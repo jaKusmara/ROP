@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 
 //create
 router.post('/', async (req, res) => {
-    const user = new userModel({
+    const user = new user({
        test: req.body.test,
        age: req.body.age,
        name: req.body.name
