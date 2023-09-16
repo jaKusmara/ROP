@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-const usersDataRouter = require('./routers/useres')
+const usersDataRouter = require('./routers/users')
 app.use('/users', usersDataRouter)
 
 //listener

@@ -22,7 +22,7 @@ const getUsers = async (req, res, next) => {
 //get all
 router.get('/', async (req, res) => {
     try {
-        const user = await user.find()
+        const user = await UserModel.find()
         res.json(user)
     } catch (err) {
         res.status(500).json({message: err.message})
