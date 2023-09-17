@@ -1,5 +1,6 @@
 require('dotenv').config() 
 require('./db/db')
+
 const express = require('express')
 const cors = require('cors')
 
@@ -10,13 +11,9 @@ const PORT = process.env.PORT
 app.use(express.json())
 app.use(cors())
 
-//endpoints
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
-const usersDataRouter = require('./routers/users')
-app.use('/users', usersDataRouter)
+//routes
+const userRoutes = require('./routers/user')
+app.use('/api/user', userRoutes)
 
 //listener
 try {

@@ -1,11 +1,8 @@
-import './App.css'
-
 function App() {
 
   return (
-    <>
-      <div className='bg-black'>ddsfdsf</div>
-    </>
+    <div className='bg-black'>dg
+    </div>
   )
 }
 
