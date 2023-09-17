@@ -8,6 +8,6 @@ const { loginUser, singUpUser } = require('../controllers/useController')
 router.post('/login', loginUser)
 
 //sing up
-router.post('/singup', singUpUser)
+router.post('/signup', singUpUser)
 
 module.exports = router

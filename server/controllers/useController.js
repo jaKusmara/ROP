@@ -7,7 +7,7 @@ const loginUser = async (req, res) => {
 
 //singup user
 const singUpUser = async (req, res) => {
-    res.json({mssg: 'login user'})
+    res.json({mssg: 'signun user'})
 }
 
 module.exports = { loginUser, singUpUser }
