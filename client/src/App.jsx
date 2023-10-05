@@ -1,8 +1,16 @@
+import Layout from "./Layout";
+import Home from './pages/Home'
+
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 function App() {
 
   return (
-    <div className='bg-black'>dg
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" element={<Home />} />
+      </Switch>
+    </Router>
   )
 }
 
