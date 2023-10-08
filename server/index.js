@@ -12,8 +12,14 @@ app.use(express.json())
 app.use(cors())
 
 //routes
-const userRoutes = require('./routers/user')
+
+//user
+const userRoutes = require('./routes/user')
 app.use('/api/user', userRoutes)
+
+//search
+const searchRoute = require('./routes/search');
+app.use('/api/search', searchRoute);
 
 //listener
 try {
