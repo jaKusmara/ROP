@@ -1,9 +1,9 @@
 const User = require('../models/userModel')
 
 const searchUsers = async (req, res) => {
-  try {
-    const { query } = req.query;
+  const { query } = req.query;
 
+  try {
     const regexPattern = new RegExp(query, 'i');
 
     const searchResults = await User.find({
@@ -11,7 +11,6 @@ const searchUsers = async (req, res) => {
         { firstname: regexPattern },
         { surname: regexPattern },
         { username: regexPattern },
-        { email: regexPattern },
       ],
     });
 

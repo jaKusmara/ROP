@@ -1,34 +1,34 @@
-// App.js or any other component
-import { useState } from 'react';
-import SearchBar from './components/SearchBar';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import { useAuthContext } from "./hooks/useAuthContext";
+
+import Home from './pages/Home'
+import Signin from "./pages/Signin"
+import Signup from "./pages/Signup"
 
 function App() {
-  const [searchResults, setSearchResults] = useState([]);
-  
-  const handleSearch = async (query) => {
-    try {
-      // Send the search query to the backend
-      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      setSearchResults(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { user } = useAuthContext();
 
   return (
-    <div>
-      <h1>My MERN App</h1>
-      <SearchBar handleSearch={handleSearch} />
-      {/* Display search results here */}
-      <ul>
-        {searchResults.map((result) => (
-          <li key={result._id}>
-            {result.firstname} {result.lastname} - {result.username} - {result.email}
-          </li>
-        ))}
-      </ul>
-    </div>
+     <>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={user ? <Home/> : <Navigate to='/signin'/>}
+          />
+          <Route
+            path="/signin"
+            element={!user ? <Signin/> : <Navigate to='/'/>}
+          />
+          <Route
+            path="/signup"
+            element={!user ? <Signup/> : <Navigate to='/'/>}
+          />
+          <Route/>
+        </Routes>
+      </BrowserRouter>
+     </> 
   );
 }
 
