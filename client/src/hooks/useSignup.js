@@ -7,21 +7,24 @@ export const useSignup = () => {
   const [isLoading, setIsLoading] = useState(false); 
   const { dispatch } = useAuthContext();
 
-  const signup = async (user) => {
+  const signup = async (firstname, surname, email, username, password) => {
     setIsLoading(true); 
 
     try {
-      const response = await axios.post('http://localhost:5000/api/user/signup', user);
+      const response = await axios.post('http://localhost:5000/api/user/signup', {firstname, surname, email, username, password});
 
       if (response.status === 200) {
         localStorage.setItem('user', JSON.stringify(response.data));
-        dispatch({ type: 'LOGIN', payload: response.data });
+
+        
         setIsLoading(false);
+        dispatch({ type: 'LOGIN', payload: response.data });
         console.log('Registered successfully:', response.data);
       }
     } catch (error) {
       setIsLoading(false);
       setError(error.response.data.error);
+      
       console.error('Registration failed:', error.response.data.error);
     }
   };

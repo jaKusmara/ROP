@@ -11,6 +11,8 @@ export default function NavBar() {
     logout()
   }
 
+  console.log(user)
+
   return (
     <>
       <div>
@@ -24,7 +26,7 @@ export default function NavBar() {
           )}
         {!user && (
           <div>
-            <Link to="/signin">LogIn</Link>
+            <Link to="/login">LogIn</Link>
             <Link to="/signup">SignUp</Link>
           </div>
         )}

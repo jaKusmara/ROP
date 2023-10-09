@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useSignin } from '../hooks/useSignin';
+import { useLogin } from '../hooks/useLogin';
 
 import NavBar from './NavBar';
 
 function LoginForm() {
-  const { signin, error, isLoading } = useSignin();
+  const { login, error, isLoading } = useLogin();
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +12,7 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await signin(identifier, password);
+    await login(identifier, password);
   };
 
   return (
