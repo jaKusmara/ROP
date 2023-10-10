@@ -10,16 +10,14 @@ export default function NavBar() {
   const handleClick = () => {
     logout()
   }
-
-  const f = user.user
-
+  
   return (
     <>
       <div>
         <nav>
           {user && (
             <div>
-              <span>{f.email}</span>
+              <span>{user.email}</span>
               <SearchBar/>
               <button onClick={handleClick}>LogOut</button>
             </div>
