@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
-    user_id:{
+    project_id:{
         type: String,
         required: true
     },
@@ -15,10 +15,12 @@ const taskSchema = new Schema({
         type: String,
         required: false
     },
-    status: {
-        type: String,
-        required: true
-    }
+    participants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true
+        }
+    ],
 })
 
 module.exports = mongoose.model('Task', taskSchema)

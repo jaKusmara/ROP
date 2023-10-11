@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
-const projectSchema = new Schema({
+const channelSchema = new Schema({
     members: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -14,21 +14,6 @@ const projectSchema = new Schema({
         type: String, 
         required: true 
     },
-    description: { 
-        type: String,
-        required: false
-    },
-    connectionString:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    channels: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Channel'
-        }
-    ],
     tasks: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -39,4 +24,4 @@ const projectSchema = new Schema({
     timestamps: true,
 });
 
-module.exports = mongoose.model('Project', projectSchema)
+module.exports = mongoose.model('Channel', channelSchema)

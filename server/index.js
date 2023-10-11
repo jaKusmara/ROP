@@ -25,6 +25,14 @@ app.use('/api/search', searchRoute);
 const projectRoute = require('./routes/project')
 app.use('/api/project', projectRoute)
 
+//task
+const taskRoute = require('./routes/task')
+app.use('/api/task', taskRoute)
+
+//channel
+const channelRoute = require('./routes/channel')
+app.use('/api/channel', channelRoute)
+
 //listener
 try {
     app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));

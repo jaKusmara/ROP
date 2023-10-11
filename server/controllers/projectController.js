@@ -1,12 +1,20 @@
-const Project = require('../models/projectModel')
+const Project = require('../models/projectModel');
+const randomToken = require('random-token').create('abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
 
+//  CREATE PROJECT
 const createProject = async (req, res) => {
     const { title, description } = req.body;
+    const user_id = req.user._id;
 
     try {
-        const user_id = req.user._id
+        const connectionString = randomToken(8);
 
-        const project = await Project.create({ user_id, title, description });
+        const project = await Project.create({ 
+            members: [user_id], 
+            title, 
+            description, 
+            connectionString 
+        });
         
         res.status(200).json(project);
     } catch (error) {
@@ -14,11 +22,18 @@ const createProject = async (req, res) => {
     }
 };
 
-const getAllProjects = async(req, res) => {
+// GET PROJECT
+const getAllUserProjects = async(req, res) => {
     const user_id = req.user._id
 
     try{
-        const projects = await Project.find({ user_id }); 
+        const projects = await Project.find(
+            { members: user_id }
+        ); 
+
+        if (!projects) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
 
         res.status(200).json(projects)
     }catch(error){
@@ -26,5 +41,76 @@ const getAllProjects = async(req, res) => {
     }
 }
 
+// JOIN PROJECT
+const joinProject = async (req, res) => {
+    const connectionString = req.body.connectionString;
+    const user_id = req.user._id;
 
-module.exports = { createProject, getAllProjects }
+    try {
+        const updatedProject = await Project.findOneAndUpdate(
+            { connectionString: connectionString },
+            { $push: { members: user_id } },
+            { new: true }
+        );
+
+        if (!updatedProject) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
+
+        res.status(200).json(updatedProject);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// LEAVE PROJECT
+const leaveProject = async (req, res) => {
+    const connectionString = req.body.connectionString
+    const user_id = req.user._id
+
+    try{
+
+        const updatedProject = await Project.findOneAndUpdate(
+            { connectionString: connectionString },
+            { $pull: { members: user_id } },
+            { new: true }
+        );
+
+        if (!updatedProject) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
+
+        res.status(200).json(updatedProject);
+    }catch(error){
+        res.status(401).json({error: error.message})
+    }
+}
+
+//  DELETE PROJECT
+const deleteProject = async (req, res) => {
+    const project_id = req.body.project_id;
+
+    try {
+        const deletedProject = await Project.deleteOne(
+            { _id: project_id }
+            );
+
+        if (deletedProject.deletedCount === 1) {
+            res.status(200).json({ message: 'Project deleted successfully' });
+        } else {
+            res.status(404).json({ error: 'Project not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+//test1
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTExODJjMjU3YzIxYWZhZDZlMjAiLCJpYXQiOjE2OTcwNTkwOTYsImV4cCI6MTY5NzMxODI5Nn0.jyNSILjOgzhyBcydbUIpdts9mVz1uHt7rGlcn2qaZ_8
+
+//janko panko
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTE1MDM4NGE0MWY1NDgzMWNjNzYiLCJpYXQiOjE2OTcwNTkxNTIsImV4cCI6MTY5NzMxODM1Mn0.Ta4fv2eDJNjpjF7yNwvzH9-Zb9_BdEnMngh_lIaXrTE
+
+module.exports = { createProject, getAllUserProjects, joinProject, leaveProject, deleteProject }
