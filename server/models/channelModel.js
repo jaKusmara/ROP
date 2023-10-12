@@ -13,7 +13,14 @@ const channelSchema = new Schema({
     title: { 
         type: String, 
         required: true 
-    }
+    },
+    messages: [
+        {
+            type: Schema.Types.ObjectId,
+            ref:"Message",
+            required: false
+        }
+    ]
 },{
     timestamps: true,
 });

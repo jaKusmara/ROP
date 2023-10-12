@@ -12,20 +12,29 @@ const createChannel = async (req, res) => {
             members: [user_id], title
         });
         
-        await Project.findByIdAndUpdate(
+        const updatedProject = await Project.findByIdAndUpdate(
             project_id,
             { $push: { channels: channel._id } },
             { new: true }
         );
 
-        res.status(200).json(channel);
+        if(!updatedProject){
+            res.status(201).json({ message: "Bad project_id" });
+        }
+
+        if(!channel){
+            res.status(201).json({ message: "Channel creation failed" });
+        }else{
+            res.status(200).json({ message: "Channel created successfully" });
+        }
+
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
-// GET CHANNEL
-const getAllChannels = async(req, res) => {
+// GET ALL PROJECT CHANNEL
+const getAllProjectChannels = async(req, res) => {
     const user_id = req.user._id
 
     try{
@@ -44,22 +53,30 @@ const getAllChannels = async(req, res) => {
 }
 
 // JOIN PROJECT
-const joinChannel = async (req, res) => {
+const useChannel = async (req, res) => {
     const channel_id = req.body.channel_id
     const user_id = req.user._id;
 
     try {
-        const updatedChannel = await Channel.findOneAndUpdate(
-            { _id: channel_id },
-            { $push: { members: user_id } },
-            { new: true }
-        );
+        const foundChannel = await Channel.findById(
+            channel_id
+        )
 
-        if (!updatedChannel) {
-            return res.status(404).json({ error: 'Channel not found' });
+        if(!foundChannel.members.includes(user_id)){
+            const updatedChannel = await Channel.findOneAndUpdate(
+                { _id: channel_id },
+                { $push: { members: user_id } },
+                { new: true }
+            );  
+
+            if (!updatedChannel) {
+                return res.status(404).json({ error: 'Channel not found' });
+            }else{
+                return res.status(200).json({ message: 'Channel joined successfully' });
+            }
+        }else{
+            return res.status(200).json({ message: 'Using chat' });
         }
-
-        res.status(200).json(updatedChannel);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -86,4 +103,4 @@ const deleteChannel = async (req, res) => {
 };
 
 
-module.exports = { createChannel, getAllChannels, joinChannel, deleteChannel }
+module.exports = { createChannel, getAllProjectChannels, useChannel, deleteChannel }

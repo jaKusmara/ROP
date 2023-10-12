@@ -3,7 +3,7 @@ const router = express.Router();
 const requireAuth = require('../middleware/requireAuth')
 
 //controllrs
-const { createChannel, getAllChannels, joinChannel, deleteChannel } = require('../controllers/channelController')
+const { createChannel, getAllProjectChannels, useChannel, deleteChannel } = require('../controllers/channelController')
 
 //middleware
 router.use(requireAuth)
@@ -13,9 +13,9 @@ router.post('/createChannel', createChannel)
 
 router.delete('/deleteChannel', deleteChannel)
 
-router.get('/getAllChannels', getAllChannels)
+router.get('/getAllProjectChannels', getAllProjectChannels)
 
-router.put('/joinChannel', joinChannel)
+router.put('/useChannel', useChannel)
 
 
 

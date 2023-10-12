@@ -5,26 +5,24 @@ const Project = require('../models/projectModel')
 
 //  CREATE TASK
 const createTask = async (req, res) => {
-    const { title, description, status } = req.body;
+    const { title, description } = req.body;
     const project_id = req.body.project_id;
 
-    try {
-        if(status == 'planning' || status == 'inProgress' || status == 'done'){
-            const task = await Task.create({ project_id, title, description, status });
+    const status = "planning"
 
-            await Project.findByIdAndUpdate(
-                project_id,
-                { $push: { tasks: task._id } },
-                { new: true }
-            );
+    try {
+        const task = await Task.create({ project_id, title, description, status });
+
+        await Project.findByIdAndUpdate(
+            project_id,
+            { $push: { tasks: task._id } },
+            { new: true }
+        );
     
-            if (task) {
-                res.status(200).json({ message: 'Task created successfully' });
-            } else {
-                res.status(400).json({ error: 'Task creation failed' });
-            } 
-        }else{
-            res.status(400).json({ error: 'Task creation failed - Bad status' });
+        if (task) {
+            res.status(200).json({ message: 'Task created successfully' });
+        } else {
+            res.status(400).json({ error: 'Task creation failed' }); 
         }
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -32,8 +30,8 @@ const createTask = async (req, res) => {
 };
 
 
-//  GET CHANNEL's TASKS
-const getAllTasks = async(req, res) => {
+//  GET PROJECT's TASKS
+const getAllProjectTasks = async(req, res) => {
     const project_id = req.body.project_id
 
     try{
@@ -47,6 +45,7 @@ const getAllTasks = async(req, res) => {
     }
 }
 
+//  GET TASK BY ID
 const getTaskById = async (req, res) => {
     const task_id = req.body.task_id;
 
@@ -79,7 +78,7 @@ const joinTask = async (req, res) => {
         if (!updatedTask) {
             return res.status(404).json({ error: 'Task not found' });
         } else {
-            res.status(200).json({ message: 'Successfully joined to the task', updatedTask });
+            res.status(200).json({ message: 'Successfully joined to the task' });
         }
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -154,4 +153,4 @@ const deleteTask = async (req, res) => {
 };
 
 
-module.exports = { createTask, getAllTasks, getTaskById, joinTask, leaveTask, deleteTask, updateTaskStatus }
+module.exports = { createTask, getAllProjectTasks, getTaskById, joinTask, leaveTask, deleteTask, updateTaskStatus }

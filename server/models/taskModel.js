@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
     project_id:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     title: { 

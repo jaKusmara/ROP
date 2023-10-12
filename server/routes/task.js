@@ -3,7 +3,7 @@ const router = express.Router();
 const requireAuth = require('../middleware/requireAuth')
 
 //controllrs
-const { createTask, getAllTasks, getTaskById, joinTask, leaveTask, deleteTask, updateTaskStatus } = require('../controllers/taskController')
+const { createTask, getAllProjectTasks, getTaskById, joinTask, leaveTask, deleteTask, updateTaskStatus } = require('../controllers/taskController')
 
 //middleware
 router.use(requireAuth)
@@ -13,7 +13,7 @@ router.post('/createTask', createTask)
 
 router.delete('/deleteTask', deleteTask)
 
-router.get('/getAllTasks', getAllTasks)
+router.get('/getAllProjectTasks', getAllProjectTasks)
 
 router.get('/getTaskById', getTaskById)
 

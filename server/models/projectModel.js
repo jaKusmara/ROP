@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const projectSchema = new Schema({
     members: [
         {
+            _id: false,
             user_id: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
@@ -13,8 +14,9 @@ const projectSchema = new Schema({
             role: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Role',
-                required: true
+                required: false
             }
+            
         }
     ],
     title: { 

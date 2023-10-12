@@ -33,6 +33,12 @@ app.use('/api/task', taskRoute)
 const channelRoute = require('./routes/channel')
 app.use('/api/channel', channelRoute)
 
+const chatRoute = require('./routes/chat')
+app.use('/api/chat', chatRoute)
+
+const messageRoute = require('./routes/message')
+app.use('/api/message', messageRoute)
+
 //listener
 try {
     app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));

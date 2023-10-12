@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const Project = require('../models/projectModel');
 const randomToken = require('random-token').create('abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
 
@@ -9,37 +11,39 @@ const createProject = async (req, res) => {
     try {
         const connectionString = randomToken(8);
 
-        const project = await Project.create({ 
-            members: [user_id], 
-            title, 
-            description, 
-            connectionString 
+        const project = await Project.create({
+            members: [{ user_id }],
+            title,
+            description,
+            connectionString,
         });
-        
+
         res.status(200).json(project);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
-// GET PROJECT
-const getAllUserProjects = async(req, res) => {
-    const user_id = req.user._id
 
-    try{
-        const projects = await Project.find(
-            { members: user_id }
-        ); 
+// GET PROJECTS FOR A USER
+const getAllUserProjects = async (req, res) => {
+    const user_id = req.user._id;
 
-        if (!projects) {
-            return res.status(404).json({ error: 'Project not found' });
+    try {
+        const projects = await Project.find({
+            "members.user_id": user_id
+        });
+
+        if (!projects || projects.length === 0) {
+            return res.status(404).json({ error: 'No projects found for the user' });
         }
 
-        res.status(200).json(projects)
-    }catch(error){
+        res.status(200).json(projects);
+    } catch (error) {
         res.status(400).json({ error: error.message });
     }
-}
+};
+
 
 // JOIN PROJECT
 const joinProject = async (req, res) => {
@@ -48,20 +52,21 @@ const joinProject = async (req, res) => {
 
     try {
         const updatedProject = await Project.findOneAndUpdate(
-            { connectionString: connectionString },
-            { $push: { members: user_id } },
+            { connectionString: connectionString, "members.user_id": { $ne: user_id } },
+            { $push: { "members": { user_id: user_id } } },
             { new: true }
         );
 
         if (!updatedProject) {
-            return res.status(404).json({ error: 'Project not found' });
+            return res.status(404).json({ error: 'Project not found or user is already a member' });
         }
 
-        res.status(200).json({message: "SNAHNHANS"});
+        res.status(200).json({ message: "Successfully joined the project" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
+
 
 // LEAVE PROJECT
 const leaveProject = async (req, res) => {
@@ -72,7 +77,7 @@ const leaveProject = async (req, res) => {
 
         const updatedProject = await Project.findOneAndUpdate(
             { connectionString: connectionString },
-            { $pull: { members: user_id } },
+            { $pull: { "members": { user_id: user_id } } },
             { new: true }
         );
 
