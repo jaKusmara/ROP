@@ -57,7 +57,7 @@ const joinProject = async (req, res) => {
             return res.status(404).json({ error: 'Project not found' });
         }
 
-        res.status(200).json(updatedProject);
+        res.status(200).json({message: "SNAHNHANS"});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -108,7 +108,7 @@ const deleteProject = async (req, res) => {
 
 
 //test1
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTExODJjMjU3YzIxYWZhZDZlMjAiLCJpYXQiOjE2OTcwNTkwOTYsImV4cCI6MTY5NzMxODI5Nn0.jyNSILjOgzhyBcydbUIpdts9mVz1uHt7rGlcn2qaZ_8
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTExODJjMjU3YzIxYWZhZDZlMjAiLCJpYXQiOjE2OTcwOTc3OTgsImV4cCI6MTY5NzM1Njk5OH0.Ow4-94Gqg2aSkgrmJTO6djTSmAVOwzV9017RCx1g0Vo
 
 //janko panko
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTE1MDM4NGE0MWY1NDgzMWNjNzYiLCJpYXQiOjE2OTcwNTkxNTIsImV4cCI6MTY5NzMxODM1Mn0.Ta4fv2eDJNjpjF7yNwvzH9-Zb9_BdEnMngh_lIaXrTE

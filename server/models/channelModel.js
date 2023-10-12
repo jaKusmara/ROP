@@ -13,13 +13,7 @@ const channelSchema = new Schema({
     title: { 
         type: String, 
         required: true 
-    },
-    tasks: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Task'
-        }
-    ],
+    }
 },{
     timestamps: true,
 });

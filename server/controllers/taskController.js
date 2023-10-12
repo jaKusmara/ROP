@@ -5,22 +5,26 @@ const Project = require('../models/projectModel')
 
 //  CREATE TASK
 const createTask = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, status } = req.body;
     const project_id = req.body.project_id;
 
     try {
-        const task = await Task.create({ project_id, title, description });
+        if(status == 'planning' || status == 'inProgress' || status == 'done'){
+            const task = await Task.create({ project_id, title, description, status });
 
-        await Project.findByIdAndUpdate(
-            project_id,
-            { $push: { tasks: task._id } },
-            { new: true }
-        );
-
-        if (task) {
-            res.status(200).json({ message: 'Task created successfully' });
-        } else {
-            res.status(400).json({ error: 'Task creation failed' });
+            await Project.findByIdAndUpdate(
+                project_id,
+                { $push: { tasks: task._id } },
+                { new: true }
+            );
+    
+            if (task) {
+                res.status(200).json({ message: 'Task created successfully' });
+            } else {
+                res.status(400).json({ error: 'Task creation failed' });
+            } 
+        }else{
+            res.status(400).json({ error: 'Task creation failed - Bad status' });
         }
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -98,9 +102,35 @@ const leaveTask = async(req, res) => {
             return res.status(404).json({ error: 'Task not found' });
         }
         
-        res.status(200).json({ message: 'Successfully left to the task', updatedTask });
+        res.status(200).json({ message: 'Successfully left to the task' });
     }catch(error){
         res.status(400).json({ error: error.message });
+    }
+}
+
+const updateTaskStatus = async (req, res) => {
+    const task_id = req.body.task_id
+    const status = req.body.status
+
+    try{
+        if(status == 'planning' || status == 'inProgress' || status == 'done'){
+            const updatedTaskStatus = await Task.findByIdAndUpdate(
+                task_id,
+                { $set: {status:status}},
+                { new: true }
+            )
+
+            if (!updatedTaskStatus) {
+                return res.status(404).json({ error: 'Task not found' });
+            } else {
+                res.status(200).json({ message: 'Successfully updated task' });
+            }
+        }else{
+            res.status(200).json({ error: 'Bad status' });
+        }
+
+    }catch(error){
+        res.status(400).json({ error: error.message })
     }
 }
 
@@ -124,4 +154,4 @@ const deleteTask = async (req, res) => {
 };
 
 
-module.exports = { createTask, getAllTasks, getTaskById, joinTask, leaveTask, deleteTask }
+module.exports = { createTask, getAllTasks, getTaskById, joinTask, leaveTask, deleteTask, updateTaskStatus }
