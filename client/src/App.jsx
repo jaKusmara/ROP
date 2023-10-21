@@ -2,20 +2,24 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { useAuthContext } from "./hooks/useAuthContext";
 
-import Home from './pages/Home'
+import Dashboard from './pages/Dashboard'
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
+import Test from "./pages/Test"
 
 function App() {
   const { user } = useAuthContext();
 
   return (
-     <>
+     <div>
       <BrowserRouter>
         <Routes>
+
+      
+           
           <Route
             path="/"
-            element={user ? <Home/> : <Navigate to='/login'/>}
+            element={user ? <Dashboard /> : <Navigate to='/login'/>}
           />
           <Route
             path="/login"
@@ -26,9 +30,16 @@ function App() {
             element={!user ? <Signup/> : <Navigate to='/'/>}
           />
           <Route/>
+        
+{/*
+          <Route
+            path="/"
+            element={<Test/>}
+          >
+          </Route>*/}
         </Routes>
       </BrowserRouter>
-     </> 
+     </div> 
   );
 }
 

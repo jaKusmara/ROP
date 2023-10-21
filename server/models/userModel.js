@@ -32,9 +32,9 @@ const userSchema = new Schema({
   });
 
 //static signup method
-userSchema.statics.signup = async function(firstname, surname, email, username, password) {
+userSchema.statics.signup = async function(firstname, surname, email, username, password, reTypePassword) {
     // Validation
-    if (!email || !username || !password || !firstname || !surname) {
+    if (!email || !username || !password || !firstname || !surname || !reTypePassword) {
         throw Error('All fields must be filled!');
     }
 
@@ -45,6 +45,10 @@ userSchema.statics.signup = async function(firstname, surname, email, username, 
     if (!validator.isStrongPassword(password)) {
         throw Error('Password not strong enough');
     }
+
+    if (password !== reTypePassword) {
+        throw Error("Passwords do not match");
+    } 
 
     const emailExist = await this.findOne({ email });
 

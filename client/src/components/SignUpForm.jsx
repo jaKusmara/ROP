@@ -9,17 +9,16 @@ function RegistrationForm() {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [reTypePassword, setReTypePassword] = useState('')
 
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-    await signup(firstname, surname, email, username, password)
+    await signup(firstname, surname, email, username, password, reTypePassword)
   }
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="flex flex-col space-y-4 w-3/5">
         <input
           type="text"
           name="firstname"
@@ -55,9 +54,15 @@ function RegistrationForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button disabled={isLoading} type="submit">Register</button>
+        <input
+          type="password"
+          name="password"
+          placeholder="re type Password"
+          value={reTypePassword}
+          onChange={(e) => setReTypePassword(e.target.value)}
+        />
+        <button onClick={handleSubmit} disabled={isLoading} type="submit" className="w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">Register</button>
         {error && <div>{error}</div>}
-      </form>
     </div>
   );
 }
