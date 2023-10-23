@@ -50,7 +50,7 @@ function Home() {
           console.error("Error fetching project tasks:", error);
         });
     }
-  };
+  }
 
   {
     /*     TOGGLE STATES      */
@@ -185,8 +185,8 @@ function Home() {
             onShowProjectDashboard={toggleShowProjectDashboard}
             isProjectDashboardOpen={isProjectDashboardOpen}
             projectTasks={projectTasks}
-            getTasks={getTasks}
             onCreateTask={toggleCreateProjectTask}
+            getTasks={getTasks}
           />
         ) : null}
       </div>

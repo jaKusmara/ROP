@@ -11,8 +11,8 @@ export default function ProjectHome({
   onShowProjectDashboard,
   isProjectDashboardOpen,
   projectTasks,
-  getTasks,
   onCreateTask,
+  getTasks
 }) {
   const { projectId, projectTitle } = useParams();
 
@@ -24,9 +24,9 @@ export default function ProjectHome({
           projectId={projectId}
           onShowProjectTasks={onShowProjectTasks}
           onShowProjectDashboard={onShowProjectDashboard}
-          getTasks={getTasks}  // Ensure getTasks is passed to ProjectSideMenu
+          getTasks={getTasks}
         />
-        {isProjectTasksOpen ? <Tasks projectTasks={projectTasks} onCreateTask={onCreateTask} /> : null}
+        {isProjectTasksOpen ? <Tasks projectTasks={projectTasks} onCreateTask={onCreateTask} getTasks={getTasks}/> : null}
         {isProjectDashboardOpen ? <ProjectDashboard /> : null}
       </div>
       <Outlet />

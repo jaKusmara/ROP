@@ -7,38 +7,40 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 
 export default function ProjectSideMenu({
-    projectTitle,
-    projectId,
-    onShowProjectTasks,
-    onShowProjectDashboard,
-    getTasks,
-  }) {
-    return (
-      <aside className="flex flex-col gap-y-3 p-2 w-1/5 bg-slate-400 items-center pt-4">
-        <span>{projectTitle}</span>
-        <div onClick={onShowProjectDashboard}>
-          <Link to={`/project/${projectTitle}/${projectId}/dashboard`}>
-            <AssessmentIcon />
-            Dashboard
-          </Link>
-        </div>
-        <div onClick={() => {
-          onShowProjectTasks();
-          getTasks();
-        }}>
-          <Link to={`/project/${projectTitle}/${projectId}/tasks`}>
-            <TaskIcon />
-            Tasks
-          </Link>
-        </div>
-        <div>
-          <GroupIcon />
-          Members
-        </div>
-        <div>
-          <SettingsIcon />
-          Settings
-        </div>
-      </aside>
-    );
-  }
+  projectTitle,
+  projectId,
+  onShowProjectTasks,
+  onShowProjectDashboard,
+  getTasks,
+}) {
+  const handleTasksClick = () => {
+    onShowProjectTasks();
+    getTasks();
+  };
+
+  return (
+    <aside className="flex flex-col gap-y-3 p-2 w-1/5 bg-slate-400 items-center pt-4">
+      <span>{projectTitle}</span>
+      <div onClick={onShowProjectDashboard}>
+        <Link to={`/project/${projectTitle}/${projectId}/dashboard`}>
+          <AssessmentIcon />
+          Dashboard
+        </Link>
+      </div>
+      <div onClick={handleTasksClick}>
+        <Link to={`/project/${projectTitle}/${projectId}/tasks`}>
+          <TaskIcon />
+          Tasks
+        </Link>
+      </div>
+      <div>
+        <GroupIcon />
+        Members
+      </div>
+      <div>
+        <SettingsIcon />
+        Settings
+      </div>
+    </aside>
+  );
+}
