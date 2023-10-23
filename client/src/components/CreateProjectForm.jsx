@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 
-export default function CreateProjectForm({onCreateProjectClick}) {
+export default function CreateProjectForm({
+  onCreateProjectClick,
+  sendDataToCreateProject
+}) {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
+  const handleSubmit = () => {
+    const body = {
+      title,
+      description
+    }
+
+    sendDataToCreateProject(body)
+  }
 
   return (
     <div className="flex flex-col w-1/3 gap-y-4">
@@ -25,6 +33,7 @@ export default function CreateProjectForm({onCreateProjectClick}) {
         onChange={(e) => setDescription(e.target.value)}
       />
       <button onClick={onCreateProjectClick}>Cancel</button>
+      <button onClick={handleSubmit}>Create Project</button>
     </div>
   );
 }

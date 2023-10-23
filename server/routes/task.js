@@ -13,7 +13,7 @@ router.post('/createTask', createTask)
 
 router.delete('/deleteTask', deleteTask)
 
-router.get('/getAllProjectTasks', getAllProjectTasks)
+router.get('/getAllProjectTasks/:project_id', getAllProjectTasks)
 
 router.get('/getTaskById', getTaskById)
 

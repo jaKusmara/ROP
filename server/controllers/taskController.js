@@ -5,10 +5,8 @@ const Project = require('../models/projectModel')
 
 //  CREATE TASK
 const createTask = async (req, res) => {
-    const { title, description } = req.body;
-    const project_id = req.body.project_id;
-
-    const status = "planning"
+    const { title, description, project_id } = req.body;
+    const status = "planning";
 
     try {
         const task = await Task.create({ project_id, title, description, status });
@@ -18,11 +16,11 @@ const createTask = async (req, res) => {
             { $push: { tasks: task._id } },
             { new: true }
         );
-    
+
         if (task) {
-            res.status(200).json({ message: 'Task created successfully' });
+            res.status(200).json({ message: 'Task created successfully', task });
         } else {
-            res.status(400).json({ error: 'Task creation failed' }); 
+            res.status(400).json({ error: 'Task creation failed' });
         }
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -31,20 +29,18 @@ const createTask = async (req, res) => {
 
 
 //  GET PROJECT's TASKS
-const getAllProjectTasks = async(req, res) => {
-    const project_id = req.body.project_id
-
-    try{
-        const tasks = await Task.find(
-            { project_id }
-            ); 
-
-        res.status(200).json(tasks)
-    }catch(error){
-        res.status(400).json({ error: error.message });
+const getAllProjectTasks = async (req, res) => {
+    const project_id = req.params.project_id;
+  
+    try {
+      const tasks = await Task.find({ project_id });
+  
+      res.status(200).json(tasks);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-}
-
+  };
+  
 //  GET TASK BY ID
 const getTaskById = async (req, res) => {
     const task_id = req.body.task_id;

@@ -2,36 +2,39 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { useAuthContext } from "./hooks/useAuthContext";
 
-import Dashboard from './pages/Dashboard'
-import Login from "./pages/Login"
-import Signup from "./pages/Signup"
-import Test from "./pages/Test"
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Chat from "./components/Chat";
+
+import Test from "./pages/Test";
 
 function App() {
   const { user } = useAuthContext();
 
   return (
-     <div>
+    <div>
       <BrowserRouter>
         <Routes>
-
-      
-           
           <Route
             path="/"
-            element={user ? <Dashboard /> : <Navigate to='/login'/>}
+            element={user ? <Dashboard /> : <Navigate to="/login" />}
           />
           <Route
             path="/login"
-            element={!user ? <Login/> : <Navigate to='/'/>}
+            element={!user ? <Login /> : <Navigate to="/" />}
           />
           <Route
             path="/signup"
-            element={!user ? <Signup/> : <Navigate to='/'/>}
+            element={!user ? <Signup /> : <Navigate to="/" />}
           />
-          <Route/>
-        
-{/*
+          <Route />
+
+          <Route path="/project/:projectTitle/:projectId/dashboard" element={<Dashboard />} />
+          <Route path="/project/:projectTitle/:projectId/tasks" element={<Dashboard />} />
+          <Route path="/chats/" element={<Dashboard />} />
+
+          {/*
           <Route
             path="/"
             element={<Test/>}
@@ -39,7 +42,7 @@ function App() {
           </Route>*/}
         </Routes>
       </BrowserRouter>
-     </div> 
+    </div>
   );
 }
 

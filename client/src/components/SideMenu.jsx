@@ -1,27 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
-export default function ({ onChatClick, onHomeClick, onCreateProjectClick, onAddProjectClick, isAddProjectClicked }) {
+import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 
+export default function ({
+  onChatClick,
+  onHomeClick,
+  onCreateProjectClick,
+  onAddProjectClick,
+  isAddProjectClicked,
+  userProjects,
+  onOpenProjectClick,
+}) {
   return (
-    <div className="flex w-1/5 bg-slate-500 flex-col">
-      <div className="flex flex-col gap-y-2 p-2" >
-        <span className="cursor-pointer" onClick={onHomeClick}>Home</span>
-        <span className="cursor-pointer" onClick={onChatClick}>Chats</span>
-        <span className="flex flex-row justify-between ">
-          <h1>Project</h1>
-          <div className="cursor-pointer" onClick={onAddProjectClick}>
-            +
-            {isAddProjectClicked ? (
-              <>
-              <div onClick={onAddProjectClick} className="absolute inset-0"></div>
+    <aside className="flex flex-col gap-y-3 p-2 w-[5%] bg-slate-500 items-center pt-4">
+      <span className="cursor-pointer" onClick={onHomeClick}>
+        <Link to={`/`}><SpaceDashboardRoundedIcon /></Link>
+      </span>
+      <span className="cursor-pointer" onClick={onChatClick}>
+      <Link to={`/chats/`}>Chats</Link>
+      </span>
+      <span className="flex flex-row justify-between">
+        <div className="cursor-pointer items-end" onClick={onAddProjectClick}>
+          +
+          {isAddProjectClicked ? (
+            <>
+              <div
+                onClick={onAddProjectClick}
+                className="absolute inset-0"
+              ></div>
               <ul className="absolute felx flex-col mt-2 bg-gray-700/95 p-2 rounded text-white">
-                <li onClick={onCreateProjectClick} className="cursor-pointer opacity">Create Project</li>
+                <li
+                  onClick={onCreateProjectClick}
+                  className="cursor-pointer opacity"
+                >
+                  Create Project
+                </li>
                 <li className="cursor-pointer">Join Project</li>
-              </ul></>
-            ) : null}
-          </div>
-        </span>
-      </div>
-    </div>
+              </ul>
+            </>
+          ) : null}
+        </div>
+      </span>
+      {userProjects.map((project) => (
+  <li className="list-none" onClick={() => onOpenProjectClick(project._id, project.title)} key={project._id}>
+    <Link to={`/project/${project.title}/${project._id}/dashboard`}>{project.title}</Link>
+  </li>
+))}
+
+    </aside>
   );
 }

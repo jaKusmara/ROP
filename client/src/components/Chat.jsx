@@ -1,4 +1,5 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom';
 
 export default function Chat() {
   return (
@@ -8,13 +9,13 @@ export default function Chat() {
       </div>
       <div className='bg-zinc-700 w-4/5 flex flex-col'>
         <div className='h-full'>
-
         </div>
         <div className='flex flex-row justify-center items-center bg-slate-400 p-3'>
           <input type="text" />
           <button>Send</button>
         </div>
       </div>
+      <Outlet />
     </div>
   )
 }
