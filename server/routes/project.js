@@ -15,8 +15,8 @@ router.delete('/deleteProject', deleteProject)
 
 router.get('/getAllUserProjects', getAllUserProjects)
 
-router.put('/joinProject', joinProject)
+router.put('/joinProject/:connectionString', joinProject)
 
-router.put('/leaveProject', leaveProject)
+router.put('/leaveProject/:projectId', leaveProject)
 
 module.exports = router

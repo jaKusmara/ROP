@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
 import TaskIcon from "@mui/icons-material/Task";
@@ -11,12 +11,19 @@ export default function ProjectSideMenu({
   projectId,
   onShowProjectTasks,
   onShowProjectDashboard,
-  getTasks,
+  handleLeaveProject,
+  onHomeClick,
+  sendLeaveData
 }) {
+
   const handleTasksClick = () => {
     onShowProjectTasks();
-    getTasks();
   };
+
+  const handleLeaveClick = () => {
+    handleLeaveProject()
+    onHomeClick()
+  }
 
   return (
     <aside className="flex flex-col gap-y-3 p-2 w-1/5 bg-slate-400 items-center pt-4">
@@ -37,10 +44,15 @@ export default function ProjectSideMenu({
         <GroupIcon />
         Members
       </div>
-      <div>
+      
+      <div>channels</div>
+      <span>
+        <button onClick={handleLeaveClick}><Link to={`/`}>Leave Project</Link></button>
+<div>
         <SettingsIcon />
         Settings
       </div>
+      </span>
     </aside>
   );
 }

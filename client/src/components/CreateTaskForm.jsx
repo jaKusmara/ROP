@@ -4,7 +4,8 @@ import { createTask } from "../controllers/taskController/createTask";
 export default function CreateTaskForm({
   onCreateTaskClick,
   sendDataToCreateTask,
-  projectId
+  projectId,
+  getTasks
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

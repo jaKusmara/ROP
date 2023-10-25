@@ -10,7 +10,6 @@ export async function getAllProjectTasks(user, projectId) {
         },
       }
     );
-
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);

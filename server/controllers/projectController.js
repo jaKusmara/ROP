@@ -38,7 +38,7 @@ const getAllUserProjects = async (req, res) => {
             return res.status(404).json({ error: 'No projects found for the user' });
         }
 
-        res.status(200).json(projects);
+        res.status(200).json({ message: "Successfully feched the projects", projects});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -47,7 +47,7 @@ const getAllUserProjects = async (req, res) => {
 
 // JOIN PROJECT
 const joinProject = async (req, res) => {
-    const connectionString = req.body.connectionString;
+    const connectionString = req.params.connectionString;
     const user_id = req.user._id;
 
     try {
@@ -61,7 +61,7 @@ const joinProject = async (req, res) => {
             return res.status(404).json({ error: 'Project not found or user is already a member' });
         }
 
-        res.status(200).json({ message: "Successfully joined the project" });
+        res.status(200).json({ message: "Successfully joined the project", updatedProject});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -70,13 +70,13 @@ const joinProject = async (req, res) => {
 
 // LEAVE PROJECT
 const leaveProject = async (req, res) => {
-    const connectionString = req.body.connectionString
+    const projectId = req.params.projectId
     const user_id = req.user._id
 
     try{
 
         const updatedProject = await Project.findOneAndUpdate(
-            { connectionString: connectionString },
+            { _id: projectId },
             { $pull: { "members": { user_id: user_id } } },
             { new: true }
         );

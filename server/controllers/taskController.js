@@ -35,7 +35,7 @@ const getAllProjectTasks = async (req, res) => {
     try {
       const tasks = await Task.find({ project_id });
   
-      res.status(200).json(tasks);
+      res.status(200).json({ message: 'Task created successfully', task });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export async function getAllUserProject(user) {
+export async function leaveProject(user, projectId) {
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/project/getAllUserProjects",
+    const response = await axios.put(
+      `http://localhost:5000/api/project/leaveProject/${projectId}`,
+      null, 
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
