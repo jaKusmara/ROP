@@ -14,6 +14,7 @@ import { leaveProject } from "../controllers/projectControllers/leaveProject";
 import { getUserTasks } from "../controllers/taskController/getUsersTasks";
 import { getTaskById } from "../controllers/taskController/getTaskById";
 import { leaveTask } from "../controllers/taskController/leaveTask";
+import { getProjectById } from "../controllers/projectControllers/getProjectById";
 
 import NavBar from "../components/NavBar";
 import SideMenu from "../components/SideMenu";
@@ -181,10 +182,11 @@ function Dashboard() {
     setProjectTasks([]);
   };
 
-  const toggleShowTask = (taskId, taskTitle) => {
+  const toggleShowTask = (taskId, taskTitle, projectId) => {
     setShowedTaskId(taskId);
     setShowedTaskTitle(taskTitle);
     setIsTaskShow(!isTaskShow);
+    setProjectId(projectId);
   };
 
   {
@@ -220,6 +222,31 @@ function Dashboard() {
     handleCreateTask(data);
   };
 
+  {
+    /*     USER TASKS      */
+  }
+
+  useEffect(() => {
+    if (user && user.token) {
+      try {
+        const fetchData = async () => {
+          const response = await getUserTasks(user);
+
+          if (response.tasks && response.message) {
+            const { message, tasks } = response;
+            setUserTasks([...tasks]);
+            toast.success(message);
+          } else {
+            console.error("Response does not contain a valid message.");
+          }
+        };
+
+        fetchData();
+      } catch (error) {
+        toast.error(error.response);
+      }
+    }
+  }, [user, isHomeOpen]);
 
   {
     /*     PROJECT TASKS      */
@@ -276,38 +303,12 @@ function Dashboard() {
   }, [user, projectId]);
 
   {
-    /*     USER TASKS      */
-  }
-
-  useEffect(() => {
-    if (user && user.token) {
-      try {
-        const fetchData = async () => {
-          const response = await getUserTasks(user);
-
-          if (response.tasks && response.message) {
-            const { message, tasks } = response;
-
-            setUserTasks([...tasks]);
-            toast.success(message);
-          } else {
-            console.error("Response does not contain a valid message.");
-          }
-        };
-
-        fetchData();
-      } catch (error) {
-        toast.error(error.response);
-      }
-    }
-  }, [user, isHomeOpen]);
-
-  {
     /*     TASK BY ID      */
   }
 
   useEffect(() => {
     if (user && user.token && showedTaskId) {
+      console.log(showedTask);
       try {
         const fetchData = async () => {
           console.log(showedTaskId);
@@ -317,7 +318,7 @@ function Dashboard() {
 
           if (response.task && response.message) {
             const { message, task } = response;
-            console.log(task.project_id)
+            console.log(task.project_id);
             setShowedTask(task);
             toast.success(message);
           } else {
@@ -331,6 +332,30 @@ function Dashboard() {
       }
     }
   }, [user, showedTaskId]);
+
+  useEffect(() => {
+    if (user && user.token) {
+      try {
+        const fetchData = async () => {
+          const response = await getProjectById(user, projectId);
+
+          console.log(response);
+
+          if (response.project && response.message) {
+            const { message, project } = response;
+            setProjectTitle(project.title)
+            console.log(message)
+          } else {
+            console.error("Response does not contain a valid message.");
+          }
+        };
+
+        fetchData();
+      } catch (error) {
+        toast.error(error.response);
+      }
+    }
+  }, [user, projectId]);
 
   return (
     <div className="relative z-0 flex flex-col h-screen w-screen">

@@ -5,6 +5,7 @@ export default function ShowedTask({
   projectTitle,
   handleLeaveTask,
 }) {
+  console.log(projectTitle)
   return (
     <div>
       <div>{showedTask.title}</div>

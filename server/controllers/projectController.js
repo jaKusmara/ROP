@@ -44,6 +44,24 @@ const getAllUserProjects = async (req, res) => {
     }
 };
 
+//  GET PROJECT BY ID
+
+const getProjectById = async(req, res) => {
+    const project_id = req.params.project_id
+
+    try {
+        const project = await Project.findById({_id: project_id})
+
+        if(!project){
+            return res.status(200).json({message: "Bad project_id"})
+        }
+
+        res.status(200).json({message: "Successfully find project!", project})
+    } catch (error) {
+        res.status(200).json({error: error.message})
+    }
+}
+
 
 // JOIN PROJECT
 const joinProject = async (req, res) => {
@@ -118,4 +136,4 @@ const deleteProject = async (req, res) => {
 //janko panko
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTE1MDM4NGE0MWY1NDgzMWNjNzYiLCJpYXQiOjE2OTcwNTkxNTIsImV4cCI6MTY5NzMxODM1Mn0.Ta4fv2eDJNjpjF7yNwvzH9-Zb9_BdEnMngh_lIaXrTE
 
-module.exports = { createProject, getAllUserProjects, joinProject, leaveProject, deleteProject }
+module.exports = { createProject, getAllUserProjects, getProjectById, joinProject, leaveProject, deleteProject }

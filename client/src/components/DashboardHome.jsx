@@ -29,7 +29,7 @@ export default function DashboardHome({ userProjects, userTasks, onOpenProjectCl
             <li
               className="list-none"
               key={task._id}
-              onClick={() => {onShowedTask(task._id, task.title)}}
+              onClick={() => {onShowedTask(task._id, task.title, task.project_id)}}
             >
              {task.title}
               
