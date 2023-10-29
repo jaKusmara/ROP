@@ -85,7 +85,7 @@ const leaveProject = async (req, res) => {
             return res.status(404).json({ error: 'Project not found' });
         }
 
-        res.status(200).json(updatedProject);
+        res.status(200).json({ isLeaving: true });
     }catch(error){
         res.status(401).json({error: error.message})
     }

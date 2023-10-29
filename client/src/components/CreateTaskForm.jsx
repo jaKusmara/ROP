@@ -5,7 +5,6 @@ export default function CreateTaskForm({
   onCreateTaskClick,
   sendDataToCreateTask,
   projectId,
-  getTasks
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

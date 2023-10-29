@@ -13,7 +13,6 @@ export default function ProjectSideMenu({
   onShowProjectDashboard,
   handleLeaveProject,
   onHomeClick,
-  sendLeaveData
 }) {
 
   const handleTasksClick = () => {

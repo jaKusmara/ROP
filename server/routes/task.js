@@ -1,26 +1,37 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const requireAuth = require('../middleware/requireAuth')
+const requireAuth = require("../middleware/requireAuth");
 
 //controllrs
-const { createTask, getAllProjectTasks, getTaskById, joinTask, leaveTask, deleteTask, updateTaskStatus } = require('../controllers/taskController')
+const {
+  createTask,
+  getAllProjectTasks,
+  getTaskById,
+  joinTask,
+  leaveTask,
+  deleteTask,
+  updateTaskStatus,
+  getUserTasks
+} = require("../controllers/taskController");
 
 //middleware
-router.use(requireAuth)
+router.use(requireAuth);
 
 //search
-router.post('/createTask', createTask)
+router.post("/createTask", createTask);
 
-router.delete('/deleteTask', deleteTask)
+router.delete("/deleteTask", deleteTask);
 
-router.get('/getAllProjectTasks/:project_id', getAllProjectTasks)
+router.get("/getAllProjectTasks/:project_id", getAllProjectTasks);
 
-router.get('/getTaskById', getTaskById)
+router.get("/getTaskById/:task_id", getTaskById);
 
-router.put('/joinTask', joinTask)
+router.get("/getUserTasks", getUserTasks);
 
-router.put('/leaveTask', leaveTask)
+router.put("/joinTask", joinTask);
 
-router.put('/updateTaskStatus', updateTaskStatus)
+router.put("/leaveTask/:task_id", leaveTask);
 
-module.exports = router
+router.put("/updateTaskStatus", updateTaskStatus);
+
+module.exports = router;

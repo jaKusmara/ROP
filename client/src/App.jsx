@@ -32,6 +32,7 @@ function App() {
 
           <Route path="/project/:projectTitle/:projectId/dashboard" element={<Dashboard />} />
           <Route path="/project/:projectTitle/:projectId/tasks" element={<Dashboard />} />
+          <Route path="/project/:projectTitle/:projectId/tasks/:taskTitle/:taskId" element={<Dashboard />} />
           <Route path="/chats/" element={<Dashboard />} />
 
           {/*
