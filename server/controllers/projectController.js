@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+const Channel = require("../models/channelModel");
 const Project = require('../models/projectModel');
 const randomToken = require('random-token').create('abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
 
@@ -18,6 +19,19 @@ const createProject = async (req, res) => {
             connectionString,
         });
 
+        if(project){
+            const title = "General"
+
+            const channel = await Channel.create({
+                members: [user_id],
+                title,
+              })
+
+            await project.findOneAndUpdate({
+                _id: project._id
+            })
+        }
+
         res.status(200).json(project);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -35,7 +49,7 @@ const getAllUserProjects = async (req, res) => {
         });
 
         if (!projects || projects.length === 0) {
-            return res.status(404).json({ error: 'No projects found for the user' });
+            return res.status(200).json({ message: 'No projects found for the user' });
         }
 
         res.status(200).json({ message: "Successfully feched the projects", projects});

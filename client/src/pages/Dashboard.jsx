@@ -81,8 +81,15 @@ function Dashboard() {
     const project_id = data.project_id;
     try {
       const newTask = await createTask(user, title, description, project_id);
-      setProjectTasks([...projectTasks, newTask]);
-      setIsProjectCreateTaskShow(false);
+
+      if(newTask.message || newTask.error && newTask.task){
+        const {message, task, error} = newTask
+        setProjectTasks([...projectTasks, task]);
+        toast.success(message)
+        toast.error(error)
+        setIsProjectCreateTaskShow(false);
+      }
+      
     } catch (error) {
       console.error("Error creating project:", error);
     }
@@ -253,7 +260,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    if (user && user.token) {
+    if (user && user.token && projectId) {
       try {
         const fetchData = async () => {
           const response = await getAllProjectTasks(user, projectId);
@@ -261,9 +268,10 @@ function Dashboard() {
           if (response.tasks && response.message) {
             const { message, tasks } = response;
             setProjectTasks([...tasks]);
-            toast.success(message);
+            console.log(message)
           } else {
-            console.error("Response does not contain a valid message.");
+            const message = response
+            console.log(message)
           }
         };
 
@@ -290,8 +298,9 @@ function Dashboard() {
             const { message, projects } = response;
             setUserProjects([...projects]);
             toast.success(message);
-          } else {
-            console.error("Response does not contain a valid message.");
+          } else if(response.message){
+            const message = response
+            console.log(message)
           }
         };
 
@@ -307,20 +316,16 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    if (user && user.token && showedTaskId) {
-      console.log(showedTask);
+    if (user && user.token && showedTaskId.length !== 0) {
       try {
         const fetchData = async () => {
-          console.log(showedTaskId);
           const response = await getTaskById(user, showedTaskId);
 
           console.log(response);
 
           if (response.task && response.message) {
             const { message, task } = response;
-            console.log(task.project_id);
             setShowedTask(task);
-            toast.success(message);
           } else {
             console.error("Response does not contain a valid message.");
           }
@@ -338,9 +343,6 @@ function Dashboard() {
       try {
         const fetchData = async () => {
           const response = await getProjectById(user, projectId);
-
-          console.log(response);
-
           if (response.project && response.message) {
             const { message, project } = response;
             setProjectTitle(project.title)

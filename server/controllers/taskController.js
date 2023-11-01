@@ -40,6 +40,10 @@ const getAllProjectTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ project_id });
 
+    if(!tasks || tasks.length === 0){
+      return res.status(200).json({message: "No tasks found for the project"})
+    }
+
     res.status(200).json({ message: "Task created successfully", tasks });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -71,11 +75,11 @@ const getTaskById = async (req, res) => {
   try {
     const task = await Task.findById(task_id);
 
-    if (!task) {
-      res.status(404).json({ error: "Task not found", task });
-    } else {
-      res.status(200).json({ message: 'Task find!', task });
-    }
+    if (!task || task.length === 0) {
+      res.status(200).json({ message: "No task found"});
+    } 
+
+    res.status(200).json({ message: 'Task find!', task });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
