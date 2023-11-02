@@ -15,6 +15,7 @@ export default function ProjectHome({
   handleLeaveProject,
   onHomeClick,
   onShowTask,
+  project
 }) {
   const { projectId, projectTitle } = useParams();
 
@@ -28,6 +29,7 @@ export default function ProjectHome({
           onShowProjectDashboard={onShowProjectDashboard}
           handleLeaveProject={handleLeaveProject}
           onHomeClick={onHomeClick}
+          project={project}
         />
         {isProjectTasksOpen ? <Tasks projectTasks={projectTasks} onCreateTask={onCreateTask} onShowTask={onShowTask}/> : null}
         {isProjectDashboardOpen ? <ProjectDashboard /> : null}

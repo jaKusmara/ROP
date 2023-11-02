@@ -19,17 +19,17 @@ const createProject = async (req, res) => {
             connectionString,
         });
 
-        if(project){
-            const title = "General"
+        if (project) {
+            const title = "General";
 
             const channel = await Channel.create({
                 members: [user_id],
                 title,
-              })
+            });
 
-            await project.findOneAndUpdate({
-                _id: project._id
-            })
+            await project.updateOne({
+                $push: { channels: channel._id },
+            });
         }
 
         res.status(200).json(project);
@@ -37,6 +37,7 @@ const createProject = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
 
 
 // GET PROJECTS FOR A USER

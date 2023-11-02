@@ -36,6 +36,7 @@ function Dashboard() {
   const [userTasks, setUserTasks] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
   const [showedTask, setShowedTask] = useState({});
+  const [project, setProject] = useState({})
 
   const [projectId, setProjectId] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
@@ -177,10 +178,9 @@ function Dashboard() {
     setAddProject(!isAddProjectClicked);
   };
 
-  const toggleOpenProject = (projectId, projectTitle) => {
+  const toggleOpenProject = (projectId) => {
     setIsprojectOpen(true);
     setProjectId(projectId);
-    setProjectTitle(projectTitle);
 
     setIsHomeOpen(false);
     setIsChatOpen(false);
@@ -338,6 +338,10 @@ function Dashboard() {
     }
   }, [user, showedTaskId]);
 
+  {
+    /*     PROJECT BY ID      */
+  }
+
   useEffect(() => {
     if (user && user.token) {
       try {
@@ -345,7 +349,7 @@ function Dashboard() {
           const response = await getProjectById(user, projectId);
           if (response.project && response.message) {
             const { message, project } = response;
-            setProjectTitle(project.title)
+            setProject(project)
             console.log(message)
           } else {
             console.error("Response does not contain a valid message.");
@@ -359,6 +363,7 @@ function Dashboard() {
     }
   }, [user, projectId]);
 
+  console.log(project)
   return (
     <div className="relative z-0 flex flex-col h-screen w-screen">
       <NavBar />
@@ -394,6 +399,7 @@ function Dashboard() {
             handleLeaveProject={handleLeaveProject}
             onHomeClick={toggleHome}
             onShowTask={toggleShowTask}
+            project={project}
           />
         ) : null}
       </div>
@@ -436,7 +442,7 @@ function Dashboard() {
           <div className="w-1/2 h-1/2 bg-slate-600 rounded-md z-10">
             <ShowedTask
               showedTask={showedTask}
-              projectTitle={projectTitle}
+              project={project}
               handleLeaveTask={handleLeaveTask}
             />
           </div>

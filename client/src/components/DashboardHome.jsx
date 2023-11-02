@@ -12,7 +12,7 @@ export default function DashboardHome({ userProjects, userTasks, onOpenProjectCl
           {userProjects.map((project) => (
             <li
               className="list-none"
-              onClick={() => onOpenProjectClick(project._id, project.title)}
+              onClick={() => onOpenProjectClick(project._id)}
               key={project._id}
             >
               <Link to={`/project/${project.title}/${project._id}/dashboard`}>
