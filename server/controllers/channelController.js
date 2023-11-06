@@ -35,10 +35,10 @@ const createChannel = async (req, res) => {
 
 // GET ALL PROJECT CHANNEL
 const getAllProjectChannels = async (req, res) => {
-  const user_id = req.user._id;
+  const project_id = req.params.project_id;
 
   try {
-    const channels = await Channel.find({ members: user_id });
+    const channels = await Channel.find({ project_id });
 
     if (!channels) {
       return res.status(404).json({ error: "Channel not found" });

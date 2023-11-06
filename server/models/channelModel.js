@@ -14,6 +14,10 @@ const channelSchema = new Schema({
         type: String, 
         required: true 
     },
+    project_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     messages: [
         {
             type: Schema.Types.ObjectId,

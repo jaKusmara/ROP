@@ -40,6 +40,7 @@ const createProject = async (req, res) => {
 
 
 
+
 // GET PROJECTS FOR A USER
 const getAllUserProjects = async (req, res) => {
     const user_id = req.user._id;

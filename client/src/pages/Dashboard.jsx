@@ -4,6 +4,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
 
 import { createProject } from "../controllers/projectControllers/createProjectController";
 import { getAllUserProjects } from "../controllers/projectControllers/getAllUserProjects";
@@ -363,7 +364,6 @@ function Dashboard() {
     }
   }, [user, projectId]);
 
-  console.log(project)
   return (
     <div className="relative z-0 flex flex-col h-screen w-screen">
       <NavBar />
@@ -448,6 +448,7 @@ function Dashboard() {
           </div>
         </div>
       ) : null}
+      <ToastContainer/>
     </div>
   );
 }
