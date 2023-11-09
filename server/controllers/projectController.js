@@ -19,19 +19,6 @@ const createProject = async (req, res) => {
             connectionString,
         });
 
-        if (project) {
-            const title = "General";
-
-            const channel = await Channel.create({
-                members: [user_id],
-                title,
-            });
-
-            await project.updateOne({
-                $push: { channels: channel._id },
-            });
-        }
-
         res.status(200).json(project);
     } catch (error) {
         res.status(400).json({ error: error.message });
