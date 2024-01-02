@@ -1,142 +1,165 @@
-const mongoose = require('mongoose');
-
 const Channel = require("../models/channelModel");
-const Project = require('../models/projectModel');
-const randomToken = require('random-token').create('abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+const Project = require("../models/projectModel");
+const Board = require("../models/boardModel")
+const randomToken = require("random-token").create(
+  "abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+);
 
-//  CREATE PROJECT
+// CREATE PROJECT
 const createProject = async (req, res) => {
-    const { title, description } = req.body;
-    const user_id = req.user._id;
+  const { title, description } = req.body;
+  const user_id = req.user._id;
 
-    try {
-        const connectionString = randomToken(8);
+  try {
+    const connectionString = randomToken(8);
 
-        const project = await Project.create({
-            members: [{ user_id }],
-            title,
-            description,
-            connectionString,
-        });
+    const board = await Board.create({title: title})
 
-        res.status(200).json(project);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+    // Create a new project
+    const data = await Project.create({
+      members: [{ user_id }],
+      title,
+      description,
+      connectionString,
+      board_id: board._id,
+      channels: [],
+    });
+
+    const channel = await Channel.create({
+      members: [user_id],
+      title: "General",
+      project_id: data._id,
+      type: "general",
+    });
+
+    await Project.findByIdAndUpdate(
+      data._id,
+      { $push: { channels: channel._id } },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
-
-
-
 
 // GET PROJECTS FOR A USER
 const getAllUserProjects = async (req, res) => {
-    const user_id = req.user._id;
+  const user_id = req.user._id;
 
-    try {
-        const projects = await Project.find({
-            "members.user_id": user_id
-        });
+  try {
+    const data = await Project.getUserProjects(user_id);
 
-        if (!projects || projects.length === 0) {
-            return res.status(200).json({ message: 'No projects found for the user' });
-        }
-
-        res.status(200).json({ message: "Successfully feched the projects", projects});
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 //  GET PROJECT BY ID
 
-const getProjectById = async(req, res) => {
-    const project_id = req.params.project_id
+const getProjectById = async (req, res) => {
+    const _id = req.query._id;
 
-    try {
-        const project = await Project.findById({_id: project_id})
+  try {
+    const data = await Project.getProjectById(_id);
 
-        if(!project){
-            return res.status(200).json({message: "Bad project_id"})
-        }
-
-        res.status(200).json({message: "Successfully find project!", project})
-    } catch (error) {
-        res.status(200).json({error: error.message})
-    }
-}
-
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(200).json({ error: error.message });
+  }
+};
 
 // JOIN PROJECT
 const joinProject = async (req, res) => {
-    const connectionString = req.params.connectionString;
-    const user_id = req.user._id;
+  const connectionString = req.query.connectionString;
+  const user_id = req.user._id;
 
-    try {
-        const updatedProject = await Project.findOneAndUpdate(
-            { connectionString: connectionString, "members.user_id": { $ne: user_id } },
-            { $push: { "members": { user_id: user_id } } },
-            { new: true }
-        );
+  try {
+    const updatedProject = await Project.findOneAndUpdate(
+      {
+        connectionString: connectionString,
+        "members.user_id": { $ne: user_id },
+      },
+      { $push: { members: { user_id: user_id } } },
+      { new: true }
+    );
 
-        if (!updatedProject) {
-            return res.status(404).json({ error: 'Project not found or user is already a member' });
-        }
-
-        res.status(200).json({ message: "Successfully joined the project", updatedProject});
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!updatedProject) {
+      return res
+        .status(404)
+        .json({ error: "Project not found or user is already a member" });
     }
-};
 
+    res
+      .status(200)
+      .json({ message: "Successfully joined the project", updatedProject });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // LEAVE PROJECT
 const leaveProject = async (req, res) => {
-    const projectId = req.params.projectId
-    const user_id = req.user._id
+  const projectId = req.params.projectId;
+  const user_id = req.user._id;
 
-    try{
+  try {
+    const updatedProject = await Project.findOneAndUpdate(
+      { _id: projectId },
+      { $pull: { members: { user_id: user_id } } },
+      { new: true }
+    );
 
-        const updatedProject = await Project.findOneAndUpdate(
-            { _id: projectId },
-            { $pull: { "members": { user_id: user_id } } },
-            { new: true }
-        );
-
-        if (!updatedProject) {
-            return res.status(404).json({ error: 'Project not found' });
-        }
-
-        res.status(200).json({ isLeaving: true });
-    }catch(error){
-        res.status(401).json({error: error.message})
+    if (!updatedProject) {
+      return res.status(404).json({ error: "Project not found" });
     }
-}
+
+    res.status(200).json({ isLeaving: true });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+};
 
 //  DELETE PROJECT
 const deleteProject = async (req, res) => {
-    const project_id = req.body.project_id;
+  const project_id = req.body.project_id;
 
-    try {
-        const deletedProject = await Project.deleteOne(
-            { _id: project_id }
-            );
+  try {
+    const deletedProject = await Project.deleteOne({ _id: project_id });
 
-        if (deletedProject.deletedCount === 1) {
-            res.status(200).json({ message: 'Project deleted successfully' });
-        } else {
-            res.status(404).json({ error: 'Project not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (deletedProject.deletedCount === 1) {
+      res.status(200).json({ message: "Project deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Project not found" });
     }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
+// GET ALL PROJECT CHANNEL
+const getAllProjectChannels = async (req, res) => {
+    const project_id = req.query.project_id;
+  
+    try {
+        const data = await Project.getAllProjectChannels(project_id);
+        res.status(200).json(data)
+      } catch (error) {
+        res.status(404).json({ error: error.message });
+      }
+      
+  };
 
-
-//test1
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTExODJjMjU3YzIxYWZhZDZlMjAiLCJpYXQiOjE2OTcwOTc3OTgsImV4cCI6MTY5NzM1Njk5OH0.Ow4-94Gqg2aSkgrmJTO6djTSmAVOwzV9017RCx1g0Vo
-
-//janko panko
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI3MTE1MDM4NGE0MWY1NDgzMWNjNzYiLCJpYXQiOjE2OTcwNTkxNTIsImV4cCI6MTY5NzMxODM1Mn0.Ta4fv2eDJNjpjF7yNwvzH9-Zb9_BdEnMngh_lIaXrTE
-
-module.exports = { createProject, getAllUserProjects, getProjectById, joinProject, leaveProject, deleteProject }
+module.exports = {
+  createProject,
+  getAllUserProjects,
+  getProjectById,
+  joinProject,
+  leaveProject,
+  deleteProject,
+  getAllProjectChannels
+};

@@ -1,22 +1,21 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const requireAuth = require('../middleware/requireAuth')
+const requireAuth = require("../middleware/requireAuth");
 
 //controllrs
-const { createChannel, getAllProjectChannels, useChannel, deleteChannel } = require('../controllers/channelController')
+const {
+  createChannel,
+  getChannel,
+  deleteChannel,
+} = require("../controllers/channelController");
 
 //middleware
-router.use(requireAuth)
+router.use(requireAuth);
 
+router.post("/createChannel", createChannel);
 
-router.post('/createChannel', createChannel)
+router.delete("/deleteChannel", deleteChannel);
 
-router.delete('/deleteChannel', deleteChannel)
+router.get("/getChannel", getChannel);
 
-router.get('/getAllProjectChannels', getAllProjectChannels)
-
-router.put('/useChannel', useChannel)
-
-
-
-module.exports = router
+module.exports = router;

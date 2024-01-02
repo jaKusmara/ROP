@@ -26,7 +26,17 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    notifications:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+        }
+    ],
+    friends:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+        }
+    ]
 },{
     timestamps: true,
   });

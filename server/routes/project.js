@@ -1,24 +1,34 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const requireAuth = require('../middleware/requireAuth')
+const requireAuth = require("../middleware/requireAuth");
 
 //controllrs
-const { createProject, getAllUserProjects, getProjectById, joinProject, leaveProject, deleteProject } = require('../controllers/projectController')
+const {
+  createProject,
+  getAllUserProjects,
+  getProjectById,
+  joinProject,
+  leaveProject,
+  deleteProject,
+  getAllProjectChannels,
+} = require("../controllers/projectController");
 
 //middleware
-router.use(requireAuth)
+router.use(requireAuth);
 
 //search
-router.post('/createProject', createProject)
+router.post("/createProject", createProject);
 
-router.delete('/deleteProject', deleteProject)
+router.delete("/deleteProject", deleteProject);
 
-router.get('/getAllUserProjects', getAllUserProjects)
+router.get("/getAllUserProjects", getAllUserProjects);
 
-router.get('/getProjectById/:project_id', getProjectById)
+router.get("/getAllProjectChannels", getAllProjectChannels);
 
-router.put('/joinProject/:connectionString', joinProject)
+router.get("/getProjectById", getProjectById);
 
-router.put('/leaveProject/:projectId', leaveProject)
+router.put("/joinProject/", joinProject);
 
-module.exports = router
+router.put("/leaveProject/:projectId", leaveProject);
+
+module.exports = router;
