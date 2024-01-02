@@ -13,6 +13,9 @@ export const projectsReducer = (state, action) => {
     case "CREATE_PROJECT": {
       return {...state, projects: [...state.projects, action.payload] };
     }
+    case "JOIN_PROJECT":{
+      return {...state, projects: [...state.projects, action.payload] };
+    }
     default:
       return state;
   }

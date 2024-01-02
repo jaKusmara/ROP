@@ -25,8 +25,13 @@ io.on("connection", (socket) => {
 
   socket.on("join", (room) => {
     socket.join(room);
-    room_id = room
+    room_id = room;
     console.log(`User joined room: ${room}`);
+  });
+
+  socket.on("leave", (room) => {
+    socket.leave(room);
+    console.log(`User left room: ${room}`);
   });
 
   const users = [];
@@ -40,12 +45,33 @@ io.on("connection", (socket) => {
 
   socket.on("private_message", (data) => {
     const { to, content } = data;
-    console.log(content)
+    console.log(content);
     io.to(to).to(room_id).emit("private_message", {
       content,
       sender_id: socket.user_id,
-      to
+      to,
     });
+  });
+
+  let board_id= "";
+
+  socket.on("join_board", (board) => {
+    socket.join(board);
+    board_id = board;
+    console.log(`User joined board: ${board}`);
+  });
+
+  socket.on("tasks_refresh", (data) => {
+    const { to } = data;
+    io.to(to).to(board_id).emit("tasks_refresh", {
+      sender_id: socket.user_id,
+      to,
+    });
+  });
+
+  socket.on("leave_board", (board_id) => {
+    socket.leave(board_id);
+    console.log(`User left board_id: ${board_id}`);
   });
 });
 

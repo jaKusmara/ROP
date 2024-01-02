@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
-import { useState } from "react";
 import Background from "../components/Background";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 
@@ -9,7 +8,7 @@ export default function RootLayout() {
   const { background } = useToggleFormContext();
 
   return (
-    <div className="m-0 h-screen relative">
+    <div className="m-0 max-h-screen max-w-screen h-screen relative">
       {background ? <Background /> : null}
       <header className="bg-indigo-400 flex-col h-[5%]">
         <NavBar />

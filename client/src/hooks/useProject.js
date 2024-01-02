@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export const useProject = () => {
-  const { state, dispatch } = useProjectContext();
+  const { dispatch } = useProjectContext();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -92,8 +92,9 @@ export const useProject = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/project/getProjectById?_id=${_id}`,
+      const response = await axios.put(
+        `http://localhost:5000/api/project/joinProject?connectionString=${connectionString}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -102,11 +103,7 @@ export const useProject = () => {
       );
 
       if (response.status) {
-        dispatch({ type: "SET_PROJECT", payload: response.data });
-        localStorage.setItem(
-          "board_id",
-          JSON.stringify(response.data.board_id)
-        );
+        dispatch({ type: "JOIN_PROJECT", payload: response.data });
         setIsLoading(false);
       }
     } catch (error) {
@@ -117,5 +114,66 @@ export const useProject = () => {
     }
   };
 
-  return { setProjects, setProject, createProject, error, isLoading };
+  const leaveProject = async (user, project_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/project/leaveProject?project_id=${project_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        //dispatch({ type: "LEAVE_PROJECT", payload: response.data });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error(error);
+    }
+  };
+
+  const deleteProject = async (user, project_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/project/deleteProject?project_id=${project_id}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        //dispatch({ type: "DELETE_PROJECT", payload: response.data });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error(error);
+    }
+  };
+
+  return {
+    setProjects,
+    setProject,
+    createProject,
+    joinProject,
+    leaveProject,
+    deleteProject,
+    error,
+    isLoading,
+  };
 };

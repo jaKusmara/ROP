@@ -8,14 +8,14 @@ export const listReducer = (state, action) => {
       return { ...state, lists: action.payload };
     }
     case "CREATE_LIST": {
-      return { lists: [...state.lists, action.payload] };
+      return { ...state, lists: [...state.lists, action.payload] };
     }
     default:
       return state;
   }
 };
 export const ListContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(listReducer, { lists: null });
+  const [state, dispatch] = useReducer(listReducer, { lists: [] });
 
   return (
     <ListContext.Provider value={{ state, dispatch }}>

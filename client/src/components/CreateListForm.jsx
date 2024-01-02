@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
-import {useList} from "../hooks/useList"
-import {useProjectContext} from "../hooks/useContext/useProjectContext"
+import { useList } from "../hooks/useList";
+import { useProjectContext } from "../hooks/useContext/useProjectContext";
 
 export default function CreateListForm() {
   const { setBackground, setCreateList } = useToggleFormContext();
-  const {createList} = useList()
+  const { createList } = useList();
   const { user } = useAuthContext();
   const [title, setTitle] = useState("");
-  const {state} = useProjectContext()
+  const { state } = useProjectContext();
 
   const handleClickCancelButton = () => {
     setCreateList(false);

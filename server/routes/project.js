@@ -27,8 +27,8 @@ router.get("/getAllProjectChannels", getAllProjectChannels);
 
 router.get("/getProjectById", getProjectById);
 
-router.put("/joinProject/", joinProject);
+router.put("/joinProject", joinProject);
 
-router.put("/leaveProject/:projectId", leaveProject);
+router.put("/leaveProject", leaveProject);
 
 module.exports = router;

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import { useTask } from "../hooks/useTask";
-import { useTaskContext } from "../hooks/useContext/useTaskContext";
 import { useList } from "../hooks/useList";
 
 export default function CreateTaskFrom() {
@@ -10,16 +9,16 @@ export default function CreateTaskFrom() {
   const { user } = useAuthContext();
   const { createTask } = useTask();
   const [title, setTitle] = useState("");
-  const { state } = useTaskContext();
   const [description, setDescription] = useState("");
   const { setBackground, setCreateTask } = useToggleFormContext();
 
   const handleCreateTask = async () => {
     const list_id = JSON.parse(localStorage.getItem("list_id"));
-    await createTask(user, list_id, title, description);
+    const board_id = JSON.parse(localStorage.getItem("board_id"));
+    await createTask(user, list_id, board_id, title, description);
     setBackground(false);
     setCreateTask(false);
-    const board_id = JSON.parse(localStorage.getItem("board_id"));
+
     setLists(user, board_id);
   };
 
@@ -29,7 +28,7 @@ export default function CreateTaskFrom() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="absolute flex flex-col">
       <input
         type="text"
         name="title"

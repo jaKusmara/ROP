@@ -36,6 +36,10 @@ export default function SideBar() {
     navigate(`channel/${channel_id}`)
   };
 
+  const handleSettingsClicked = () => {
+    navigate("settings")
+  }
+
   return (
     <div className="flex flex-col">
       <div>
@@ -62,7 +66,7 @@ export default function SideBar() {
 
       {loading && loading}
       {error && error}
-      <div>Settings</div>
+      <button onClick={handleSettingsClicked}>Settings</button>
     </div>
   );
 }

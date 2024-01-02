@@ -3,12 +3,6 @@ import { useProjectContext } from "../hooks/useContext/useProjectContext";
 import { useProject } from "../hooks/useProject";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useEffect, useState } from "react";
-import {
-  TEDropdown,
-  TEDropdownToggle,
-  TEDropdownMenu,
-  TEDropdownItem,
-} from "tw-elements-react";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 
 export default function SideBar() {
@@ -17,7 +11,7 @@ export default function SideBar() {
   const { setProjects, error, isLoading } = useProject();
   const [sideDropdown, setSideDropdown] = useState(false);
 
-  const { setCreateProject, setJoinProject, setBackground, background } =
+  const { setCreateProject, setJoinProject, setBackground } =
     useToggleFormContext();
 
   useEffect(() => {
@@ -65,24 +59,20 @@ export default function SideBar() {
           {sideDropdown ? (
             <ul className="">
               <li>
-                <NavLink>
-                  <button
-                    onClick={handleCreateProject}
-                    className="block w-full min-w-sm cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-gray-700 hover:bg-gray-100 active:text-gray-800 active:bg-gray-100 focus:bg-gray-100 focus:text-gray-800 focus:outline-none active:no-underline dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:active:bg-gray-600"
-                  >
-                    Create Project
-                  </button>
-                </NavLink>
+                <button
+                  onClick={handleCreateProject}
+                  className="block w-full min-w-sm cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-gray-700 hover:bg-gray-100 active:text-gray-800 active:bg-gray-100 focus:bg-gray-100 focus:text-gray-800 focus:outline-none active:no-underline dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:active:bg-gray-600"
+                >
+                  Create Project
+                </button>
               </li>
               <li>
-                <NavLink>
-                  <button
-                    onClick={handleJoinProject}
-                    className="block w-full min-w-sm cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-gray-700 hover:bg-gray-100 active:text-gray-800 active:bg-gray-100 focus:bg-gray-100 focus:text-gray-800 focus:outline-none active:no-underline dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:active:bg-gray-600"
-                  >
-                    Join Project
-                  </button>
-                </NavLink>
+                <button
+                  onClick={handleJoinProject}
+                  className="block w-full min-w-sm cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-gray-700 hover:bg-gray-100 active:text-gray-800 active:bg-gray-100 focus:bg-gray-100 focus:text-gray-800 focus:outline-none active:no-underline dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:active:bg-gray-600"
+                >
+                  Join Project
+                </button>
               </li>
             </ul>
           ) : null}

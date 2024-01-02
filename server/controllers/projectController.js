@@ -1,6 +1,6 @@
 const Channel = require("../models/channelModel");
 const Project = require("../models/projectModel");
-const Board = require("../models/boardModel")
+const Board = require("../models/boardModel");
 const randomToken = require("random-token").create(
   "abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 );
@@ -13,7 +13,7 @@ const createProject = async (req, res) => {
   try {
     const connectionString = randomToken(8);
 
-    const board = await Board.create({title: title})
+    const board = await Board.create({ title: title });
 
     // Create a new project
     const data = await Project.create({
@@ -38,9 +38,7 @@ const createProject = async (req, res) => {
       { new: true }
     );
 
-    res
-      .status(200)
-      .json(data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -62,7 +60,7 @@ const getAllUserProjects = async (req, res) => {
 //  GET PROJECT BY ID
 
 const getProjectById = async (req, res) => {
-    const _id = req.query._id;
+  const _id = req.query._id;
 
   try {
     const data = await Project.getProjectById(_id);
@@ -94,9 +92,7 @@ const joinProject = async (req, res) => {
         .json({ error: "Project not found or user is already a member" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Successfully joined the project", updatedProject });
+    res.status(200).json(updatedProject);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -104,29 +100,36 @@ const joinProject = async (req, res) => {
 
 // LEAVE PROJECT
 const leaveProject = async (req, res) => {
-  const projectId = req.params.projectId;
+  const project_id = req.query.project_id;
   const user_id = req.user._id;
 
   try {
-    const updatedProject = await Project.findOneAndUpdate(
-      { _id: projectId },
-      { $pull: { members: { user_id: user_id } } },
-      { new: true }
-    );
+    const project = await Project.findOne({
+      _id: project_id,
+      "members.user_id": user_id,
+    });
 
-    if (!updatedProject) {
-      return res.status(404).json({ error: "Project not found" });
+    if (!project) {
+      return res
+        .status(404)
+        .json({ error: "Project not found or user not a member" });
     }
 
-    res.status(200).json({ isLeaving: true });
+    project.members = project.members.filter(
+      (member) => member.user_id.toString() !== user_id.toString()
+    );
+
+    await project.save();
+
+    res.status(200).json(project);
   } catch (error) {
-    res.status(401).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
 //  DELETE PROJECT
 const deleteProject = async (req, res) => {
-  const project_id = req.body.project_id;
+  const project_id = req.query.project_id;
 
   try {
     const deletedProject = await Project.deleteOne({ _id: project_id });
@@ -134,25 +137,25 @@ const deleteProject = async (req, res) => {
     if (deletedProject.deletedCount === 1) {
       res.status(200).json({ message: "Project deleted successfully" });
     } else {
-      res.status(404).json({ error: "Project not found" });
+      res.status(404).json({ message: "Project not found or could not be deleted" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+
 // GET ALL PROJECT CHANNEL
 const getAllProjectChannels = async (req, res) => {
-    const project_id = req.query.project_id;
-  
-    try {
-        const data = await Project.getAllProjectChannels(project_id);
-        res.status(200).json(data)
-      } catch (error) {
-        res.status(404).json({ error: error.message });
-      }
-      
-  };
+  const project_id = req.query.project_id;
+
+  try {
+    const data = await Project.getAllProjectChannels(project_id);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createProject,
@@ -161,5 +164,5 @@ module.exports = {
   joinProject,
   leaveProject,
   deleteProject,
-  getAllProjectChannels
+  getAllProjectChannels,
 };

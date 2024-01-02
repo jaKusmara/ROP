@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useTaskContext } from "./useContext/useTaskContext";
 import { useState } from "react";
+import socket from "../utils/socekt";
 
 export const useTask = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useTaskContext();
 
-  const createTask = async (user, boardList_id, title, description) => {
+  const createTask = async (user, boardList_id, board_id, title, description) => {
     setIsLoading(true);
     console.log(boardList_id);
     try {
@@ -28,7 +29,9 @@ export const useTask = () => {
         dispatch({ type: "CREATE_TASK", payload: response.data });
         setIsLoading(false);
 
-        console.log("Task created successfully:", response.data);
+        socket.emit("tasks_refresh", {
+          to: board_id,
+        });
       }
     } catch (error) {
       setIsLoading(false);

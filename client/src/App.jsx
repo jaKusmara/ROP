@@ -17,28 +17,11 @@ import PrivateRoute from "./utils/PrivateRoute";
 import ProjectDashboard from "./pages/project/ProjectDashboard";
 import Board from "./pages/project/Board";
 import Channel from "./pages/project/Channel";
-import socket from "./utils/socekt";
 import NotFound from "./pages/NotFound";
+import Settings from "./pages/project/Settings";
 
 const App = () => {
   const { user } = useAuthContext();
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    if (user) {
-      let user_id = user.user._id;
-      socket.auth = { user_id };
-      socket.connect();
-    }
-
-    socket.on("users", (users) => {
-      setUsers(users);
-    });
-    if (!user) {
-      socket.disconnect();
-      socket.off("users");
-    }
-  }, [user]);
 
   const router = createBrowserRouter([
     {
@@ -70,6 +53,10 @@ const App = () => {
                 {
                   path: "channel/:channel_id",
                   element: <Channel />,
+                },
+                {
+                  path: "settings",
+                  element: <Settings />,
                 },
               ],
             },

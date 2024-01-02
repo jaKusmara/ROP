@@ -15,8 +15,13 @@ export default function CreateProjectForm() {
     setBackground(false)
   };
 
+  
+  const handlecancelClick = () => {
+    setBackground(false);
+   };
+
   return (
-    <div>
+    <div className="flex flex-col z-50 bg-gray-600">
       <input
         type="text"
         name="title"
@@ -25,6 +30,7 @@ export default function CreateProjectForm() {
         onChange={(e) => setTitle(e.target.value)}
       />
       <button onClick={handleCreateClick}>Create!</button>
+      <button onClick={handlecancelClick}>Cancel</button>
     </div>
   );
 }
