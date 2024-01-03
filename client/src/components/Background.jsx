@@ -4,9 +4,10 @@ import CreateTaskFrom from "./CreateTaskFrom";
 import CreateListForm from "./CreateListForm";
 import CreateProjectForm from "./CreateProjectForm";
 import JoinProjectForm from "./JoinProjectForm";
+import Task from "./Task";
 
 export default function Background() {
-  const { createTask, createList, createProject, joinProject } =
+  const { createTask, createList, createProject, joinProject, showTask } =
     useToggleFormContext();
 
   return (
@@ -15,6 +16,7 @@ export default function Background() {
       {createList ? <CreateListForm /> : null}
       {joinProject ? <JoinProjectForm /> : null}
       {createProject ? <CreateProjectForm /> : null}
+      {showTask ? <Task /> : null}
     </div>
   );
 }

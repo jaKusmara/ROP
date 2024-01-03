@@ -76,7 +76,7 @@ const getUserTasks = async (req, res) => {
 
 //  GET TASK BY ID
 const getTaskById = async (req, res) => {
-  const task_id = req.params.task_id;
+  const task_id = req.query.task_id;
 
   try {
     const task = await Task.findById(task_id);
@@ -85,7 +85,7 @@ const getTaskById = async (req, res) => {
       res.status(200).json({ message: "No task found" });
     }
 
-    res.status(200).json({ message: "Task find!", task });
+    res.status(200).json(task);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

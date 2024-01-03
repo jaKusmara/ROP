@@ -12,12 +12,12 @@ export default function Board() {
   const { state: list } = useListContext();
   const { user } = useAuthContext();
   const { setLists, error: listError, isLoading: listLoading } = useList();
-  const [socketData, setSocketData] = useState(null)
+  const [socketData, setSocketData] = useState(null);
 
   const board_id = JSON.parse(localStorage.getItem("board_id"));
 
   useEffect(() => {
-    setSocketData(null)
+    setSocketData(null);
     setLists(user, board_id);
   }, [user, board_id, socketData]);
 
@@ -40,18 +40,21 @@ export default function Board() {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-full">
+    <div className="flex flex-col h-full max-w">
       <nav>
         <button onClick={handleCreateTask}>New List</button>
       </nav>
       {listLoading && <div>Loading...</div>}
       {listError && listError}
-      <div className="flex overflow-x-auto w-[90%]">
-        {list.lists &&
-          list.lists.map((item) => (
-            <ListComponent key={item._id} item={item} />
-          ))}
+      <div className="flex overflow-x-auto overflow-y-hidden">
+        <div className="flex flex-nowrap">
+          {list.lists &&
+            list.lists.map((item) => (
+              <ListComponent key={item._id} item={item} />
+            ))}
+        </div>
       </div>
     </div>
   );
+  
 }

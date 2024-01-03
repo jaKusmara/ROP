@@ -24,7 +24,7 @@ router.delete("/deleteTask", deleteTask);
 
 router.get("/getAllListTasks", getAllListTasks);
 
-router.get("/getTaskById/:task_id", getTaskById);
+router.get("/getTaskById", getTaskById);
 
 router.get("/getUserTasks", getUserTasks);
 

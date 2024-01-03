@@ -1,5 +1,5 @@
-import React from "react";
-import SettingsIcon from "@mui/icons-material/Settings";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import TaskCard from "./project/TaskCard";
 
@@ -11,17 +11,18 @@ export default function ListComponent({ item }) {
     setCreateTask(true);
     localStorage.setItem("list_id", JSON.stringify(item._id));
   };
+
   return (
-    <div className="border px-2 mx-2 rounded-md bg-gray-800 h-fit">
+    <div className="border px-2 mx-2 rounded-md bg-gray-800 h-fit w-80 whitespace-wrap break-all self-start">
       <nav className="flex flex-row">
-        <h2 onClick={handleCreateTask}>+</h2>
+        <AddIcon />
         <h2 className="w-full text-center">{item.title}</h2>
-        <span className="">
-          <SettingsIcon />
-        </span>
+        <EditIcon />
       </nav>
-      {item.tasks_id &&
-        item.tasks_id.map((task) => <TaskCard key={task._id} task={task} />)}
+      <div className="whitespace-wrap break-all max-h-96">
+        {item.tasks_id &&
+          item.tasks_id.map((task) => <TaskCard key={task._id} task={task} />)}
+      </div>
     </div>
   );
 }

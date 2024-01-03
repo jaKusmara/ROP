@@ -8,6 +8,7 @@ export const ShowFormContextProvider = ({ children }) => {
   const [createList, setCreateList] = useState(false);
   const [createProject, setCreateProject] = useState(false);
   const [joinProject, setJoinProject] = useState(false);
+  const [showTask, setShowTask] = useState(false);
 
   return (
     <ShowFormContext.Provider
@@ -22,6 +23,8 @@ export const ShowFormContextProvider = ({ children }) => {
         setCreateProject,
         joinProject,
         setJoinProject,
+        showTask,
+        setShowTask,
       }}
     >
       {children}

@@ -20,7 +20,7 @@ export default function ProjectLayout() {
       <aside className="flex flex-col h-full bg-neutral-700 w-[15%]">
         <SideBar />
       </aside>
-      <main className="flex flex-col h-full bg-neutral-500 w-[95%]">
+      <main className="flex flex-col h-full bg-neutral-500 w-[85%]">
         <Outlet />
       </main>
     </div>

@@ -41,7 +41,7 @@ export default function SideBar() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-w-80">
       <div>
         {project.data && project.data.title}
         {project.loading && project.loading}

@@ -41,30 +41,33 @@ export const useTask = () => {
     }
   };
 
-  // const setTask = async (user, board_id) => {
-  //   setIsLoading(true);
+  const getTask = async (user, task_id) => {
+    setIsLoading(true);
 
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:5000/api/task/getAllListTasks?board_id=${board_id}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${user.token}`,
-  //         },
-  //       }
-  //     );
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/task/getTaskById?task_id=${task_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
-  //     if (response.status) {
-  //       dispatch({ type: "SET_TASKS", payload: response.data });
-  //       setIsLoading(false);
-  //     }
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //     setError(error);
+      if (response.status) {
+        dispatch({ type: "SET_TASK", payload: response.data });
+        console.log(response.data)
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
 
-  //     console.error("Setting task failed:", error);
-  //   }
-  // };
+      console.error("Setting task failed:", error);
+    }
+  };
 
-  return { createTask, error, isLoading };
+
+
+  return { createTask, getTask, error, isLoading };
 };
