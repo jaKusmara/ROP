@@ -15,7 +15,7 @@ export default function ListComponent({ item }) {
   return (
     <div className="border px-2 mx-2 rounded-md bg-gray-800 h-fit w-80 whitespace-wrap break-all self-start">
       <nav className="flex flex-row">
-        <AddIcon />
+        <button onClick={handleCreateTask}><AddIcon/></button>
         <h2 className="w-full text-center">{item.title}</h2>
         <EditIcon />
       </nav>

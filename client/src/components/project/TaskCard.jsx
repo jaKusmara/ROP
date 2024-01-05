@@ -2,22 +2,30 @@ import { useState, useEffect } from "react";
 import { useTask } from "../../hooks/useTask";
 import { useAuthContext } from "../../hooks/useContext/useAuthContext";
 import { useToggleFormContext } from "../../hooks/useContext/useToggleForm";
+import { useIdContext } from "../../hooks/useContext/useIdContext";
 
 export default function TaskCard({ task }) {
   const [taskId, setTaskId] = useState(null);
   const { getTask } = useTask();
   const { user } = useAuthContext();
+  const { state, dispatch } = useIdContext();
   const { setBackground, background, setShowTask, showTask } =
     useToggleFormContext();
 
   useEffect(() => {
     if (taskId) {
-      getTask(user, taskId);
+      dispatch({ type: "SET_TASK_ID", payload: taskId });
       setBackground(!background);
       setShowTask(!showTask);
     }
+
+    if (state.taskId) {
+      console.log(state);
+      getTask(user, state.taskId);
+    }
+    
     setTaskId(null);
-  }, [user, taskId]);
+  }, [user, taskId, state]);
 
   const handleOnTaskClick = () => {
     setTaskId(task._id);

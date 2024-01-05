@@ -8,9 +8,15 @@ export const useTask = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useTaskContext();
 
-  const createTask = async (user, boardList_id, board_id, title, description) => {
+  const createTask = async (
+    user,
+    boardList_id,
+    board_id,
+    title,
+    description
+  ) => {
     setIsLoading(true);
-    console.log(boardList_id);
+
     try {
       const response = await axios.post(
         `http://localhost:5000/api/task/createTask?boardList_id=${boardList_id}`,
@@ -56,7 +62,7 @@ export const useTask = () => {
 
       if (response.status) {
         dispatch({ type: "SET_TASK", payload: response.data });
-        console.log(response.data)
+        console.log(response.data);
         setIsLoading(false);
       }
     } catch (error) {
@@ -67,7 +73,43 @@ export const useTask = () => {
     }
   };
 
+  const updateTask = async (
+    user,
+    task_id,
+    title,
+    description,
+    board_id
+  ) => {
+    setIsLoading(true);
 
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/task/updateTask?task_id=${task_id}`,
+        {
+          title: title,
+          description: description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
-  return { createTask, getTask, error, isLoading };
+      if (response.status) {
+        setIsLoading(false);
+
+        socket.emit("tasks_refresh", {
+          to: board_id,
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Task update failed:", error);
+    }
+  };
+
+  return { createTask, getTask, updateTask, error, isLoading };
 };

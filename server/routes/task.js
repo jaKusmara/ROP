@@ -10,7 +10,7 @@ const {
   joinTask,
   leaveTask,
   deleteTask,
-  updateTaskStatus,
+  updateTask,
   getUserTasks
 } = require("../controllers/taskController");
 
@@ -32,6 +32,6 @@ router.put("/joinTask", joinTask);
 
 router.put("/leaveTask/:task_id", leaveTask);
 
-router.put("/updateTaskStatus", updateTaskStatus);
+router.put("/updateTask", updateTask);
 
 module.exports = router;

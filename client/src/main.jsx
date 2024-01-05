@@ -11,25 +11,28 @@ import { ChatContextProvider } from "./context/ChatContext.jsx";
 import { MessageContextProvider } from "./context/MessageContext.jsx";
 import { ChannelContextProvider } from "./context/ChannelContext.jsx";
 import { ListContextProvider } from "./context/ListContext.jsx";
+import { IdContextProvider } from "./context/IdContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ListContextProvider>
-      <ChannelContextProvider>
-        <MessageContextProvider>
-          <ChatContextProvider>
-            <ProjectContextProvider>
-              <TaskContextProvider>
-                <AuthContextProvider>
-                  <ShowFormContextProvider>
-                    <App />
-                  </ShowFormContextProvider>
-                </AuthContextProvider>
-              </TaskContextProvider>
-            </ProjectContextProvider>
-          </ChatContextProvider>
-        </MessageContextProvider>
-      </ChannelContextProvider>
-    </ListContextProvider>
+    <IdContextProvider>
+      <ListContextProvider>
+        <ChannelContextProvider>
+          <MessageContextProvider>
+            <ChatContextProvider>
+              <ProjectContextProvider>
+                <TaskContextProvider>
+                  <AuthContextProvider>
+                    <ShowFormContextProvider>
+                      <App />
+                    </ShowFormContextProvider>
+                  </AuthContextProvider>
+                </TaskContextProvider>
+              </ProjectContextProvider>
+            </ChatContextProvider>
+          </MessageContextProvider>
+        </ChannelContextProvider>
+      </ListContextProvider>
+    </IdContextProvider>
   </React.StrictMode>
 );

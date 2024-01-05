@@ -15,7 +15,7 @@ const createTask = async (req, res) => {
       participants: [user_id],
     });
 
-    console.log(boardList_id)
+    console.log(boardList_id);
 
     await List.findByIdAndUpdate(
       boardList_id,
@@ -137,30 +137,6 @@ const leaveTask = async (req, res) => {
   }
 };
 
-const updateTaskStatus = async (req, res) => {
-  const task_id = req.body.task_id;
-  const status = req.body.status;
-
-  try {
-    if (status == "planning" || status == "inProgress" || status == "done") {
-      const updatedTaskStatus = await Task.findByIdAndUpdate(
-        task_id,
-        { $set: { status: status } },
-        { new: true }
-      );
-
-      if (!updatedTaskStatus) {
-        return res.status(404).json({ error: "Task not found" });
-      } else {
-        res.status(200).json({ message: "Successfully updated task" });
-      }
-    } else {
-      res.status(200).json({ error: "Bad status" });
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
 
 //  DELETE TASK
 const deleteTask = async (req, res) => {
@@ -179,6 +155,24 @@ const deleteTask = async (req, res) => {
   }
 };
 
+//EDIT task
+
+const updateTask = async (req, res) => {
+  const task_id = req.query.task_id;
+  const {title, description} = req.body
+
+  try {
+    const task = await Task.findByIdAndUpdate(task_id, {
+      title: title,
+      description: description,
+    });
+
+    res.status(200).json({ task });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createTask,
   getAllListTasks,
@@ -186,6 +180,6 @@ module.exports = {
   joinTask,
   leaveTask,
   deleteTask,
-  updateTaskStatus,
+  updateTask,
   getUserTasks,
 };
