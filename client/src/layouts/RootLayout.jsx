@@ -8,16 +8,16 @@ export default function RootLayout() {
   const { background } = useToggleFormContext();
 
   return (
-    <div className="m-0 h-screen relative w-full">
-      {background ? <Background /> : null}
-      <header className="bg-indigo-400 flex-col h-[5%]">
+    <div className="max-h-screen max-w-screen">
+      {background && <Background />}
+      <header className="bg-indigo-400 h-[6vh]">
         <NavBar />
       </header>
-      <section className="flex flex-row h-[95%]">
-        <aside className="flex flex-col w-96 bg-neutral-800 border-r">
+      <section className="flex h-[92vh]">
+        <aside className="w-96 bg-neutral-800 border-r">
           <SideBar />
         </aside>
-        <main className="bg-neutral-700 w-full h-full">
+        <main className="flex-1 bg-neutral-700">
           <Outlet />
         </main>
       </section>

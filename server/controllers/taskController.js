@@ -82,7 +82,7 @@ const getTaskById = async (req, res) => {
     const task = await Task.findById(task_id);
 
     if (!task || task.length === 0) {
-      res.status(200).json({ message: "No task found" });
+      return res.status(200).json({ status: 0 });
     }
 
     res.status(200).json(task);
@@ -94,9 +94,19 @@ const getTaskById = async (req, res) => {
 //  JOIN TASK
 const joinTask = async (req, res) => {
   const user_id = req.user._id;
-  const task_id = req.body.task_id;
+  const task_id = req.query.task_id;
 
   try {
+    const task = await Task.findById(task_id);
+
+    if (!task) {
+      return res.status(404).json({ status: 0 });
+    }
+
+    if (task.participants.includes(user_id)) {
+      return res.status(200).json({ status: 0 });
+    }
+
     const updatedTask = await Task.findByIdAndUpdate(
       task_id,
       { $push: { participants: user_id } },
@@ -104,21 +114,33 @@ const joinTask = async (req, res) => {
     );
 
     if (!updatedTask) {
-      return res.status(404).json({ error: "Task not found" });
-    } else {
-      res.status(200).json({ message: "Successfully joined to the task" });
+      return res.status(404).json({ status: 0 });
     }
+
+    return res.status(200).json({ status: 1 });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
 
 //    LEAVE TASK
 const leaveTask = async (req, res) => {
   const user_id = req.user._id;
-  const task_id = req.params.task_id;
+  const task_id = req.query.task_id;
 
   try {
+    const task = await Task.findById(task_id);
+
+    if (!task) {
+      res.status(404).json({ status: 0 });
+      return;
+    }
+
+    if (!task.participants.includes(user_id)) {
+      res.status(200).json({ status: 0 });
+      return;
+    }
+
     const updatedTask = await Task.findByIdAndUpdate(
       { _id: task_id },
       { $pull: { participants: user_id } },
@@ -126,40 +148,60 @@ const leaveTask = async (req, res) => {
     );
 
     if (!updatedTask) {
-      return res.status(404).json({ error: "Task not found" });
+      res.status(404).json({ status: 0 });
+    } else {
+      res.status(200).json({ status: 1 });
     }
-
-    res
-      .status(200)
-      .json({ message: "Successfully left the task", isLeaving: true });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(404).json({ error: error.message });
   }
 };
-
 
 //  DELETE TASK
 const deleteTask = async (req, res) => {
-  const task_id = req.body.task_id;
+  const task_id = req.query.task_id;
 
   try {
-    const deletedTask = await Task.deleteOne({ _id: task_id });
+    const task = await Task.findByIdAndDelete(task_id);
 
-    if (deletedTask.deletedCount === 1) {
-      res.status(200).json({ message: "Task deleted successfully" });
-    } else {
-      res.status(404).json({ error: "Task not found" });
+    if (!task) {
+      return res.status(404).json({ status: 0 });
     }
+
+    res.status(200).json({ status: 1 });
   } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+//get participants
+
+const taskParticipants = async (req, res) => {
+  const task_id = req.query.task_id;
+
+  try {
+    const task = await Task.findById(task_id);
+
+    if (!task) {
+      return res.status(200).json({ status: 0 });
+    }
+
+    const participants = task.participants;
+
+    res.status(200).json({ participants });
+  } catch (error) {
+    // Handle any errors during the process
     res.status(500).json({ error: error.message });
   }
 };
+
+module.exports = { taskParticipants };
 
 //EDIT task
 
 const updateTask = async (req, res) => {
   const task_id = req.query.task_id;
-  const {title, description} = req.body
+  const { title, description } = req.body;
 
   try {
     const task = await Task.findByIdAndUpdate(task_id, {
@@ -182,4 +224,5 @@ module.exports = {
   deleteTask,
   updateTask,
   getUserTasks,
+  taskParticipants,
 };

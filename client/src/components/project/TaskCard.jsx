@@ -3,33 +3,30 @@ import { useTask } from "../../hooks/useTask";
 import { useAuthContext } from "../../hooks/useContext/useAuthContext";
 import { useToggleFormContext } from "../../hooks/useContext/useToggleForm";
 import { useIdContext } from "../../hooks/useContext/useIdContext";
+import socket from "../../utils/socekt";
 
 export default function TaskCard({ task }) {
-  const [taskId, setTaskId] = useState(null);
   const { getTask } = useTask();
   const { user } = useAuthContext();
   const { state, dispatch } = useIdContext();
   const { setBackground, background, setShowTask, showTask } =
     useToggleFormContext();
+  const [socketData, setSocketData] = useState(null);
 
   useEffect(() => {
-    if (taskId) {
-      dispatch({ type: "SET_TASK_ID", payload: taskId });
+    socket.on("tasks_refresh", (data) => {
+      setSocketData(data);
+    });
+
+    if (state.taskId) {
+      getTask(user, state.taskId);
       setBackground(!background);
       setShowTask(!showTask);
     }
-
-    if (state.taskId) {
-      console.log(state);
-      getTask(user, state.taskId);
-    }
-    
-    setTaskId(null);
-  }, [user, taskId, state]);
+  }, [user, state, socketData]);
 
   const handleOnTaskClick = () => {
-    setTaskId(task._id);
-    console.log(taskId);
+    dispatch({ type: "SET_TASK_ID", payload: task._id });
   };
 
   return (

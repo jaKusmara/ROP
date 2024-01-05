@@ -16,11 +16,14 @@ export default function ProjectLayout() {
   localStorage.setItem("project_id", JSON.stringify(project_id));
 
   return (
-    <div className="flex flex-row h-full w-full">
-      <aside className="flex flex-col h-full bg-neutral-700 w-[15%]">
+    <div className="flex h-full w-full">
+      {/* Sidebar */}
+      <aside className="flex flex-col h-full w-1/6 bg-neutral-700">
         <SideBar />
       </aside>
-      <main className="flex flex-col h-full bg-neutral-500 w-[85%]">
+
+      {/* Main Content */}
+      <main className="flex flex-col h-full w-5/6 bg-neutral-500">
         <Outlet />
       </main>
     </div>

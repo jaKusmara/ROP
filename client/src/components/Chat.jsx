@@ -26,6 +26,7 @@ export default function Chat() {
   useEffect(() => {
     socket.on("private_message", (message) => {
       setReceiveDataFromSocket(message);
+      console.log(message)
     });
 
     return () => {
@@ -43,7 +44,7 @@ export default function Chat() {
 
   const handleSendMessage = (user, chat_id, content) => {
     sendMessage(user, chat_id, content);
-
+    
     socket.emit("private_message", {
       content,
       to: chat_id,

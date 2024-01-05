@@ -63,6 +63,7 @@ io.on("connection", (socket) => {
 
   socket.on("tasks_refresh", (data) => {
     const { to } = data;
+    
     io.to(to).to(board_id).emit("tasks_refresh", {
       sender_id: socket.user_id,
       to,

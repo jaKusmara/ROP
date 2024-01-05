@@ -62,7 +62,7 @@ export const useTask = () => {
 
       if (response.status) {
         dispatch({ type: "SET_TASK", payload: response.data });
-        console.log(response.data);
+
         setIsLoading(false);
       }
     } catch (error) {
@@ -73,13 +73,7 @@ export const useTask = () => {
     }
   };
 
-  const updateTask = async (
-    user,
-    task_id,
-    title,
-    description,
-    board_id
-  ) => {
+  const updateTask = async (user, task_id, title, description, board_id) => {
     setIsLoading(true);
 
     try {
@@ -111,5 +105,122 @@ export const useTask = () => {
     }
   };
 
-  return { createTask, getTask, updateTask, error, isLoading };
+  const getTaskParticipants = async (user, task_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/task/taskParticipants?task_id=${task_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        if (response.data.participants) {
+          dispatch({
+            type: "SET_PARTICIPANTS",
+            payload: response.data.participants,
+          });
+        }
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting participants failed:", error);
+    }
+  };
+
+  const joinTask = async (user, task_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/task/joinTask?task_id=${task_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting participants failed:", error);
+    }
+  };
+
+  const leaveTask = async (user, task_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/task/leaveTask?task_id=${task_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting participants failed:", error);
+    }
+  };
+
+  const deleteTask = async (user, task_id, board_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/task/deleteTask?task_id=${task_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        socket.emit("tasks_refresh", {
+          to: board_id,
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting participants failed:", error);
+    }
+  };
+
+  return {
+    createTask,
+    getTask,
+    updateTask,
+    getTaskParticipants,
+    deleteTask,
+    leaveTask,
+    joinTask,
+    error,
+    isLoading,
+  };
 };

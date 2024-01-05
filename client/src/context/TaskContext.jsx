@@ -5,13 +5,16 @@ export const TaskContext = createContext();
 export const tasksReducer = (state, action) => {
   switch (action.type) {
     case "SET_TASKS": {
-      return { listAndTasks: action.payload };
+      return { ...state, listAndTasks: action.payload };
     }
     case "CREATE_TASK": {
-      return { tasks: [...state.tasks, action.payload] };
+      return { ...state, tasks: [...state.tasks, action.payload] };
     }
     case "SET_TASK": {
-      return { task: action.payload };
+      return { ...state, task: action.payload };
+    }
+    case "SET_PARTICIPANTS": {
+      return { ...state, participants: action.payload };
     }
     default:
       return state;
@@ -23,6 +26,7 @@ export const TaskContextProvider = ({ children }) => {
     tasks: [],
     listAndTasks: null,
     task: null,
+    participants: [],
   });
 
   return (

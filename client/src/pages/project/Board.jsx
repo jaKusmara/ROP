@@ -40,14 +40,19 @@ export default function Board() {
   };
 
   return (
-    <div className="flex flex-col h-full max-w">
-      <nav>
-        <button onClick={handleCreateTask}>New List</button>
+    <div className="flex flex-col h-full mx-auto">
+      <nav className="mb-4">
+        <button
+          onClick={handleCreateTask}
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
+        >
+          New List
+        </button>
       </nav>
       {listLoading && <div>Loading...</div>}
-      {listError && listError}
-      <div className="flex overflow-x-auto overflow-y-hidden">
-        <div className="flex flex-nowrap">
+      {listError && <div className="text-red-500">{listError}</div>}
+      <div className="flex overflow-x-auto overflow-y-hidden max-w-screen-2xl ">
+        <div className="flex flex-nowrap space-x-4">
           {list.lists &&
             list.lists.map((item) => (
               <ListComponent key={item._id} item={item} />
@@ -56,5 +61,4 @@ export default function Board() {
       </div>
     </div>
   );
-  
 }

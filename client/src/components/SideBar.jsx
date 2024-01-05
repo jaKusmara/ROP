@@ -36,32 +36,38 @@ export default function SideBar() {
 
   return (
     <>
-      <div className="flex flex-col">
-        <span>
-          <NavLink to="/">Dashboard</NavLink>
-        </span>
-        <span>
-          <NavLink to="messages">Messages</NavLink>
-        </span>
+      <div className="flex flex-col text-white">
+        <NavLink
+          to="/"
+          className="sidebar-link hover:bg-gray-700 py-2 px-4 rounded-md"
+        >
+          Dashboard
+        </NavLink>
+        <NavLink
+          to="messages"
+          className="sidebar-link hover:bg-gray-700 py-2 px-4 rounded-md"
+        >
+          Messages
+        </NavLink>
       </div>
       <div>
         <div className="flex flex-col border-t p-1">
-          <span className="flex flex-row justify-between">
+          <span className="flex justify-between items-center">
             <h2 className="text-lg font-semibold">Projects</h2>
             <button
               onClick={handlePlusClick}
-              className="flex items-center whitespace-nowrap px-3 py-1.5 text-xs font-medium uppercase leading-normal text-white shadow-sm transition duration-150 ease-in-out"
+              className="btn-plus bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full transition duration-300 ease-in-out"
             >
               +
             </button>
           </span>
 
-          {sideDropdown ? (
-            <ul className="">
+          {sideDropdown && (
+            <ul className="dropdown-list">
               <li>
                 <button
                   onClick={handleCreateProject}
-                  className="block w-full min-w-sm cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-gray-700 hover:bg-gray-100 active:text-gray-800 active:bg-gray-100 focus:bg-gray-100 focus:text-gray-800 focus:outline-none active:no-underline dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:active:bg-gray-600"
+                  className="dropdown-item"
                 >
                   Create Project
                 </button>
@@ -69,22 +75,26 @@ export default function SideBar() {
               <li>
                 <button
                   onClick={handleJoinProject}
-                  className="block w-full min-w-sm cursor-pointer whitespace-nowrap bg-transparent px-4 py-2 text-sm text-left font-normal pointer-events-auto text-gray-700 hover:bg-gray-100 active:text-gray-800 active:bg-gray-100 focus:bg-gray-100 focus:text-gray-800 focus:outline-none active:no-underline dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:active:bg-gray-600"
+                  className="dropdown-item"
                 >
                   Join Project
                 </button>
               </li>
             </ul>
-          ) : null}
+          )}
         </div>
         <div className="flex flex-col list-none mt-2">
           {error && <div className="text-red-500">{error}</div>}
           {isLoading && <div className="text-gray-500">Loading...</div>}
           {state &&
             state.projects.map((project) => (
-              <li key={project._id}>
-                <NavLink to={`project/${project._id}`}>{project.title}</NavLink>
-              </li>
+              <NavLink
+                key={project._id}
+                to={`project/${project._id}`}
+                className="sidebar-link hover:bg-gray-700 py-2 px-4 rounded-md"
+              >
+                {project.title}
+              </NavLink>
             ))}
         </div>
       </div>
