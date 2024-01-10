@@ -1,34 +1,38 @@
-import axios from 'axios';
-import { useAuthContext } from './useContext/useAuthContext';
-import { useState } from 'react';
-
+import axios from "axios";
+import { useAuthContext } from "./useContext/useAuthContext";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
 
   const login = async (identifier, password) => {
-    setIsLoading(true); 
+    setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/user/login', {identifier, password});
+      const response = await axios.post(
+        "http://localhost:5000/api/user/login",
+        { identifier, password }
+      );
 
       if (response.status === 200) {
-        localStorage.setItem('user', JSON.stringify(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data));
 
-        dispatch({ type: 'LOGIN', payload: response.data });
+        dispatch({ type: "LOGIN", payload: response.data });
         setIsLoading(false);
-
-        console.log('Login successfully:', response.data);
+        navigate("/");
+        console.log("Login successfully:", response.data);
       }
     } catch (error) {
       setIsLoading(false);
       setError(error);
 
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
     }
   };
 
-  return { login, error, isLoading }; 
+  return { login, error, isLoading };
 };

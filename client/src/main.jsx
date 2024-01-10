@@ -10,13 +10,13 @@ import { TaskContextProvider } from "./context/TaskContext.jsx";
 import { ChatContextProvider } from "./context/ChatContext.jsx";
 import { MessageContextProvider } from "./context/MessageContext.jsx";
 import { ChannelContextProvider } from "./context/ChannelContext.jsx";
-import { ListContextProvider } from "./context/ListContext.jsx";
+import { BoardContextProvider } from "./context/BoardContext.jsx";
 import { IdContextProvider } from "./context/IdContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <IdContextProvider>
-      <ListContextProvider>
+      <BoardContextProvider>
         <ChannelContextProvider>
           <MessageContextProvider>
             <ChatContextProvider>
@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </ChatContextProvider>
           </MessageContextProvider>
         </ChannelContextProvider>
-      </ListContextProvider>
+      </BoardContextProvider>
     </IdContextProvider>
   </React.StrictMode>
 );

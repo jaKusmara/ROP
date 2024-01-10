@@ -2,26 +2,37 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import TaskCard from "./project/TaskCard";
+import { useBoardContext } from "../hooks/useContext/useBoardContext";
+import { useEffect } from "react";
+import { useTask } from "../hooks/useTask";
+import { useAuthContext } from "../hooks/useContext/useAuthContext";
+import { useIdContext } from "../hooks/useContext/useIdContext";
 
-export default function ListComponent({ item }) {
+// ... (imports)
+
+export default function ListComponent({ list, tasks }) {
+  const { state: idState, dispatch } = useIdContext();
+  const { user } = useAuthContext();
+  const { getTasks } = useTask();
   const { setBackground, setCreateTask } = useToggleFormContext();
 
   const handleCreateTask = () => {
     setBackground(true);
     setCreateTask(true);
-    localStorage.setItem("list_id", JSON.stringify(item._id));
+    dispatch({ type: "SET_LIST_ID", payload: list._id });
   };
 
   return (
     <div className="border px-2 mx-2 rounded-md bg-gray-800 h-fit w-80 whitespace-wrap break-all self-start">
       <nav className="flex flex-row">
-        <button onClick={handleCreateTask}><AddIcon/></button>
-        <h2 className="w-full text-center">{item.title}</h2>
+        <button onClick={handleCreateTask}>
+          <AddIcon />
+        </button>
+        <h2 className="w-full text-center">{list.title}</h2>
         <EditIcon />
       </nav>
       <div className="whitespace-wrap break-all max-h-96">
-        {item.tasks_id &&
-          item.tasks_id.map((task) => <TaskCard key={task._id} task={task} />)}
+        {tasks && tasks.map((task) => <TaskCard key={task._id} task={task} />)}
       </div>
     </div>
   );

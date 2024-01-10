@@ -5,7 +5,7 @@ const requireAuth = require("../middleware/requireAuth");
 //controllrs
 const {
   createTask,
-  getAllListTasks,
+  getAllBoardTasks,
   getTaskById,
   joinTask,
   leaveTask,
@@ -23,7 +23,7 @@ router.post("/createTask", createTask);
 
 router.delete("/deleteTask", deleteTask);
 
-router.get("/getAllListTasks", getAllListTasks);
+router.get("/getAllBoardTasks", getAllBoardTasks);
 
 router.get("/getTaskById", getTaskById);
 

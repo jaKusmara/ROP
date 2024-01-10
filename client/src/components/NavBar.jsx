@@ -1,6 +1,6 @@
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
-import avatar from "../../public/user.png";
+import avatar from "../assets/user.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useState } from "react";

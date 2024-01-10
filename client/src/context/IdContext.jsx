@@ -5,7 +5,13 @@ export const IdContext = createContext();
 export const idReducer = (state, action) => {
   switch (action.type) {
     case "SET_TASK_ID": {
-      return { taskId: action.payload };
+      return { ...state, taskId: action.payload };
+    }
+    case "SET_BOARD_ID": {
+      return { ...state, board_id: action.payload };
+    }
+    case "SET_LIST_ID": {
+      return { ...state, list_id: action.payload };
     }
     default:
       return state;
@@ -13,7 +19,7 @@ export const idReducer = (state, action) => {
 };
 
 export const IdContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(idReducer, { taskId: null });
+  const [state, dispatch] = useReducer(idReducer, { taskId: null, board_id: null, list_id: null });
 
   return (
     <IdContext.Provider

@@ -10,7 +10,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useIdContext } from "../hooks/useContext/useIdContext";
-import avatar from "../../public/user.png";
+import avatar from "../assets/user.png"
 import socket from "../utils/socekt";
 
 export default function Task() {

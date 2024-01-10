@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import { useTask } from "../hooks/useTask";
-import { useList } from "../hooks/useList";
+import { useBoard } from "../hooks/useBoard";
+import { useIdContext } from "../hooks/useContext/useIdContext";
 
 export default function CreateTaskFrom() {
-  const { setLists } = useList();
+  const { state: idState } = useIdContext();
+  const { setLists } = useBoard();
   const { user } = useAuthContext();
   const { createTask } = useTask();
   const [title, setTitle] = useState("");
@@ -13,15 +15,18 @@ export default function CreateTaskFrom() {
   const { setBackground, setCreateTask } = useToggleFormContext();
 
   const handleCreateTask = async () => {
-    const list_id = JSON.parse(localStorage.getItem("list_id"));
-    const board_id = JSON.parse(localStorage.getItem("board_id"));
-    await createTask(user, list_id, board_id, title, description);
+    createTask(
+      user,
+      idState.list_id,
+      idState.board_id,
+      title,
+      description
+    );
     setBackground(false);
     setCreateTask(false);
 
-    setLists(user, board_id);
+    setLists(user, idState.board_id);
   };
-
   const handleCancel = () => {
     setBackground(false);
     setCreateTask(false);

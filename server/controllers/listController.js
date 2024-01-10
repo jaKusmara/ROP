@@ -23,20 +23,13 @@ const createList = async (req, res) => {
 const getLists = async (req, res) => {
   const board_id = req.query.board_id;
   try {
-    let listsAndTasks = [];
+    const board = await Board.findById(board_id).populate("lists");
 
-    const data = await Board.findById(board_id).populate("lists");
+    const data = board.lists;
 
-    const listPromises = data.lists.map(async (list) => {
-      const listWithTasks = await List.findById(list._id).populate("tasks_id");
-      return listWithTasks;
-    });
-
-    listsAndTasks = await Promise.all(listPromises);
-
-    res.status(200).json({listsAndTasks})
+    res.status(200).json(data);
   } catch (error) {
-    res.status(404).json({ error });
+    res.status(404).json({ error: error.message });
   }
 };
 

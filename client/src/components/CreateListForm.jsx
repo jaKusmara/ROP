@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
-import { useList } from "../hooks/useList";
+import { useBoard } from "../hooks/useBoard";
 import { useProjectContext } from "../hooks/useContext/useProjectContext";
 
 export default function CreateListForm() {
   const { setBackground, setCreateList } = useToggleFormContext();
-  const { createList } = useList();
+  const { createList } = useBoard();
   const { user } = useAuthContext();
   const [title, setTitle] = useState("");
   const { state } = useProjectContext();

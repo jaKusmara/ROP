@@ -13,7 +13,6 @@ export default function Login() {
     e.preventDefault();
 
     await login(identifier, password);
-    navigate("/");
   };
   return (
     <form className="flex flex-col max-w-xs">

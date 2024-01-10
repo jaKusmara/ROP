@@ -5,12 +5,6 @@ const listSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tasks_id: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Task",
-    },
-  ],
 });
 
 const List = mongoose.model("List", listSchema);

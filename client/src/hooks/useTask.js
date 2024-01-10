@@ -1,25 +1,19 @@
 import axios from "axios";
-import { useTaskContext } from "./useContext/useTaskContext";
+import { useBoardContext } from "./useContext/useBoardContext";
 import { useState } from "react";
 import socket from "../utils/socekt";
 
 export const useTask = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useTaskContext();
+  const { dispatch } = useBoardContext();
 
-  const createTask = async (
-    user,
-    boardList_id,
-    board_id,
-    title,
-    description
-  ) => {
+  const createTask = async (user, list_id, board_id, title, description) => {
     setIsLoading(true);
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/task/createTask?boardList_id=${boardList_id}`,
+        `http://localhost:5000/api/task/createTask?board_id=${board_id}&list_id=${list_id}`,
         {
           title: title,
           description: description,
@@ -44,6 +38,32 @@ export const useTask = () => {
       setError(error);
 
       console.error("Task creation failed:", error);
+    }
+  };
+
+  const getTasks = async (user, board_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/task/getAllBoardTasks?board_id=${board_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        dispatch({ type: "SET_TASKS", payload: response.data });
+
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Setting task failed:", error);
     }
   };
 
@@ -220,6 +240,7 @@ export const useTask = () => {
     deleteTask,
     leaveTask,
     joinTask,
+    getTasks,
     error,
     isLoading,
   };

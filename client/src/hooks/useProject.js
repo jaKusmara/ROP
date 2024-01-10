@@ -1,9 +1,11 @@
 import { useProjectContext } from "./useContext/useProjectContext";
+import { useIdContext } from "./useContext/useIdContext";
 import axios from "axios";
 import { useState } from "react";
 
 export const useProject = () => {
   const { dispatch } = useProjectContext();
+  const {dispatch: idDispatch} = useIdContext()
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,6 +49,9 @@ export const useProject = () => {
 
       if (response.status) {
         dispatch({ type: "SET_PROJECT", payload: response.data });
+        
+        idDispatch({ type: "SET_BOARD_ID", payload: response.data.board_id })
+
         localStorage.setItem(
           "board_id",
           JSON.stringify(response.data.board_id)

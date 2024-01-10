@@ -5,28 +5,23 @@ const Board = require("../models/boardModel");
 //  CREATE TASK
 const createTask = async (req, res) => {
   const { title, description } = req.body;
-  const boardList_id = req.query.boardList_id;
+  const list_id = req.query.list_id;
+  const board_id = req.query.board_id
   const user_id = req.user._id;
 
   try {
+    //const list = await List.findById(list_id)
+
     const data = await Task.create({
       title,
       description,
       participants: [user_id],
+      list_id: list_id,
+      board_id: board_id
     });
-
-    console.log(boardList_id);
-
-    await List.findByIdAndUpdate(
-      boardList_id,
-      { $push: { tasks_id: data._id } },
-      { new: true }
-    );
 
     if (data) {
       res.status(200).json(data);
-    } else {
-      res.status(400).json({ error: "Task creation failed" });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -34,23 +29,15 @@ const createTask = async (req, res) => {
 };
 
 //  GET PROJECT's TASKS
-const getAllListTasks = async (req, res) => {
+const getAllBoardTasks = async (req, res) => {
   const board_id = req.query.board_id;
 
   try {
-    let listsAndTasks = [];
 
-    const data = await Board.findById(board_id).populate("lists");
+    const data = await Task.find({board_id: board_id});
 
-    const listPromises = data.lists.map(async (list) => {
-      const listWithTasks = await List.findById(list._id).populate("tasks_id");
-      return listWithTasks;
-    });
 
-    listsAndTasks = await Promise.all(listPromises);
-
-    //console.log(listsAndTasks);
-    res.json(listsAndTasks);
+    res.json(data);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -217,7 +204,7 @@ const updateTask = async (req, res) => {
 
 module.exports = {
   createTask,
-  getAllListTasks,
+  getAllBoardTasks,
   getTaskById,
   joinTask,
   leaveTask,

@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useListContext } from "./useContext/useListContext";
+import { useBoardContext } from "./useContext/useBoardContext";
 import { useState } from "react";
 import socket from "../utils/socekt";
 
-export const useList = () => {
+export const useBoard = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useListContext();
+  const { dispatch } = useBoardContext();
 
   const createList = async (user, title, board_id) => {
     setIsLoading(true);
@@ -25,6 +25,7 @@ export const useList = () => {
       );
 
       if (response.status) {
+      
         dispatch({ type: "CREATE_LIST", payload: response.data.data });
         setIsLoading(false);
         
@@ -54,7 +55,7 @@ export const useList = () => {
       );
 
       if (response.status) {
-        dispatch({ type: "SET_LISTS", payload: response.data.listsAndTasks });
+        dispatch({ type: "SET_LISTS", payload: response.data });
         setIsLoading(false);
       }
     } catch (error) {
