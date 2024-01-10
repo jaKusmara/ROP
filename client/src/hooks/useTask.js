@@ -81,6 +81,7 @@ export const useTask = () => {
       );
 
       if (response.status) {
+        console.log(response);
         dispatch({ type: "SET_TASK", payload: response.data });
 
         setIsLoading(false);
@@ -113,7 +114,7 @@ export const useTask = () => {
       if (response.status) {
         setIsLoading(false);
 
-        socket.emit("tasks_refresh", {
+        socket.emit("task_refresh", {
           to: board_id,
         });
       }
@@ -155,7 +156,7 @@ export const useTask = () => {
     }
   };
 
-  const joinTask = async (user, task_id) => {
+  const joinTask = async (user, task_id, board_id) => {
     setIsLoading(true);
 
     try {
@@ -171,6 +172,10 @@ export const useTask = () => {
 
       if (response.status) {
         setIsLoading(false);
+
+        socket.emit("task_refresh", {
+          to: board_id,
+        });
       }
     } catch (error) {
       setIsLoading(false);
@@ -180,7 +185,7 @@ export const useTask = () => {
     }
   };
 
-  const leaveTask = async (user, task_id) => {
+  const leaveTask = async (user, task_id, board_id) => {
     setIsLoading(true);
 
     try {
@@ -196,6 +201,9 @@ export const useTask = () => {
 
       if (response.status) {
         setIsLoading(false);
+        socket.emit("task_refresh", {
+          to: board_id,
+        });
       }
     } catch (error) {
       setIsLoading(false);
@@ -219,7 +227,7 @@ export const useTask = () => {
       );
 
       if (response.status) {
-        socket.emit("tasks_refresh", {
+        socket.emit("task_refresh", {
           to: board_id,
         });
         setIsLoading(false);

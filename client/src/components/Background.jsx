@@ -11,7 +11,7 @@ export default function Background() {
     useToggleFormContext();
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-0">
+    <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-0 w-full h-full">
       {createTask ? <CreateTaskFrom /> : null}
       {createList ? <CreateListForm /> : null}
       {joinProject ? <JoinProjectForm /> : null}

@@ -70,6 +70,15 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("task_refresh", (data) => {
+    const { to } = data;
+    
+    io.to(to).to(board_id).emit("task_refresh", {
+      sender_id: socket.user_id,
+      to,
+    });
+  });
+
   socket.on("leave_board", (board_id) => {
     socket.leave(board_id);
     console.log(`User left board_id: ${board_id}`);

@@ -17,26 +17,31 @@ export default function Board() {
   const { setLists, error: listError, isLoading: listLoading } = useBoard();
   const { getTasks, error: taskError, isLoading: taskIsLoading } = useTask();
   const [socketData, setSocketData] = useState(null);
+  const [updateTask, setUpdateTask] = useState(null)
 
-  const board_id = JSON.parse(localStorage.getItem("board_id"));
-  console.log(idState);
   useEffect(() => {
     setSocketData(null);
-    setLists(user, board_id);
-  }, [user, board_id, socketData]);
+    if (idState.board_id) {
+      setLists(user, idState.board_id);
+    }
+  }, [user, idState.board_id, socketData]);
 
   useEffect(() => {
-    socket.emit("join_board", board_id);
+    socket.emit("join_board", idState.board_id);
+
+    socket.on("task_refresh", (data) => {
+      setUpdateTask(data);
+    });
 
     socket.on("tasks_refresh", (data) => {
       setSocketData(data);
     });
 
     return () => {
-      socket.emit("leave_board", board_id);
+      socket.emit("leave_board", idState.board_id);
       socket.off("join_board");
     };
-  }, [board_id]);
+  }, [idState.board_id]);
 
   const handleCreateTask = () => {
     setBackground(!background);
@@ -47,7 +52,7 @@ export default function Board() {
     if (idState.board_id) {
       getTasks(user, idState.board_id);
     }
-  }, [idState.board_id]);
+  }, [idState.board_id, socketData, updateTask]);
 
   return (
     <div className="flex flex-col h-full mx-auto">
@@ -68,14 +73,13 @@ export default function Board() {
               const filteredTasks = board.tasks.filter(
                 (task) => task.list_id === list._id
               );
-
-              console.log(filteredTasks);
-
               return (
                 <ListComponent
                   key={list._id}
                   list={list}
                   tasks={filteredTasks}
+                  error={taskError}
+                  isLoading={taskIsLoading}
                 />
               );
             })}

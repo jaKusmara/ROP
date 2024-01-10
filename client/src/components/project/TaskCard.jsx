@@ -12,21 +12,28 @@ export default function TaskCard({ task }) {
   const { setBackground, background, setShowTask, showTask } =
     useToggleFormContext();
   const [socketData, setSocketData] = useState(null);
+  const [updateTask, setUpdateTask] = useState(null);
 
   useEffect(() => {
     socket.on("tasks_refresh", (data) => {
       setSocketData(data);
     });
 
-    if (state.taskId) {
-      getTask(user, state.taskId);
-      setBackground(!background);
-      setShowTask(!showTask);
+    socket.on("task_refresh", (data) => {
+      setUpdateTask(data);
+    });
+  }, [socketData]);
+
+  useEffect(() => {
+    if (state.task_id) {
+      getTask(user, state.task_id);
     }
-  }, [user, state, socketData]);
+  }, [updateTask, user, state.task_id]);
 
   const handleOnTaskClick = () => {
     dispatch({ type: "SET_TASK_ID", payload: task._id });
+    setBackground(!background);
+    setShowTask(!showTask);
   };
 
   return (

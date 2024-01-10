@@ -2,18 +2,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import TaskCard from "./project/TaskCard";
-import { useBoardContext } from "../hooks/useContext/useBoardContext";
-import { useEffect } from "react";
-import { useTask } from "../hooks/useTask";
-import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useIdContext } from "../hooks/useContext/useIdContext";
 
 // ... (imports)
 
 export default function ListComponent({ list, tasks }) {
-  const { state: idState, dispatch } = useIdContext();
-  const { user } = useAuthContext();
-  const { getTasks } = useTask();
+  const { dispatch } = useIdContext()
   const { setBackground, setCreateTask } = useToggleFormContext();
 
   const handleCreateTask = () => {
@@ -32,7 +26,7 @@ export default function ListComponent({ list, tasks }) {
         <EditIcon />
       </nav>
       <div className="whitespace-wrap break-all max-h-96">
-        {tasks && tasks.map((task) => <TaskCard key={task._id} task={task} />)}
+        {tasks && tasks.map((task) => (<TaskCard key={task._id} task={task} />))}
       </div>
     </div>
   );
