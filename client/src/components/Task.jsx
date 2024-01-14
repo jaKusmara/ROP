@@ -185,13 +185,8 @@ export default function Task() {
             {isLoading && <div>loading...</div>}
             {state.participants &&
               state.participants.map((participant) => (
-                <li key={participant} className="mr-2">
-                  <img
-                    src={avatar}
-                    alt="User Avatar"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </li>
+                console.log(participant)
+                
               ))}
           </ul>
         </footer>

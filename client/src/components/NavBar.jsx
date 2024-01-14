@@ -6,29 +6,24 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
 import { useState } from "react";
+import IconButton from '@mui/material/IconButton';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function NavBar() {
-  const [dropDownAvatar, setDropDownAvatar] = useState(false);
   const { logout } = useLogout();
   const { user } = useAuthContext();
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const handleClickLogOut = () => {
     logout();
-  };
-
-  const handleOnAvatarClick = () => {
-    setDropDownAvatar(!dropDownAvatar);
   };
 
   return (
@@ -40,26 +35,55 @@ export default function NavBar() {
           <NotificationsIcon />
         </Badge>
       </div>
-      <Avatar
-        id="avatar-nav-menu"
-        alt={user.user.username}
-        src=""
-        onClick={handleClick}
-      />
+      <IconButton
+            onClick={handleClick}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={open ? 'account-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+          >
+        <Avatar
+          id="avatar-nav-menu"
+          alt={user.user.username}
+          src=""
+          onClick={handleClick}
+        />
+      </IconButton>
       <Menu
-        id="avatar-nav-menu"
-        aria-labelledby="avatar-nav-menu"
         anchorEl={anchorEl}
+        id="account-menu"
         open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&::before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
           <h2>{user && user.user.email}</h2>
@@ -78,13 +102,6 @@ export default function NavBar() {
           </button>
         </MenuItem>
       </Menu>
-      {dropDownAvatar && (
-        <ul className="bg-white w-40 mt-2 p-2 relative rounded-md right-0 text-black">
-          <li className="p-2 flex flex-row"></li>
-          <li className="cursor-pointer hover:bg-gray-200 p-2 flex flex-row justify-between"></li>
-          <li className="cursor-pointer hover:bg-gray-200 p-2 flex flex-row"></li>
-        </ul>
-      )}
     </nav>
   );
 }
