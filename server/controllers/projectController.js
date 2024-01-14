@@ -46,8 +46,11 @@ const createProject = async (req, res) => {
 
 // GET PROJECTS FOR A USER
 const getAllUserProjects = async (req, res) => {
-  const user_id = req.user._id;
+  const user_id = req.user;
 
+  if (user_id) {
+    console.log(user_id);
+  }
   try {
     const data = await Project.getUserProjects(user_id);
 
@@ -137,13 +140,14 @@ const deleteProject = async (req, res) => {
     if (deletedProject.deletedCount === 1) {
       res.status(200).json({ message: "Project deleted successfully" });
     } else {
-      res.status(404).json({ message: "Project not found or could not be deleted" });
+      res
+        .status(404)
+        .json({ message: "Project not found or could not be deleted" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 // GET ALL PROJECT CHANNEL
 const getAllProjectChannels = async (req, res) => {

@@ -8,11 +8,13 @@ import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LabelIcon from "@mui/icons-material/Label";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useIdContext } from "../hooks/useContext/useIdContext";
 import avatar from "../assets/user.png";
 import socket from "../utils/socekt";
+import MoveTask from "./MoveTask";
 
 export default function Task() {
   const { state } = useBoardContext();
@@ -33,6 +35,7 @@ export default function Task() {
   const [editedTitle, setEditedTitle] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
   const [labels, setLabels] = useState(false);
+  const [move, setMove] = useState(false);
 
   const [socketData, setSocketData] = useState();
   const [updateTaskSocket, setUpdateTask] = useState();
@@ -98,6 +101,10 @@ export default function Task() {
     setLabels(!labels);
   };
 
+  const handleMove = () => {
+    setMove(!move);
+  };
+
   return (
     <div className="w-full h-full flex flex-row">
       <div className="flex flex-col h-96 w-96 bg-gray-600 break-all p-4 space-x-4">
@@ -124,7 +131,6 @@ export default function Task() {
                     />
                   </>
                 ) : (
-                  // Display Mode
                   <>
                     <h2 className="text-white text-xl font-semibold mb-2">
                       {state.task.title}
@@ -162,6 +168,10 @@ export default function Task() {
               Labels <LabelIcon />
             </button>
 
+            <button className="" onClick={handleMove}>
+              Move <ArrowForwardIcon />
+            </button>
+
             <button className="text-white" onClick={handleDeleteTask}>
               Delete Task <DeleteIcon />
             </button>
@@ -187,6 +197,7 @@ export default function Task() {
         </footer>
       </div>
       {labels ? <ShowLabels /> : null}
+      {move ? <MoveTask/> : null}
     </div>
   );
 }

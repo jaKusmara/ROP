@@ -12,7 +12,8 @@ const {
   deleteTask,
   updateTask,
   getUserTasks,
-  taskParticipants
+  taskParticipants,
+  moveTask,
 } = require("../controllers/taskController");
 
 //middleware
@@ -27,7 +28,7 @@ router.get("/getAllBoardTasks", getAllBoardTasks);
 
 router.get("/getTaskById", getTaskById);
 
-router.get("/taskParticipants", taskParticipants)
+router.get("/taskParticipants", taskParticipants);
 
 router.get("/getUserTasks", getUserTasks);
 
@@ -36,5 +37,7 @@ router.put("/joinTask", joinTask);
 router.put("/leaveTask", leaveTask);
 
 router.put("/updateTask", updateTask);
+
+router.put("/moveTask", moveTask);
 
 module.exports = router;

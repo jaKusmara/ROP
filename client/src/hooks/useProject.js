@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export const useProject = () => {
   const { dispatch } = useProjectContext();
-  const {dispatch: idDispatch} = useIdContext()
+  const { dispatch: idDispatch } = useIdContext();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,6 +13,8 @@ export const useProject = () => {
     setIsLoading(true);
 
     try {
+      console.log(user.token);
+      
       const response = await axios.get(
         `http://localhost:5000/api/project/getAllUserProjects`,
         {
@@ -21,11 +23,12 @@ export const useProject = () => {
           },
         }
       );
-
+      
       if (response.status) {
         dispatch({ type: "SET_PROJECTS", payload: response.data });
         setIsLoading(false);
       }
+      
     } catch (error) {
       setIsLoading(false);
       setError(error);
@@ -49,8 +52,8 @@ export const useProject = () => {
 
       if (response.status) {
         dispatch({ type: "SET_PROJECT", payload: response.data });
-        
-        idDispatch({ type: "SET_BOARD_ID", payload: response.data.board_id })
+
+        idDispatch({ type: "SET_BOARD_ID", payload: response.data.board_id });
 
         localStorage.setItem(
           "board_id",

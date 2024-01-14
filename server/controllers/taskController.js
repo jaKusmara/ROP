@@ -6,7 +6,7 @@ const Board = require("../models/boardModel");
 const createTask = async (req, res) => {
   const { title, description } = req.body;
   const list_id = req.query.list_id;
-  const board_id = req.query.board_id
+  const board_id = req.query.board_id;
   const user_id = req.user._id;
 
   try {
@@ -17,7 +17,7 @@ const createTask = async (req, res) => {
       description,
       participants: [user_id],
       list_id: list_id,
-      board_id: board_id
+      board_id: board_id,
     });
 
     if (data) {
@@ -33,9 +33,7 @@ const getAllBoardTasks = async (req, res) => {
   const board_id = req.query.board_id;
 
   try {
-
-    const data = await Task.find({board_id: board_id});
-
+    const data = await Task.find({ board_id: board_id });
 
     res.json(data);
   } catch (error) {
@@ -202,6 +200,20 @@ const updateTask = async (req, res) => {
   }
 };
 
+const moveTask = async (req, res) => {
+  const task_id = req.query.task_id;
+  const list_id = req.query.list_id;
+
+  try {
+    await Task.findByIdAndUpdate(task_id, {
+      list_id: list_id,
+    });
+    res.status(200).send("Task moved successfully");
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createTask,
   getAllBoardTasks,
@@ -212,4 +224,5 @@ module.exports = {
   updateTask,
   getUserTasks,
   taskParticipants,
+  moveTask,
 };

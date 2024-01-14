@@ -15,8 +15,11 @@ export default function SideBar() {
     useToggleFormContext();
 
   useEffect(() => {
-    setProjects(user);
-  }, [user]);
+    if (user) {
+      //console.log(user)
+      setProjects(user);
+    }
+  }, [user.token]);
 
   const handleCreateProject = () => {
     setBackground(true);
@@ -65,18 +68,12 @@ export default function SideBar() {
           {sideDropdown && (
             <ul className="dropdown-list">
               <li>
-                <button
-                  onClick={handleCreateProject}
-                  className="dropdown-item"
-                >
+                <button onClick={handleCreateProject} className="dropdown-item">
                   Create Project
                 </button>
               </li>
               <li>
-                <button
-                  onClick={handleJoinProject}
-                  className="dropdown-item"
-                >
+                <button onClick={handleJoinProject} className="dropdown-item">
                   Join Project
                 </button>
               </li>

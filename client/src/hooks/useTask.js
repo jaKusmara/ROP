@@ -240,6 +240,35 @@ export const useTask = () => {
     }
   };
 
+  const moveTask = async (user, task_id, list_id, board_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/task/moveTask?task_id=${task_id}&list_id=${list_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        socket.emit("tasks_refresh", {
+          to: board_id,
+        });
+
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Setting task failed:", error);
+    }
+  };
+
   return {
     createTask,
     getTask,
@@ -249,6 +278,7 @@ export const useTask = () => {
     leaveTask,
     joinTask,
     getTasks,
+    moveTask,
     error,
     isLoading,
   };
