@@ -41,7 +41,7 @@ export default function Login() {
           Login
         </button>
         <div className="flex justify-start text-red-600">
-          {error && <p>{error}</p>}
+          {error && <p>{error.error}</p>}
         </div>
       </span>
     </form>

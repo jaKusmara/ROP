@@ -27,10 +27,9 @@ export const useLogin = () => {
         console.log("Login successfully:", response.data);
       }
     } catch (error) {
+      console.error("Login failed:", error.response.data);
+      setError(error.response.data);
       setIsLoading(false);
-      setError(error);
-
-      console.error("Login failed:", error);
     }
   };
 

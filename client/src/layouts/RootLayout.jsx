@@ -1,26 +1,34 @@
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
+import SideBar from "../components/home/SideBar";
 import Background from "../components/Background";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
+import { useAuthContext } from "../hooks/useContext/useAuthContext";
+import { useProject } from "../hooks/useProject";
 
 export default function RootLayout() {
+  const { user } = useAuthContext();
+  const { setProjects } = useProject();
   const { background } = useToggleFormContext();
 
+  useEffect(() => {
+    if (user) {
+      setProjects(user);
+    }
+  }, [user]);
+
   return (
-    <div className="max-h-screen max-w-screen">
+    <>
       {background && <Background />}
-      <header className="bg-indigo-400 h-[6vh]">
+      {/* <header className="bg-indigo-400 h-[6vh]">
         <NavBar />
-      </header>
-      <section className="flex h-[92vh]">
-        <aside className="w-96 bg-neutral-800 border-r">
-          <SideBar />
-        </aside>
-        <main className="flex-1 bg-neutral-700">
-          <Outlet />
-        </main>
-      </section>
-    </div>
+      </header> */}
+      <aside className="bg-neutral-800 border-r">
+        <SideBar />
+      </aside>
+      <main className="flex bg-neutral-700">
+        <Outlet />
+      </main>
+    </>
   );
 }

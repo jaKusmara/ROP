@@ -13,8 +13,6 @@ export const useProject = () => {
     setIsLoading(true);
 
     try {
-      console.log(user.token);
-      
       const response = await axios.get(
         `http://localhost:5000/api/project/getAllUserProjects`,
         {
@@ -23,12 +21,11 @@ export const useProject = () => {
           },
         }
       );
-      
+
       if (response.status) {
         dispatch({ type: "SET_PROJECTS", payload: response.data });
         setIsLoading(false);
       }
-      
     } catch (error) {
       setIsLoading(false);
       setError(error);
