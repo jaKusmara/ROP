@@ -1,13 +1,29 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeForm() {
+  const navigate = useNavigate();
+
   return (
-    <>
-      <h2>Get Started</h2>
-      <form className="flex flex-row gap-y-1">
-        <button className="">Login</button>
-        <button className="">Signup</button>
-      </form>
-    </>
+    <div className="flex flex-col items-center gap-y-10">
+      <h2 className="text-7xl font-bold">Get Started</h2>
+      <div className="flex flex-col items-center w-3/5 h-fit gap-y-3">
+        <button
+          onClick={() => {
+            navigate("login");
+          }}
+          className="bg-indigo-900 h-16 w-full rounded-md text-3xl"
+        >
+          Login
+        </button>
+        <button
+          onClick={() => {
+            navigate("signup");
+          }}
+          className="bg-indigo-900 h-16 w-full rounded-md text-3xl"
+        >
+          Signup
+        </button>
+      </div>
+    </div>
   );
 }

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useSignup } from "../../hooks/useSignup";
-import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function RegistrationForm() {
   const { signup, error, isLoading } = useSignup();
+
+  const navigate = useNavigate();
 
   const [firstname, setFirstName] = useState("");
   const [surname, setSurName] = useState("");
@@ -19,11 +21,11 @@ function RegistrationForm() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <h2>Registration...</h2>
-      <div className="flex flex-wrap gap-x-[2%] gap-y-4 justify-center">
+    <div className="flex flex-col items-center gap-y-8">
+      <h2 className="text-7xl font-bold">Sign Up</h2>
+      <div className="flex flex-wrap justify-center w-3/5 h-fit gap-y-3 gap-x-3">
         <input
-          className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500  w-[45%] h- p-2.5 checked:bg-emerald-500"
+          className="h-14 w-2/5 rounded-md text-3xl "
           type="text"
           name="firstname"
           placeholder="First Name"
@@ -32,7 +34,7 @@ function RegistrationForm() {
         />
 
         <input
-          className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500  w-[45%] p-2.5 checked:bg-emerald-500"
+          className="h-14 w-2/5 rounded-md text-3xl "
           type="text"
           name="surname"
           placeholder="Surname"
@@ -41,7 +43,7 @@ function RegistrationForm() {
         />
 
         <input
-          className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500  w-[92%] p-2.5 checked:bg-emerald-500"
+          className="h-14 w-5/6 rounded-md text-3xl "
           type="text"
           name="email"
           placeholder="Email"
@@ -50,7 +52,7 @@ function RegistrationForm() {
         />
 
         <input
-          className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500  w-[92%] p-2.5 checked:bg-emerald-500"
+          className="h-14 w-5/6 rounded-md text-3xl "
           type="text"
           name="username"
           placeholder="Username"
@@ -59,7 +61,7 @@ function RegistrationForm() {
         />
 
         <input
-          className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500  w-[45%] p-2.5 checked:bg-emerald-500"
+          className="h-14 w-2/5 rounded-md text-3xl "
           type="password"
           name="password"
           placeholder="Password"
@@ -68,7 +70,7 @@ function RegistrationForm() {
         />
 
         <input
-          className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500  w-[45%] p-2.5 checked:bg-emerald-500"
+          className="h-14 w-2/5 rounded-md text-3xl "
           type="password"
           name="password"
           placeholder="re type Password"
@@ -76,22 +78,27 @@ function RegistrationForm() {
           onChange={(e) => setReTypePassword(e.target.value)}
         />
       </div>
-      <div className="flex items-center w-full justify-center mt-4">
-        <div className="w-1/2 text-red-700">{error && <p>{error}</p>}</div>
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            type="submit"
-            className=" w-[40%] p-2.5 text-white bg-black flex items-center justify-center rounded-xl hover:bg-emerald-600"
-          >
-            Register
-          </button>
-      </div>
-      <div className="flex w-full flex-row-reverse p-4">
-      <Link to={`/login`}>
-      <p className="text-indigo-700">Do you have an account?</p>
-      </Link>
-      </div>
+      <span className="flex flex-col w-3/5 gap-y-2">
+        <div className="flex text-red-600 text-xl">
+          {error && <p>{error.error}</p>}
+        </div>
+        <button
+          onClick={handleSubmit}
+          disabled={isLoading}
+          type="submit"
+          className="bg-indigo-900 self-end rounded-md w-1/3 text-2xl h-14 hover:bg-green-400"
+        >
+          Register
+        </button>
+        <p
+          onClick={() => {
+            navigate("../login");
+          }}
+          className="self-end text-xl text-blue-900"
+        >
+          Do you have an account?
+        </p>
+      </span>
     </div>
   );
 }

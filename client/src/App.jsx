@@ -32,19 +32,10 @@ const App = () => {
       element: <Outlet />,
       children: [
         {
-          path: "/",
-          element: <AuthLayout />,
-          children: [
-            { path: "login", element: <Login /> },
-            { path: "signup", element: <SignUp /> },
-            { path: "/", element: <Home />, index: true },
-          ],
-        },
-        {
           element: <PrivateRoute />,
           path: "/",
           children: [
-            { index: true, element: user ? <Dashboard /> : <NotFound /> },
+            { index: true, element: user ? <Dashboard /> : <Home /> },
             {
               element: <MessageLayout />,
               children: [{ path: "messages", element: <DirectMessages /> }],
@@ -68,6 +59,15 @@ const App = () => {
                 },
               ],
             },
+          ],
+        },
+        {
+          path: "/",
+          element: <AuthLayout />,
+          children: [
+            { path: "login", element: <Login /> },
+            { path: "signup", element: <SignUp /> },
+            { path: "/", element: <Home />, index: true },
           ],
         },
       ],

@@ -3,7 +3,8 @@ import { useLogin } from "../../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { login, error, isLoading } = useLogin();
+  const { login, error } = useLogin();
+
   const navigate = useNavigate();
 
   const [identifier, setIdentifier] = useState("");
@@ -15,35 +16,46 @@ export default function Login() {
     await login(identifier, password);
   };
   return (
-    <form className="flex flex-col max-w-xs">
-      <input
-        className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500 w-[85%] p-2.5 checked:bg-emerald-500"
-        type="text"
-        name="identifier"
-        placeholder="Email or Username"
-        value={identifier}
-        onChange={(e) => setIdentifier(e.target.value)}
-      />
-      <input
-        className="flex bg-gray-50ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm rounded-lg focus:ring-violet-500  focus:border-violet-500 w-[85%] p-2.5 checked:bg-emerald-500"
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <span>
+    <div className="flex flex-col items-center gap-y-8">
+      <h2 className="text-7xl font-bold">Login</h2>
+      <div className="flex flex-col items-center w-3/5 h-fit gap-y-3">
+        <input
+          className="h-10 w-full rounded-md text-3xl h-16"
+          type="text"
+          name="identifier"
+          placeholder="Email or Username"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
+        />
+        <input
+          className="h-10 w-full rounded-md text-3xl h-16"
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <span className="flex flex-col w-3/5 gap-y-2">
+        <div className="flex text-red-600 text-xl">
+          {error && <p>{error.error}</p>}
+        </div>
         <button
-          className="flex justify-end"
+          className="bg-indigo-900 self-end rounded-md w-1/3 text-2xl h-14 hover:bg-green-400"
           type="submit"
           onClick={handleSubmit}
         >
           Login
         </button>
-        <div className="flex justify-start text-red-600">
-          {error && <p>{error.error}</p>}
-        </div>
+        <p
+          onClick={() => {
+            navigate("../signup");
+          }}
+          className="self-end text-xl text-blue-900"
+        >
+          You don t have an account?
+        </p>
       </span>
-    </form>
+    </div>
   );
 }
