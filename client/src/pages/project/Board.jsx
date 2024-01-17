@@ -7,52 +7,18 @@ import socket from "../../utils/socekt";
 import { useIdContext } from "../../hooks/useContext/useIdContext";
 import { useTask } from "../../hooks/useTask";
 
-import ListComponent from "../../components/ListComponent";
+import ListComponent from "../../components/project/board/ListComponent";
 
 export default function Board() {
   const { setBackground, background, setCreateList } = useToggleFormContext();
   const { state: board } = useBoardContext();
-  const { state: idState } = useIdContext();
-  const { user } = useAuthContext();
-  const { setLists, error: listError, isLoading: listLoading } = useBoard();
-  const { getTasks, error: taskError, isLoading: taskIsLoading } = useTask();
-  const [socketData, setSocketData] = useState(null);
-  const [updateTask, setUpdateTask] = useState(null)
-
-  useEffect(() => {
-    setSocketData(null);
-    if (idState.board_id) {
-      setLists(user, idState.board_id);
-    }
-  }, [user, idState.board_id, socketData]);
-
-  useEffect(() => {
-    socket.emit("join_board", idState.board_id);
-
-    socket.on("task_refresh", (data) => {
-      setUpdateTask(data);
-    });
-
-    socket.on("tasks_refresh", (data) => {
-      setSocketData(data);
-    });
-
-    return () => {
-      socket.emit("leave_board", idState.board_id);
-      socket.off("join_board");
-    };
-  }, [idState.board_id]);
+  const { error: listError, isLoading: listLoading } = useBoard();
+  const { error: taskError, isLoading: taskIsLoading } = useTask();
 
   const handleCreateTask = () => {
     setBackground(!background);
     setCreateList(true);
   };
-
-  useEffect(() => {
-    if (idState.board_id) {
-      getTasks(user, idState.board_id);
-    }
-  }, [idState.board_id, socketData, updateTask]);
 
   return (
     <div className="flex flex-col h-full mx-auto">

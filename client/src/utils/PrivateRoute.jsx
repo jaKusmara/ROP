@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import RootLayout from "../layouts/RootLayout";
-import NotFound from "../pages/NotFound";
+import AuthLayout from "../layouts/AuthLayout";
 import socket from "./socekt";
 
 const PrivateRoute = () => {
@@ -21,7 +21,7 @@ const PrivateRoute = () => {
     }
   }, [user]);
 
-  return user ? <RootLayout /> : <NotFound/>;
+  return user ? <RootLayout /> : <AuthLayout />;
 };
 
 export default PrivateRoute;

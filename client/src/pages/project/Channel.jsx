@@ -10,58 +10,31 @@ export default function Channel() {
   const { sendMessage, getMessages, error, isLoading } = useChat();
   const { user } = useAuthContext();
   const { channel_id } = useParams();
-  const [receiveDataFromSocket, setReceiveDataFromSocket] = useState(null);
+  const [messageFromSocket, setMessageFromSocket] = useState(null);
   const [content, setContent] = useState("");
   const { state } = useMessageContext();
 
-  const chat_id = JSON.parse(localStorage.getItem("c_id"));
+  useEffect(() => {
+    getMessages(user, channel_id);
+  }, [channel_id, messageFromSocket]);
 
   useEffect(() => {
-    socket.emit("join", chat_id);
+    setMessageFromSocket(null);
 
-    return () => {
-      socket.off("join");
-    };
-  }, [chat_id]);
+    socket.emit("join", channel_id);
 
-  useEffect(() => {
-    socket.on("private_message", (message) => {
-      setReceiveDataFromSocket(message);
+    socket.on("private_message", (data) => {
+      setMessageFromSocket(data);
     });
-
-    return () => {
-      socket.off("private_message");
-    };
-  }, []);
-
-  const handleSendMessage = (user, chat_id, content) => {
-    sendMessage(user, chat_id, content);
-
-    socket.emit("private_message", {
-      content,
-      to: chat_id,
-    });
-
-    setContent("");
-  };
-
-  useEffect(() => {
-    getMessages(user, chat_id);
-    if (receiveDataFromSocket !== null) {
-      getMessages(user, chat_id);
-      setReceiveDataFromSocket(null);
-    }
-  }, [user, chat_id, receiveDataFromSocket]);
+  }, [channel_id]);
 
   return (
     <div className="flex flex-col h-full">
-      <nav className="flex felx-row">
-       
-      </nav>
+      <nav className="flex felx-row"></nav>
       <div className="flex flex-col px-2 overflow-hidden overflow-y-scroll h-full w-full">
         {state.messages &&
           state.messages.map((message) => (
-              <Message
+            <Message
               key={message._id}
               message={message}
               error={error}
@@ -79,7 +52,9 @@ export default function Channel() {
         />
         <button
           className="bg-blue-500 text-white p-2 rounded-r hover:bg-blue-600 focus:outline-none"
-          onClick={() => handleSendMessage(user, channel_id, content)}
+          onClick={() => {
+            sendMessage(user, channel_id, content), setContent("");
+          }}
         >
           Send
         </button>

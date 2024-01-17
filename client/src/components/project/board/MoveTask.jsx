@@ -1,8 +1,8 @@
 import React from "react";
-import { useBoardContext } from "../hooks/useContext/useBoardContext";
-import { useTask } from "../hooks/useTask";
-import { useAuthContext } from "../hooks/useContext/useAuthContext";
-import { useIdContext } from "../hooks/useContext/useIdContext";
+import { useBoardContext } from "../../../hooks/useContext/useBoardContext";
+import { useTask } from "../../../hooks/useTask";
+import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
+import { useIdContext } from "../../../hooks/useContext/useIdContext";
 
 export default function MoveTask() {
   const { user } = useAuthContext();

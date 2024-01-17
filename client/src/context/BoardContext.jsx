@@ -19,6 +19,9 @@ export const boardReducer = (state, action) => {
     case "SET_TASK": {
       return { ...state, task: action.payload };
     }
+    case "SET_COUNTEDTASK": {
+      return { ...state, countedTasks: action.payload };
+    }
     case "SET_PARTICIPANTS": {
       return { ...state, participants: action.payload };
     }
@@ -32,6 +35,7 @@ export const BoardContextProvider = ({ children }) => {
     tasks: [],
     task: null,
     participants: [],
+    countedTasks: null,
   });
 
   return (

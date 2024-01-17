@@ -9,13 +9,6 @@ const sendMessage = async (req, res) => {
   const sender_id = req.user._id;
 
   try {
-    const chat = await Chat.findById(chat_id);
-    const channel = await Channel.findById(chat_id);
-
-    if (!chat && !channel) {
-      return res.status(404).json({ error: "Chat not found" });
-    }
-
     let cipher = crypto.createCipher("aes-256-cbc", process.env.SECRET);
     let crypted = cipher.update(content, "utf8", "hex");
     crypted += cipher.final("hex");
@@ -23,19 +16,10 @@ const sendMessage = async (req, res) => {
     const message = await Message.create({
       content: crypted,
       sender_id: sender_id,
+      chat_id: chat_id,
     });
 
-    if (chat) {
-      chat.messages.push(message._id);
-      await chat.save();
-    }
-
-    if (channel) {
-      channel.messages.push(message._id);
-      await channel.save();
-    }
-
-    res.status(200).json({ message });
+    res.status(200).json(message);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -45,35 +29,19 @@ const getAllMessages = async (req, res) => {
   const chat_id = req.query.chat_id;
 
   try {
-    let messages;
+    // Assuming you have the appropriate models imported
+    const messages = await Message.find({ chat_id });
 
-    const chat = await Chat.findById(chat_id).populate("messages");
-    const channel = await Channel.findById(chat_id).populate("messages");
-
-    if (!chat && !channel) {
-      return res.status(404).json({ error: "Chat not found" });
-    }
-
-    if (chat) {
-      messages = chat.messages;
-    }
-
-    if (channel) {
-      messages = channel.messages;
-    }
-
-    // Decrypt all messages
+    // Decrypt each message
     const decryptedMessages = messages.map((message) => {
-      let decipher = crypto.createDecipher("aes-256-cbc", process.env.SECRET);
+      const decipher = crypto.createDecipher("aes-256-cbc", process.env.SECRET);
+      let decrypted = decipher.update(message.content, "hex", "utf8");
+      decrypted += decipher.final("utf8");
 
-      let decryptedContent = decipher.update(message.content, "hex", "utf8");
-      decryptedContent += decipher.final("utf8");
-
+      // Replace the encrypted content with decrypted content
       return {
-        _id: message._id,
-        content: decryptedContent,
-        sender_id: message.sender_id,
-        createdAt: message.createdAt,
+        ...message.toObject(),
+        content: decrypted,
       };
     });
 

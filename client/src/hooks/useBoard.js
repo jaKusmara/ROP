@@ -55,6 +55,7 @@ export const useBoard = () => {
       );
 
       if (response.status) {
+        console.log(response)
         dispatch({ type: "SET_LISTS", payload: response.data });
         setIsLoading(false);
       }

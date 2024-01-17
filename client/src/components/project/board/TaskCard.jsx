@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useTask } from "../../hooks/useTask";
-import { useAuthContext } from "../../hooks/useContext/useAuthContext";
-import { useToggleFormContext } from "../../hooks/useContext/useToggleForm";
-import { useIdContext } from "../../hooks/useContext/useIdContext";
-import socket from "../../utils/socekt";
+import { useTask } from "../../../hooks/useTask";
+import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
+import { useToggleFormContext } from "../../../hooks/useContext/useToggleForm";
+import { useIdContext } from "../../../hooks/useContext/useIdContext";
+import socket from "../../../utils/socekt";
 
 export default function TaskCard({ task }) {
   const { getTask } = useTask();

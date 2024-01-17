@@ -1,4 +1,26 @@
-export default function Dashboard() {
+import { useEffect } from "react";
+import { useBoardContext } from "../hooks/useContext/useBoardContext";
+import { useTask } from "../hooks/useTask";
+import { useAuthContext } from "../hooks/useContext/useAuthContext";
+import TaskCard from "../components/home/TaskCard";
 
-  return <div>dsvcsdv</div>;
+export default function Dashboard() {
+  const { user } = useAuthContext();
+  const { state: boardState } = useBoardContext();
+  const { getUserTasks } = useTask();
+
+  useEffect(() => {
+    getUserTasks(user);
+  }, []);
+
+  return (
+    <>
+      <div className="flex flex-row">
+        {boardState.tasks &&
+          boardState.tasks.map((task) => (
+            <TaskCard key={task._id} task={task} />
+          ))}
+      </div>
+    </>
+  );
 }

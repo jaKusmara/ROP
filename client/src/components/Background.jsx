@@ -4,7 +4,7 @@ import CreateTaskFrom from "./CreateTaskFrom";
 import CreateListForm from "./CreateListForm";
 import CreateProjectForm from "./CreateProjectForm";
 import JoinProjectForm from "./JoinProjectForm";
-import Task from "./Task";
+import Task from "./project/board/Task"
 
 export default function Background() {
   const { createTask, createList, createProject, joinProject, showTask } =

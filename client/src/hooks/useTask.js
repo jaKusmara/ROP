@@ -269,6 +269,31 @@ export const useTask = () => {
     }
   };
 
+  const getUserTasks = async (user) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/task/getUserTasks`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        dispatch({ type: "SET_TASKS", payload: response.data });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting user tasks failed:", error);
+    }
+  };
+
   return {
     createTask,
     getTask,
@@ -279,6 +304,7 @@ export const useTask = () => {
     joinTask,
     getTasks,
     moveTask,
+    getUserTasks,
     error,
     isLoading,
   };

@@ -35,6 +35,7 @@ io.on("connection", (socket) => {
   });
 
   const users = [];
+  
   for (let [socket] of io.of("/").sockets) {
     users.push({
       user_id: socket.user_id,
@@ -44,16 +45,15 @@ io.on("connection", (socket) => {
   io.emit("users", users);
 
   socket.on("private_message", (data) => {
-    const { to, content } = data;
-    console.log(content);
+    const { to } = data;
+
     io.to(to).to(room_id).emit("private_message", {
-      content,
       sender_id: socket.user_id,
       to,
     });
   });
 
-  let board_id= "";
+  let board_id = "";
 
   socket.on("join_board", (board) => {
     socket.join(board);
@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
 
   socket.on("tasks_refresh", (data) => {
     const { to } = data;
-    
+
     io.to(to).to(board_id).emit("tasks_refresh", {
       sender_id: socket.user_id,
       to,
@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
 
   socket.on("task_refresh", (data) => {
     const { to } = data;
-    
+
     io.to(to).to(board_id).emit("task_refresh", {
       sender_id: socket.user_id,
       to,

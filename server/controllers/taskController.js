@@ -21,6 +21,13 @@ const createTask = async (req, res) => {
     });
 
     if (data) {
+      // Update the associated list with the new task's ID
+      await List.findByIdAndUpdate(
+        list_id,
+        { $push: { tasks: data._id } },
+        { new: true }
+      );
+
       res.status(200).json(data);
     }
   } catch (error) {
@@ -49,13 +56,24 @@ const getUserTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ participants: user_id });
 
-    if (tasks) {
-      res.status(200).json({ message: "Successfully feched the tasks", tasks });
-    } else {
-      res.status(404).json({ message: "No tasks found for the user" });
-    }
+    const detailedTasks = await Promise.all(
+      tasks.map(async (task) => {
+        const list = await List.findById(task.list_id);
+        const board = await Board.findById(task.board_id);
+
+        return {
+          _id: task._id,
+          title: task.title,
+          description: task.description,
+          project_title: board ? board.title : null,
+          list_title: list ? list.title : null,
+        };
+      })
+    );
+
+    res.status(200).json(detailedTasks);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -153,6 +171,12 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ status: 0 });
     }
 
+    await List.findByIdAndUpdate(
+      list_id,
+      { $pull: { tasks: task_id } },
+      { new: true }
+    );
+
     res.status(200).json({ status: 1 });
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -202,17 +226,40 @@ const updateTask = async (req, res) => {
 
 const moveTask = async (req, res) => {
   const task_id = req.query.task_id;
-  const list_id = req.query.list_id;
+  const new_list_id = req.query.list_id;
 
   try {
-    await Task.findByIdAndUpdate(task_id, {
-      list_id: list_id,
-    });
+    const taskToMove = await Task.findById(task_id);
+
+    if (!taskToMove) {
+      return res.status(404).json({ status: 0, error: "Task not found" });
+    }
+
+    const current_list_id = taskToMove.list_id;
+
+    await Task.findByIdAndUpdate(task_id, { list_id: new_list_id });
+
+    await List.findByIdAndUpdate(
+      current_list_id,
+      { $pull: { tasks: task_id } },
+      { new: true }
+    );
+
+    await List.findByIdAndUpdate(
+      new_list_id,
+      { $push: { tasks: task_id } },
+      { new: true }
+    );
+
     res.status(200).send("Task moved successfully");
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
   }
 };
+
+module.exports = { moveTask };
 
 module.exports = {
   createTask,

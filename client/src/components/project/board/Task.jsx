@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import ShowLabels from "./ShowLabels";
-import { useBoardContext } from "../hooks/useContext/useBoardContext";
-import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
-import { useTask } from "../hooks/useTask";
+import ShowLabels from "../../ShowLabels";
+import { useBoardContext } from "../../../hooks/useContext/useBoardContext";
+import { useToggleFormContext } from "../../../hooks/useContext/useToggleForm";
+import { useTask } from "../../../hooks/useTask";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,10 +10,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LabelIcon from "@mui/icons-material/Label";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { useAuthContext } from "../hooks/useContext/useAuthContext";
-import { useIdContext } from "../hooks/useContext/useIdContext";
-import avatar from "../assets/user.png";
-import socket from "../utils/socekt";
+import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
+import { useIdContext } from "../../../hooks/useContext/useIdContext";
+
+import socket from "../../../utils/socekt";
 import MoveTask from "./MoveTask";
 
 export default function Task() {
@@ -184,15 +184,12 @@ export default function Task() {
           <ul className="mt-4">
             {isLoading && <div>loading...</div>}
             {state.participants &&
-              state.participants.map((participant) => (
-                console.log(participant)
-                
-              ))}
+              state.participants.map((participant) => console.log(participant))}
           </ul>
         </footer>
       </div>
       {labels ? <ShowLabels /> : null}
-      {move ? <MoveTask/> : null}
+      {move ? <MoveTask /> : null}
     </div>
   );
 }

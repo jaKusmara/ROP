@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProjectContext } from "../../../hooks/useContext/useProjectContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { useIdContext } from "../../../hooks/useContext/useIdContext";
+import { useProject } from "../../../hooks/useProject";
+import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
+import { useBoardContext } from "../../../hooks/useContext/useBoardContext";
 
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -17,12 +21,24 @@ import CreateProject from "./CreateProject";
 import JoinProject from "./JoinProject";
 
 export default function ProjectList() {
-  const { state } = useProjectContext();
+  const { user } = useAuthContext();
+  const { dispatch: listContextDisp } = useBoardContext();
+  const { state: idContext, dispatch } = useIdContext();
+  const { setProject } = useProject();
+  const { state, dispatch: projectDispatch } = useProjectContext();
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalJoin, setOpenModalJoin] = useState(false);
   const open = Boolean(anchorEl);
+  const { project_id } = useParams();
+
+  useEffect(() => {
+    if (project_id) {
+      dispatch({ type: "SET_PROJECT_ID", payload: project_id });
+      setProject(user, project_id);
+    }
+  }, [project_id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -34,6 +50,9 @@ export default function ProjectList() {
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
+    listContextDisp({ type: "SET_LISTS", payload: [] });
+    listContextDisp({ type: "TASKS_LISTS", payload: [] });
+    listContextDisp({ type: "SET_PARTICIPANTS", payload: [] });
   };
 
   return (
@@ -63,7 +82,7 @@ export default function ProjectList() {
           <NavLink key={project._id} to={`project/${project._id}`}>
             <ListItemButton
               selected={selectedIndex === 2}
-              onClick={(event) => handleListItemClick(event, 1)}
+              onClick={(event) => handleListItemClick(event, 1, project)}
             >
               <ListItemText primary={project.title} />
             </ListItemButton>
@@ -88,17 +107,25 @@ export default function ProjectList() {
             New project
           </ListItemButton>
         </MenuItem>
-        <MenuItem onClick={handleClose}><ListItemButton
+        <MenuItem onClick={handleClose}>
+          <ListItemButton
             variant="outlined"
             color="neutral"
             startDecorator={<Add />}
             onClick={() => setOpenModalJoin(true)}
           >
             Join Project
-          </ListItemButton></MenuItem>
+          </ListItemButton>
+        </MenuItem>
       </Menu>
-      <CreateProject open={openModalCreate} onClose={() => setOpenModalCreate(false)}/>
-      <JoinProject open={openModalJoin} onClose={() => setOpenModalJoin(false)}/>
+      <CreateProject
+        open={openModalCreate}
+        onClose={() => setOpenModalCreate(false)}
+      />
+      <JoinProject
+        open={openModalJoin}
+        onClose={() => setOpenModalJoin(false)}
+      />
     </List>
   );
 }

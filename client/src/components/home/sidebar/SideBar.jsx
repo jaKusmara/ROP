@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { useAuthContext } from "../../hooks/useContext/useAuthContext";
+import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
 
-import ModalDialogComponent from "./sidebar/CreateProject";
-import ProjectList from "./sidebar/ProjectList";
+import ModalDialogComponent from "./CreateProject";
+import ProjectList from "./ProjectList";
 
 import TextField from "@mui/material/TextField";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
@@ -52,7 +52,7 @@ export default function SideBar() {
       <ProjectList />
       <hr />
       <List sx={{ maxWidth: 350 }}>
-        <ListItem endAction={<Avatar />}>
+        <ListItem endAction={<Avatar id="avatar-nav-menu" alt={user.user.username} src=""/>}>
           <ListItemButton color="primary">
             <ListItemContent>{user.user.firstname} {user.user.surname}</ListItemContent>
           </ListItemButton>

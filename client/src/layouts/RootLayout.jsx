@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import SideBar from "../components/home/SideBar";
+import SideBar from "../components/home/sidebar/SideBar";
 import Background from "../components/Background";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
@@ -26,7 +26,7 @@ export default function RootLayout() {
       <aside className="bg-neutral-800 border-r">
         <SideBar />
       </aside>
-      <main className="flex bg-neutral-700">
+      <main className="flex bg-neutral-700 w-full">
         <Outlet />
       </main>
     </>

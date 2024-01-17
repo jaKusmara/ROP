@@ -1,10 +1,10 @@
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
-import TaskCard from "./project/TaskCard";
-import { useIdContext } from "../hooks/useContext/useIdContext";
+import { useToggleFormContext } from "../../../hooks/useContext/useToggleForm";
 
+import { useIdContext } from "../../../hooks/useContext/useIdContext";
 
+import TaskCard from "./TaskCard"
 
 import IconButton from '@mui/joy/IconButton';
 import Menu from '@mui/joy/Menu';
