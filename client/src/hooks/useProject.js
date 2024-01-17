@@ -2,8 +2,10 @@ import { useProjectContext } from "./useContext/useProjectContext";
 import { useIdContext } from "./useContext/useIdContext";
 import axios from "axios";
 import { useState } from "react";
+import { useLogout } from "./useLogout";
 
 export const useProject = () => {
+  const { logout } = useLogout();
   const { dispatch } = useProjectContext();
   const { dispatch: idDispatch } = useIdContext();
   const [error, setError] = useState(null);
@@ -27,6 +29,10 @@ export const useProject = () => {
         setIsLoading(false);
       }
     } catch (error) {
+      console.log(error.response.data.error);
+      if (error.response.data.error === "Request is not authorized") {
+        logout();
+      }
       setIsLoading(false);
       setError(error);
 

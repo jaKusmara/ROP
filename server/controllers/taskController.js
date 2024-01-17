@@ -1,6 +1,7 @@
 const Task = require("../models/taskModel");
 const List = require("../models/listModel");
 const Board = require("../models/boardModel");
+const Project = require("../models/projectModel");
 
 //  CREATE TASK
 const createTask = async (req, res) => {
@@ -60,9 +61,12 @@ const getUserTasks = async (req, res) => {
       tasks.map(async (task) => {
         const list = await List.findById(task.list_id);
         const board = await Board.findById(task.board_id);
+        const board_id = board._id;
+        const project = await Project.findOne({ board_id });
 
         return {
           _id: task._id,
+          project_id: project ? project._id : null,
           title: task.title,
           description: task.description,
           project_title: board ? board.title : null,

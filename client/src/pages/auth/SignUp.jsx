@@ -86,7 +86,7 @@ function RegistrationForm() {
           onClick={handleSubmit}
           disabled={isLoading}
           type="submit"
-          className="bg-indigo-900 self-end rounded-md w-1/3 text-2xl h-14 hover:bg-green-400"
+          className="bg-indigo-900 self-end rounded-md w-1/3 text-2xl h-12 hover:bg-green-400"
         >
           Register
         </button>

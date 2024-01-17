@@ -20,13 +20,10 @@ export default function RootLayout() {
   return (
     <>
       {background && <Background />}
-      {/* <header className="bg-indigo-400 h-[6vh]">
-        <NavBar />
-      </header> */}
-      <aside className="bg-neutral-800 border-r">
+      <aside className="bg-neutral-950 border-r md:w-[13%] sm:w-1/12 flex flex-col justify-between">
         <SideBar />
       </aside>
-      <main className="flex bg-neutral-700 w-full">
+      <main className="flex bg-neutral-700 md:w-[87%] sm:w-11/12">
         <Outlet />
       </main>
     </>
