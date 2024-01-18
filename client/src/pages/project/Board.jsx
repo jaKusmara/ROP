@@ -33,7 +33,7 @@ export default function Board() {
       {listLoading && <div>Loading...</div>}
       {listError && <div className="text-red-500">{listError}</div>}
       <div className="flex overflow-x-auto overflow-y-hidden max-w-screen-2xl">
-        <div className="flex flex-nowrap space-x-4">
+        <div className="flex flex-nowrap space-x-4 max-w-5xl">
           {board.lists &&
             board.lists.map((list) => {
               const filteredTasks = board.tasks.filter(

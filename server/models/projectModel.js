@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./userModel");
 
 const Schema = mongoose.Schema;
 
@@ -68,7 +69,28 @@ projectSchema.statics.getProjectById = async function (_id) {
     throw Error("Bad project ID");
   }
 
-  return project;
+  const users = await Promise.all(
+    project.members.map(async (member) => {
+      const user = await User.findById(member.user_id);
+      return {
+        user_id: user._id,
+        username: user.username,
+        firstname: user.firstname,
+        surname: user.surname,
+        avatar: user.avatar,
+        email: user.email,
+      };
+    })
+  );
+
+  const projectWithUsers = {
+    ...project.toObject(),
+    users,
+  };
+
+  console.log(projectWithUsers);
+
+  return projectWithUsers;
 };
 
 // projectSchema.statics.getUserProjects = async function (user_id) {

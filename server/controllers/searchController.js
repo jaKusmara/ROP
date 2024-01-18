@@ -1,10 +1,10 @@
-const User = require('../models/userModel')
+const User = require("../models/userModel");
 
 const searchUsers = async (req, res) => {
-  const { query } = req.query;
+  const query = req.query.query;
 
   try {
-    const regexPattern = new RegExp(query, 'i');
+    const regexPattern = new RegExp(query, "i");
 
     const searchResults = await User.find({
       $or: [
@@ -16,8 +16,8 @@ const searchUsers = async (req, res) => {
 
     res.json(searchResults);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = searchUsers
+module.exports = searchUsers;

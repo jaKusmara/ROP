@@ -20,7 +20,7 @@ export default function RootLayout() {
   return (
     <>
       {background && <Background />}
-      <aside className="bg-neutral-950 border-r md:w-[13%] sm:w-1/12 flex flex-col justify-between">
+      <aside className="bg-neutral-950 border-r md:w-[13%] sm:w-1/12 flex flex-col text-lg p-1">
         <SideBar />
       </aside>
       <main className="flex bg-neutral-700 md:w-[87%] sm:w-11/12">
