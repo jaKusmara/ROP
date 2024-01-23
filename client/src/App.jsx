@@ -70,6 +70,10 @@ const App = () => {
             { path: "/", element: <Home />, index: true },
           ],
         },
+        {
+          path: "*",
+          element: <NotFound />,
+        },
       ],
     },
   ]);

@@ -35,7 +35,7 @@ export default function FooterSideBar() {
   const avatarTitle = `${user.user.firstname} ${user.user.surname}`;
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row w-full md:p-1 md:px-5">
       <Avatar {...stringAvatar(avatarTitle)} />
 
       <p className="self-center ml-4">

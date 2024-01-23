@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="flex max-w-full max-h-full overflow-auto flex-wrap gap-5 m-5">
+      <div className="grid  grid-cols-4  max-h-full overflow-auto flex-wrap md:gap-5 md:m-5">
         {boardState.tasks &&
           boardState.tasks.map((task) => (
             <TaskCard key={task._id} task={task} />

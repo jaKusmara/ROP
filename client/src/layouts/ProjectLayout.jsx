@@ -67,7 +67,7 @@ export default function ProjectLayout() {
         <SideBar />
       </aside>
 
-      <main className="flex flex-col bg-neutral-600 w-5/6 p-4">
+      <main className="flex bg-neutral-800 w-5/6 p-4">
         <Outlet />
       </main>
     </>

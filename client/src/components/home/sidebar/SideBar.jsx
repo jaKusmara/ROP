@@ -26,6 +26,8 @@ import Search from "./Search";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AddIcon from "@mui/icons-material/Add";
+import LoginIcon from "@mui/icons-material/Login";
+
 import { useEffect, useState } from "react";
 
 export default function SideBar() {
@@ -82,7 +84,7 @@ export default function SideBar() {
         </List>
       </nav>
       <hr />
-      <section className="max-h-1/2 overflow-auto">
+      <section className="max-h-1/2 overflow-auto h-full">
         <h2>Projects:</h2>
         <ProjectList />
       </section>
@@ -98,23 +100,25 @@ export default function SideBar() {
               <FooterSideBar />
             </Button>
           </MenuHandler>
-          <MenuList className="w-36 p-1 bg-neutral-600 text-md border-zinc-400 text-white">
+          <MenuList className="w-[14%] p-1 ml-1 bg-neutral-600 text-md border-zinc-400 text-white flex flex-col gap-y-2">
             <MenuItem
               onClick={() => {
                 setBackground(!background), setCreateProject(!createProject);
               }}
             >
-              Add project <AddIcon />
+              Add project
+              <AddIcon />
             </MenuItem>
             <MenuItem
               onClick={() => {
                 setBackground(!background), setJoinProject(!joinProject);
               }}
             >
-              Join project <AddIcon />
+              Join project <LoginIcon />
             </MenuItem>
             <MenuItem>
-              Settings <SettingsIcon />
+              Settings
+              <SettingsIcon />
             </MenuItem>
             <hr />
             <MenuItem onClick={() => logout()}>

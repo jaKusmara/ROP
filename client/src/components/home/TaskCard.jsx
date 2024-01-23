@@ -1,27 +1,22 @@
 //ROUTER
 import { useNavigate } from "react-router-dom";
 
-//TAILWIND COMPONENTS
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
-
 export default function TaskCard({ task }) {
   const navigate = useNavigate();
   return (
-    <div className="bg-zinc-500 h-52 w-52 rounded p-2 flex flex-col ">
-      <h2 className="font-bold text-2xl">{task.title}</h2>
-      <h1 className="text-zinc-600 text-sm">
+    <div className="bg-neutral-700 md:rounded flex flex-col md:gap-2 md:p-3 md:w md:h-56">
+      <h2 className="font-bold text-2xl w-full">
+        {task.title.substring(0, 26)}
+      </h2>
+      <h1 className="text-neutral-400 text-sm">
         {task.project_title}/{task.list_title}
       </h1>
-      <section>{task.description}</section>
+      <section className="break-all h-full">
+        {task.description.substring(0, 70)}
+      </section>
       <footer className="self-end justify-items-end">
         <button
-          className="rounded bg-violet-950 p-1"
+          className="rounded bg-purple-500 p-1 px-3"
           onClick={() => {
             navigate(`project/${task.project_id}/tasks`);
           }}

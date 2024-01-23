@@ -18,9 +18,9 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center gap-y-8">
       <h2 className="text-7xl font-bold">Login</h2>
-      <div className="flex flex-col items-center w-2/5 h-fit gap-y-3">
+      <div className="flex flex-col items-center text-black sm:w-3/5 h-fit gap-y-3">
         <input
-          className="w-full rounded-md text-3xl h-12"
+          className="w-full rounded-md text-3xl sm:h-10 sm:p-2"
           type="text"
           name="identifier"
           placeholder="Email or Username"
@@ -28,7 +28,7 @@ export default function Login() {
           onChange={(e) => setIdentifier(e.target.value)}
         />
         <input
-          className="w-full rounded-md text-3xl h-12"
+          className="w-full rounded-md text-3xl sm:h-10 sm:p-2"
           type="password"
           name="password"
           placeholder="Password"
