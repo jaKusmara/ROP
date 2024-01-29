@@ -72,11 +72,8 @@ export const useChannel = () => {
       if (response.status === 200) {
         console.log(response);
 
-        // socket.emit("channel_refresh", {
-        //   to: project_id,
-        // });
+        dispatch({ type: "CREATE_CHANNEL", payload: response.data });
 
-        
         setIsLoading(false);
       }
     } catch (error) {
@@ -85,5 +82,38 @@ export const useChannel = () => {
     }
   };
 
-  return { getChannel, getProjectChannels, createChannel, error, isLoading };
+  const deleteChannel = async (user, channel_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/channel/deleteChannel?channel_id=${channel_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log(response.data);
+
+        dispatch({ type: "DELETE_CHANNEL", payload: response.data });
+
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+    }
+  };
+
+  return {
+    getChannel,
+    getProjectChannels,
+    createChannel,
+    deleteChannel,
+    error,
+    isLoading,
+  };
 };

@@ -3,68 +3,132 @@ import AddIcon from "@mui/icons-material/Add";
 import { useToggleFormContext } from "../../../hooks/useContext/useToggleForm";
 
 import { useIdContext } from "../../../hooks/useContext/useIdContext";
+import { useState } from "react";
+import { useTask } from "../../../hooks/useTask";
+import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
+import SaveIcon from "@mui/icons-material/Save";
+import { IdContext } from "../../../context/IdContext";
+import TaskCard from "./TaskCard";
 
-import TaskCard from "./TaskCard"
-
-import IconButton from '@mui/joy/IconButton';
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import ListDivider from '@mui/joy/ListDivider';
-import MoreVert from '@mui/icons-material/MoreVert';
-import Edit from '@mui/icons-material/Edit';
-import DeleteForever from '@mui/icons-material/DeleteForever';
-import MenuButton from '@mui/joy/MenuButton';
-import Dropdown from '@mui/joy/Dropdown';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useBoard } from "../../../hooks/useBoard";
 
 export default function ListComponent({ list, tasks }) {
   const { dispatch } = useIdContext();
-  const { setBackground, setCreateTask } = useToggleFormContext();
-
-  const handleCreateTask = () => {
-    setBackground(true);
-    setCreateTask(true);
-    dispatch({ type: "SET_LIST_ID", payload: list._id });
-  };
+  const { deleteList, editTitle } = useBoard();
+  const { user } = useAuthContext();
+  const { state: idState } = useIdContext();
+  const [createTask, setCreateTask] = useState(false);
+  const [editList, setEditList] = useState("");
+  const [title, setTitle] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const { createTask: createTaskClick } = useTask();
 
   return (
-    <div className="border px-2 mx-2 rounded-md bg-gray-800 h-fit w-80 whitespace-wrap break-all self-start">
-      <nav className="flex flex-row">
-        <button onClick={handleCreateTask}>
+    <div className=" rounded-md bg-neutral-700 h-fit w-96 shadow-lg shadow-neutral-800">
+      <nav className="flex gap-x-2 p-3">
+        <button
+          className="hover:bg-green-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+          onClick={() => {
+            setCreateTask(!createTask);
+            dispatch({ type: "SET_LIST_ID", payload: list._id });
+          }}
+        >
           <AddIcon />
         </button>
-        <h2 className="w-full text-center">{list.title}</h2>
-        <Dropdown>
-          <MenuButton
-            slots={{ root: IconButton }}
-            slotProps={{ root: { variant: "outlined", color: "neutral" } }}
+        <button
+          className="hover:bg-red-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+          onClick={() => {
+            deleteList(user, list._id, idState.board_id);
+          }}
+        >
+          <DeleteIcon />
+        </button>
+        {editList ? (
+          <button
+            className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+            onClick={() => {
+              setEditList(!editList);
+              editTitle(user, list._id, idState.board_id, newTitle);
+            }}
           >
-            <MoreVert />
-          </MenuButton>
-          <Menu placement="bottom-end">
-            <MenuItem>
-              <ListItemDecorator>
-                <Edit />
-              </ListItemDecorator>{" "}
-              Edit post
-            </MenuItem>
-            <MenuItem disabled>
-              <ListItemDecorator />
-              Draft post
-            </MenuItem>
-            <ListDivider />
-            <MenuItem variant="soft" color="danger">
-              <ListItemDecorator sx={{ color: "inherit" }}>
-                <DeleteForever />
-              </ListItemDecorator>{" "}
-              Delete
-            </MenuItem>
-          </Menu>
-        </Dropdown>
+            <SaveIcon />
+          </button>
+        ) : (
+          <button
+            className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+            onClick={() => {
+              setEditList(!editList);
+              setNewTitle(list.title);
+            }}
+          >
+            <EditIcon />
+          </button>
+        )}
+
+        <h2 className="w-full text-center align-middle break-all text-2xl">
+          {editList ? (
+            <input
+              type="text"
+              name="new title"
+              className="w-full p-1 text-black"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+          ) : (
+            list.title
+          )}
+        </h2>
       </nav>
-      <div className="whitespace-wrap break-all max-h-96">
-        {tasks && tasks.map((task) => <TaskCard key={task._id} task={task} />)}
-      </div>
+      {createTask && (
+        <div className="rounded-md break-all bg-neutral-800 m-4 p-3 shadow-xl grid gap-y-2 shadow shadow-neutral-900">
+          <input
+            type="text"
+            name="title"
+            placeholder="Task Title"
+            className="p-2 text-black rounded"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            type="text"
+            name="description"
+            className="p-2 text-black rounded"
+            placeholder="Task Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <footer className="grid gap-x-2 grid-cols-2 rounded">
+            <button
+              onClick={() => {
+                setDescription("");
+                setTitle("");
+                setCreateTask(!createTask);
+                createTaskClick(
+                  user,
+                  list._id,
+                  idState.board_id,
+                  title,
+                  description
+                );
+              }}
+              className="bg-purple-500 hover:bg-green-400 p-2 rounded"
+            >
+              Create!
+            </button>
+            <button
+              onClick={() => {
+                setCreateTask(!createTask);
+              }}
+              className="bg-red-500 hover:bg-red-400 p-2 rounded"
+            >
+              Cancel
+            </button>
+          </footer>
+        </div>
+      )}
+      {tasks && tasks.map((task) => <TaskCard key={task._id} task={task} />)}
     </div>
   );
 }

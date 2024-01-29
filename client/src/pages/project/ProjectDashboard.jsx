@@ -17,18 +17,23 @@ export default function ProjectDashboard() {
   console.log(projectState.project);
   return (
     <>
-      <div className="flex flex-row w-full h-1/2">
+      <div className="flex w-full h-1/2 mb-4">
         <div className="flex flex-col w-full">
           {projectState.project && (
             <h2 className="text-5xl">{projectState.project.title}</h2>
           )}
-          <span className="p-2">wfewfwef</span>
+          <span className="p-2">{projectState.project.description}</span>
         </div>
-        <div className="max-h-80 bg-zinc-800 w-80 rounded p-2">
+        <div className="max-h-full bg-zinc-800 w-1/2 rounded p-3">
           <DoughnutChart data={chartData} />
         </div>
       </div>
-      <UserTable />
+      <section>
+        <nav>
+          Members
+        </nav>
+        <div></div>
+      </section>
     </>
   );
 }

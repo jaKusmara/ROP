@@ -16,9 +16,20 @@ export const channelReducer = (state, action) => {
     case "CREATE_CHANNEL": {
       return {
         ...state,
-        channel: [...state.channels, action.payload],
+        channels: [...state.channels, action.payload],
       };
     }
+    case "DELETE_CHANNEL": {
+      return {
+        ...state,
+        channels: [
+          ...state.channels.filter(
+            (channel) => channel._id != action.payload._id
+          ),
+        ],
+      };
+    }
+
     default:
       return state;
   }

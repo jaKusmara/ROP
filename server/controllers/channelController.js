@@ -54,16 +54,12 @@ const getChannel = async (req, res) => {
 
 //  DELETE CHANNEL
 const deleteChannel = async (req, res) => {
-  const channel_id = req.body.channel_id;
+  const channel_id = req.query.channel_id;
 
   try {
-    const deletedChannel = await Channel.deleteOne({ _id: channel_id });
+    const deletedChannel = await Channel.findByIdAndDelete(channel_id);
 
-    if (deletedChannel.deletedCount === 1) {
-      res.status(200).json({ message: "Channel deleted successfully" });
-    } else {
-      res.status(404).json({ error: "Channel not found" });
-    }
+    res.status(200).json(deletedChannel);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

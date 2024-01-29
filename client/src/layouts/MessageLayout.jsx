@@ -22,7 +22,7 @@ export default function MessageLayout() {
             }}
           />
         </nav>
-        <section className=" overflow-auto h-[90%] ">
+        <section className="overflow-auto h-[90%] ">
           <FriendList query={query} />
         </section>
       </aside>

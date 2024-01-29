@@ -50,8 +50,8 @@ const friendRoute = require("./routes/friend")
 app.use("/api/friend", friendRoute)
 
 //boardList
-const listRoue = require("./routes/boardList")
-app.use("/api/list", listRoue)
+const listRoute = require("./routes/boardList")
+app.use("/api/list", listRoute)
 
 
 

@@ -29,7 +29,7 @@ export default function ProjectLayout() {
     if (user && idState.project_id) {
       getProjectChannels(user, idState.project_id);
     }
-  }, [idState.project_id]);
+  }, [user, idState.project_id]);
 
   useEffect(() => {
     setSocketData(null);
@@ -63,11 +63,11 @@ export default function ProjectLayout() {
 
   return (
     <>
-      <aside className="bg-neutral-700 border-r w-1/6 flex flex-col text-lg p-1">
+      <aside className="border-r w-1/6 text-lg">
         <SideBar />
       </aside>
 
-      <main className="flex bg-neutral-800 w-5/6 p-4">
+      <main className="w-5/6 p-4">
         <Outlet />
       </main>
     </>

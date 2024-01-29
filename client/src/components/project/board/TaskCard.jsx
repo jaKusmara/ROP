@@ -37,11 +37,15 @@ export default function TaskCard({ task }) {
   };
 
   return (
-    <div className="border rounded-md my-2 bg-gray-700 p-2">
+    <div className="rounded-md break-all  bg-neutral-800 m-4 p-3 shadow-lg shadow-neutral-900">
       {task && (
         <div onClick={handleOnTaskClick}>
-          <h2 className="text-center text-md">{task.title}</h2>
-          <div className="text-sm">{task.description}</div>
+          <h2 className="text-center text-lg">{task.title}</h2>
+          {task.description && (
+            <div className="text-md bg-neutral-900 p-2 rounded shadow-inner shadow-neutral-700">
+              {task.description}
+            </div>
+          )}
         </div>
       )}
     </div>
