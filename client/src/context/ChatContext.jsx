@@ -13,6 +13,20 @@ export const chatReducer = (state, action) => {
         friends: action.payload,
       };
     }
+    case "ADD_FRIENDS": {
+      return {
+        ...state,
+        friends: [...state.friends, action.payload],
+      };
+    }
+    case "REMOVE_FRIENDS": {
+      return {
+        ...state,
+        friends: [
+          ...state.friends.filter((friend) => friend._id != action.payload._id),
+        ],
+      };
+    }
     default:
       return state;
   }

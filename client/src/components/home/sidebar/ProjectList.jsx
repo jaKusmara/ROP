@@ -27,7 +27,7 @@ export default function ProjectList() {
 
   return (
     <>
-      <List>
+      <List className="">
         {projectState.projects &&
           projectState.projects.map((project) => (
             <ListItem

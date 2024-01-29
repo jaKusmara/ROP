@@ -52,7 +52,6 @@ export const useChat = () => {
       );
 
       if (response.status === 200) {
-
         socket.emit("private_message", {
           to: chat_id,
         });
@@ -111,5 +110,65 @@ export const useChat = () => {
       setError(error);
     }
   };
-  return { openChat, sendMessage, getMessages, getFriends, error, isLoading };
+
+  const addFriend = async (user, friend_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/friend/addFriend?friend_id=${friend_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        chatContextDisp({ type: "ADD_FRIENDS", payload: response.data });
+        console.log(response);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+    }
+  };
+
+  const removeFriend = async (user, friend_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/friend/removeFriend?friend_id=${friend_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        chatContextDisp({ type: "REMOVE_FRIENDS", payload: response.data });
+        console.log(response);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+    }
+  };
+
+  return {
+    openChat,
+    sendMessage,
+    getMessages,
+    getFriends,
+    addFriend,
+    removeFriend,
+    error,
+    isLoading,
+  };
 };

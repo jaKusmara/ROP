@@ -63,29 +63,34 @@ export default function SideBar() {
           <p>Tasking</p>
         </header>
       </NavLink>
-      <input
-        type="text"
-        className="mx-2"
-        placeholder="Search..."
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-        }}
-      />
-      {searchState.query && query ? <Search query={searchState.query} /> : null}
+      <div className="relative">
+        <input
+          type="text"
+          className="mx-2 max-w-full text-black p-1"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+        />
+        {searchState.query && query ? (
+          <Search query={searchState.query} />
+        ) : null}
+      </div>
+
       <nav>
-        <List>
+        <ul>
           <NavLink to={"/"}>
-            <ListItem>Dashboard</ListItem>
+            <li>Dashboard</li>
           </NavLink>
           <NavLink to={"messages"}>
-            <ListItem>Messages</ListItem>
+            <li>Messages</li>
           </NavLink>
-        </List>
+        </ul>
       </nav>
       <hr />
+      <h2>Projects:</h2>
       <section className="max-h-1/2 overflow-auto h-full">
-        <h2>Projects:</h2>
         <ProjectList />
       </section>
       <footer>

@@ -13,14 +13,7 @@ export default function Message({ message }) {
       >
         <div>{message.content}</div>
       </div>
-      <div
-        className={
-          message.sender_id === user.user._id
-            ? "relative max-w-[60%] md:max-w-[80%] lg:max-w-[60%] xl:max-w-[50%] rounded-md text-gray-900 whitespace-wrap break-all self-end"
-            : "relative max-w-[60%] md:max-w-[80%] lg:max-w-[60%] xl:max-w-[50%] rounded-md text-gray-900 whitespace-wrap break-all"
-        }
-      >
-      </div>
+      <h2>{message.sender_id === user.user._id ? user.user.surname : null}</h2>
     </>
   );
 }
