@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import "./index.css";
 import {
   Outlet,
@@ -11,7 +11,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
-import RootLayout from "./layouts/RootLayout";
+
 import DirectMessages from "./pages/project/DirectMessages";
 import ProjectLayout from "./layouts/ProjectLayout";
 import PrivateRoute from "./utils/PrivateRoute";

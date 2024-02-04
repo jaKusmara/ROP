@@ -12,3 +12,8 @@
 body{
     height: 100vh;
 }
+
+.selected-avatar {
+    background-color: rgb(17, 255, 0);
+    border-radius: 50%;
+  }

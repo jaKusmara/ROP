@@ -9,7 +9,7 @@ export default function MessageLayout() {
   const [query, setQuery] = useState("");
 
   return (
-    <>
+    <div className="flex flex-row w-full h-full">
       <aside className="inline-block w-[25%] h-full">
         <nav className="p-2 w-full">
           <input
@@ -32,6 +32,6 @@ export default function MessageLayout() {
           <Outlet />
         </main>
       )}
-    </>
+    </div>
   );
 }

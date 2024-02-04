@@ -34,6 +34,7 @@ export default function SideBar() {
   const { logout } = useLogout();
   const { search } = useSearch();
   const { user } = useAuthContext();
+  const [menu, setMenu] = useState(false);
 
   const {
     background,
@@ -93,8 +94,30 @@ export default function SideBar() {
       <section className="max-h-1/2 overflow-auto h-full">
         <ProjectList />
       </section>
-      <footer>
-        <Menu
+      <footer className="static z-0">
+        {menu && (
+          <div className="bg-neutral-600 text-md border-zinc-400 text-white">
+            <ul>
+              <li
+                onClick={() => {
+                  setBackground(!background), setCreateProject(!createProject);
+                }}
+              >
+                Add Project
+              </li>
+            </ul>
+          </div>
+        )}
+        <div
+          onClick={() => {
+            setMenu(!menu);
+          }}
+          className="flex flex-row w-full md:p-1 md:px-5 hover:bg-pink-300"
+        >
+          <FooterSideBar />
+        </div>
+
+        {/* <Menu
           animate={{
             mount: { y: 0 },
             unmount: { y: 25 },
@@ -130,7 +153,7 @@ export default function SideBar() {
               Logout <LogoutIcon />
             </MenuItem>
           </MenuList>
-        </Menu>
+        </Menu> */}
       </footer>
     </>
   );

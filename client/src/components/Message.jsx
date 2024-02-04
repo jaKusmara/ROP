@@ -2,6 +2,7 @@ import { useAuthContext } from "../hooks/useContext/useAuthContext";
 
 export default function Message({ message }) {
   const { user } = useAuthContext();
+  console.log(message)
   return (
     <>
       <div

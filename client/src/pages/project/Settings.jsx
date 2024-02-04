@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useIdContext } from "../../hooks/useContext/useIdContext";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { useChannel } from "../../hooks/useChannel";
 import { useProjectContext } from "../../hooks/useContext/useProjectContext";
 
@@ -19,7 +20,7 @@ export default function Settings() {
   const [title, setTitle] = useState("");
   const { createChannel, deleteChannel } = useChannel();
   const [addChannel, setAddChannel] = useState(false);
-  const [editChannel, setEditChannel] = useState(false);
+  const [optionsChannel, setOptionsChannel] = useState(false);
 
   const handleLeaveProjectClick = () => {
     leaveProject(user, idContext.project_id);
@@ -30,7 +31,7 @@ export default function Settings() {
     deleteProject(user, idContext.project_id);
     navigate("/");
   };
-  console.log(projectState);
+
 
   return (
     <div className="grid">
@@ -91,44 +92,28 @@ export default function Settings() {
             </button>
           </div>
         )}
-        <table className="table-fixed w-full bg-neutral-600 my-5 rounded shadow-xl shadow-neutral-800 max-h-20">
-          <thead>
-            <tr className="text-xl">
+        <table className="table-fixed w-full bg-neutral-600 my-5 rounded shadow-xl shadow-neutral-800 border-b-2">
+          <thead className="border-b-2">
+            <tr className="text-2xl h-16">
               <th>Title</th>
               <th>Type</th>
+              <th>Options</th>
             </tr>
           </thead>
-          <tbody className="overflow-auto">
+
+          <tbody>
             {channelContext.channels &&
               channelContext.channels.map((channel) => (
-                <tr className="text-xl h-20" key={channel._id}>
-                  {editChannel ? (
-                    <td>
-                      <input type="text" name="" />
-                    </td>
-                  ) : (
-                    <td>{channel.title}</td>
-                  )}
-
+                <tr className="text-xl h-20 text-center" key={channel._id}>
+                  <td>{channel.title}</td>
                   <td>Text</td>
-                  <th>
-                    <button
-                      onClick={() => {
-                        setEditChannel(!editChannel);
-                      }}
-                    >
-                      <EditIcon />
-                    </button>
-                  </th>
-                  <th>
-                    <button
-                      onClick={() => {
-                        deleteChannel(user, channel._id);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </button>
-                  </th>
+                  <td
+                    onClick={() => {
+                      setOptionsChannel(!optionsChannel);
+                    }}
+                  >
+                    <SettingsIcon />
+                  </td>
                 </tr>
               ))}
           </tbody>

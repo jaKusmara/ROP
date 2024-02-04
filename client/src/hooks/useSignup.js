@@ -15,14 +15,23 @@ export const useSignup = () => {
     email,
     username,
     password,
-    reTypePassword
+    reTypePassword,
+    avatar
   ) => {
     setIsLoading(true);
 
     try {
       const response = await axios.post(
         "http://localhost:5000/api/user/signup",
-        { firstname, surname, email, username, password, reTypePassword }
+        {
+          firstname,
+          surname,
+          email,
+          username,
+          password,
+          reTypePassword,
+          avatar,
+        }
       );
 
       if (response.status === 200) {

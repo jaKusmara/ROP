@@ -78,7 +78,7 @@ export default function ProjectLayout() {
         <SideBar />
       </aside>
 
-      <main className="w-5/6 p-4">
+      <main className="w-5/6 p-4 overflow-auto">
         <Outlet />
       </main>
     </>

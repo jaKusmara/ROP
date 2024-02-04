@@ -32,15 +32,17 @@ function stringAvatar(name) {
 export default function FooterSideBar() {
   const { user } = useAuthContext();
 
-  const avatarTitle = `${user.user.firstname} ${user.user.surname}`;
-
   return (
-    <div className="flex flex-row w-full md:p-1 md:px-5">
-      <Avatar {...stringAvatar(avatarTitle)} />
+    <>
+      <img
+        src={user.user.avatar}
+        alt={user.user.username}
+        className="max-h-16"
+      />
 
       <p className="self-center ml-4">
         {user.user.firstname} {user.user.surname}
       </p>
-    </div>
+    </>
   );
 }
