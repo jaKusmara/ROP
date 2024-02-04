@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useChannel } from "../hooks/useChannel";
@@ -6,18 +6,29 @@ import { useIdContext } from "../hooks/useContext/useIdContext";
 import { useBoard } from "../hooks/useBoard";
 import { useTask } from "../hooks/useTask";
 import socket from "../utils/socekt";
+import { useProject } from "../hooks/useProject";
 
 import SideBar from "../components/project/sidebar/SideBar";
 
 export default function ProjectLayout() {
   const { user } = useAuthContext();
   const { getProjectChannels } = useChannel();
-  const { state: idState } = useIdContext();
+  const { state: idState, dispatch: idDispatch } = useIdContext();
+  const { setProject } = useProject();
   const { setLists, error: listError, isLoading: listLoading } = useBoard();
   const { getTasks, error: taskError, isLoading: taskIsLoading } = useTask();
 
   const [socketData, setSocketData] = useState(null);
   const [updateTask, setUpdateTask] = useState(null);
+
+  const { project_id } = useParams();
+
+  useEffect(() => {
+    if (project_id && user) {
+      idDispatch({ type: "SET_PROJECT_ID", payload: project_id });
+      setProject(user, project_id);
+    }
+  }, [project_id]);
 
   useEffect(() => {
     if (user && idState.project_id) {

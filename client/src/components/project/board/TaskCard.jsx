@@ -42,7 +42,7 @@ export default function TaskCard({ task }) {
         <div onClick={handleOnTaskClick}>
           <h2 className="text-center text-lg">{task.title}</h2>
           {task.description && (
-            <div className="text-md bg-neutral-900 p-2 rounded shadow-inner shadow-neutral-700">
+            <div className="text-md md:text-sm bg-neutral-900 p-2  shadow-neutral-700">
               {task.description}
             </div>
           )}

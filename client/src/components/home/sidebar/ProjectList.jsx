@@ -18,12 +18,7 @@ export default function ProjectList() {
   const { project_id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (project_id) {
-      dispatch({ type: "SET_PROJECT_ID", payload: project_id });
-      setProject(user, project_id);
-    }
-  }, [project_id]);
+  
 
   return (
     <>

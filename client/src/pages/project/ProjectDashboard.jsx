@@ -22,16 +22,16 @@ export default function ProjectDashboard() {
           {projectState.project && (
             <h2 className="text-5xl">{projectState.project.title}</h2>
           )}
-          <span className="p-2">{projectState.project.description}</span>
+          <span className="p-2">project description</span>
+
+          {/*  {projectState.project.description && projectState.project.description} */}
         </div>
         <div className="max-h-full bg-zinc-800 w-1/2 rounded p-3">
           <DoughnutChart data={chartData} />
         </div>
       </div>
       <section>
-        <nav>
-          Members
-        </nav>
+        <nav>Members</nav>
         <div></div>
       </section>
     </>

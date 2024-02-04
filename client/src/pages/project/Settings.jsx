@@ -7,8 +7,10 @@ import { useIdContext } from "../../hooks/useContext/useIdContext";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useChannel } from "../../hooks/useChannel";
+import { useProjectContext } from "../../hooks/useContext/useProjectContext";
 
 export default function Settings() {
+  const { state: projectState } = useProjectContext();
   const { state: channelContext } = useChannelContext();
   const { state: idContext } = useIdContext();
   const { user } = useAuthContext();
@@ -28,9 +30,16 @@ export default function Settings() {
     deleteProject(user, idContext.project_id);
     navigate("/");
   };
+  console.log(projectState);
 
   return (
     <div className="grid">
+      <h2 className="text-5xl">
+        {projectState.project && projectState.project.title}
+      </h2>
+      <h2 className="mb-4 text-slate-500">
+        # {projectState.project && projectState.project.connectionString}
+      </h2>
       <nav className="flex gap-x-4">
         <button
           onClick={handleLeaveProjectClick}
@@ -48,7 +57,7 @@ export default function Settings() {
 
       <hr className="my-4" />
 
-      <section className="w-3/4 justify-self-center">
+      <section className="w-[90%] justify-self-center">
         <h2 className="text-4xl text-center">Channels</h2>
         <nav>
           <button
@@ -82,17 +91,17 @@ export default function Settings() {
             </button>
           </div>
         )}
-        <table className="table-fixed w-full bg-neutral-600 my-5 rounded shadow-xl shadow-neutral-800">
+        <table className="table-fixed w-full bg-neutral-600 my-5 rounded shadow-xl shadow-neutral-800 max-h-20">
           <thead>
             <tr className="text-xl">
               <th>Title</th>
               <th>Type</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="overflow-auto">
             {channelContext.channels &&
               channelContext.channels.map((channel) => (
-                <tr className="text-xl h-10" key={channel._id}>
+                <tr className="text-xl h-20" key={channel._id}>
                   {editChannel ? (
                     <td>
                       <input type="text" name="" />

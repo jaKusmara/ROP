@@ -11,7 +11,6 @@ import ListComponent from "../../components/project/board/ListComponent";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function Board() {
-  //const { setBackground, background, setCreateList:handleCreateList } = useToggleFormContext();
   const { state: board } = useBoardContext();
   const { user } = useAuthContext();
   const { createList: createListClick } = useBoard();
@@ -41,13 +40,13 @@ export default function Board() {
       <div className="flex overflow-x-auto overflow-y-hidden h-full">
         <div className="flex flex-nowrap space-x-4">
           {createList && (
-            <div className="flex bg-neutral-700 w-80 h-fit p-3 rounded">
+            <div className="flex bg-neutral-700 w-80 md:w-60 h-fit p-3 md:p-1.5 rounded">
               <input
                 type="text"
                 name="listTitle"
                 value={listTitle}
                 onChange={(e) => setListTitle(e.target.value)}
-                className="p-2 w-full rounded text-black"
+                className="p-2 w-full rounded text-black md:p-0.5"
                 placeholder="List name..."
               />
               <button
@@ -56,7 +55,7 @@ export default function Board() {
                   setCreateList(!createList);
                   setListTitle("");
                 }}
-                className="bg-purple-500 p-2 ml-2 rounded"
+                className="bg-purple-500 p-2 ml-2 md:ml-0.5 rounded md:p-0.5"
               >
                 <AddIcon />
               </button>

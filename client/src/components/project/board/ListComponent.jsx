@@ -26,10 +26,10 @@ export default function ListComponent({ list, tasks }) {
   const { createTask: createTaskClick } = useTask();
 
   return (
-    <div className=" rounded-md bg-neutral-700 h-fit w-96 shadow-lg shadow-neutral-800">
-      <nav className="flex gap-x-2 p-3">
+    <div className=" rounded-md bg-neutral-700 h-fit md:w-60 w-96 shadow-lg shadow-neutral-800">
+      <nav className="flex gap-x-2 md:p-1 p-3">
         <button
-          className="hover:bg-green-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+          className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5"
           onClick={() => {
             setCreateTask(!createTask);
             dispatch({ type: "SET_LIST_ID", payload: list._id });
@@ -38,7 +38,7 @@ export default function ListComponent({ list, tasks }) {
           <AddIcon />
         </button>
         <button
-          className="hover:bg-red-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+          className="hover:bg-red-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5"
           onClick={() => {
             deleteList(user, list._id, idState.board_id);
           }}
@@ -47,7 +47,7 @@ export default function ListComponent({ list, tasks }) {
         </button>
         {editList ? (
           <button
-            className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+            className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5"
             onClick={() => {
               setEditList(!editList);
               editTitle(user, list._id, idState.board_id, newTitle);
@@ -57,7 +57,7 @@ export default function ListComponent({ list, tasks }) {
           </button>
         ) : (
           <button
-            className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800"
+            className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5"
             onClick={() => {
               setEditList(!editList);
               setNewTitle(list.title);
@@ -67,7 +67,7 @@ export default function ListComponent({ list, tasks }) {
           </button>
         )}
 
-        <h2 className="w-full text-center align-middle break-all text-2xl">
+        <h2 className="w-full text-center align-middle break-all md:text-base text-2xl">
           {editList ? (
             <input
               type="text"
@@ -82,19 +82,19 @@ export default function ListComponent({ list, tasks }) {
         </h2>
       </nav>
       {createTask && (
-        <div className="rounded-md break-all bg-neutral-800 m-4 p-3 shadow-xl grid gap-y-2 shadow shadow-neutral-900">
+        <div className="rounded-md md:rounded-sm break-all bg-neutral-800 m-4 p-3 shadow-xl grid gap-y-2 shadow shadow-neutral-900 md:p-1.5">
           <input
             type="text"
             name="title"
             placeholder="Task Title"
-            className="p-2 text-black rounded"
+            className="p-2 text-black rounded md:p-0.5 md:rounded-sm"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <input
             type="text"
             name="description"
-            className="p-2 text-black rounded"
+            className="p-2 text-black rounded md:p-0.5 md:rounded-sm"
             placeholder="Task Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -113,7 +113,7 @@ export default function ListComponent({ list, tasks }) {
                   description
                 );
               }}
-              className="bg-purple-500 hover:bg-green-400 p-2 rounded"
+              className="bg-purple-500 hover:bg-green-400 p-2 md:p-0.5 rounded"
             >
               Create!
             </button>
@@ -121,7 +121,7 @@ export default function ListComponent({ list, tasks }) {
               onClick={() => {
                 setCreateTask(!createTask);
               }}
-              className="bg-red-500 hover:bg-red-400 p-2 rounded"
+              className="bg-red-500 hover:bg-red-400 p-2 md:p-0.5 rounded"
             >
               Cancel
             </button>
