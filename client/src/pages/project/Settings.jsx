@@ -2,7 +2,7 @@ import { useProject } from "../../hooks/useProject";
 import { useAuthContext } from "../../hooks/useContext/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { useChannelContext } from "../../hooks/useContext/useChannelContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIdContext } from "../../hooks/useContext/useIdContext";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,12 +15,20 @@ export default function Settings() {
   const { state: channelContext } = useChannelContext();
   const { state: idContext } = useIdContext();
   const { user } = useAuthContext();
-  const { leaveProject, deleteProject } = useProject();
+  const {
+    leaveProject,
+    deleteProject,
+    editProjectTitle,
+    editProjectDescription,
+  } = useProject();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const { createChannel, deleteChannel } = useChannel();
   const [addChannel, setAddChannel] = useState(false);
   const [optionsChannel, setOptionsChannel] = useState(false);
+  const [editDesc, setEditDesc] = useState(false);
+  const [desc, setDesc] = useState("");
+  const [editTitle, setEditTitle] = useState(false);
 
   const handleLeaveProjectClick = () => {
     leaveProject(user, idContext.project_id);
@@ -32,14 +40,38 @@ export default function Settings() {
     navigate("/");
   };
 
+  console.log(projectState);
 
   return (
     <div className="grid">
-      <h2 className="text-5xl">
-        {projectState.project && projectState.project.title}
-      </h2>
-      <h2 className="mb-4 text-slate-500">
+      {editTitle ? (
+        <input />
+      ) : (
+        <h2 className="text-5xl">
+          {projectState.project && projectState.project.title}
+        </h2>
+      )}
+
+      <h2 className="text-slate-500">
         # {projectState.project && projectState.project.connectionString}
+      </h2>
+      <h2>
+        {projectState.project &&
+          (editDesc ? (
+            <textarea
+              maxLength="250"
+              placeholder="Project description..."
+              className="text-white rounded text-lg h-20 resize-none p-2 w-1/3 my-2 bg-neutral-700"
+              value={desc}
+              onChange={(e) => {
+                setDesc(e.target.value);
+              }}
+            ></textarea>
+          ) : (
+            <div className="my-4 text-lg">
+              {projectState.project.description}
+            </div>
+          ))}
       </h2>
       <nav className="flex gap-x-4">
         <button
@@ -54,10 +86,51 @@ export default function Settings() {
         >
           Delete Project
         </button>
+        {editDesc ? (
+          <button
+            className="p-2 bg-green-600 rounded-md"
+            onClick={() => {
+              setEditDesc(!editDesc);
+              editProjectDescription(user, projectState.project._id, desc);
+              setDesc("");
+            }}
+          >
+            Save Description
+          </button>
+        ) : (
+          <button
+            className="p-2 bg-blue-600 rounded-md"
+            onClick={() => {
+              setEditDesc(!editDesc);
+            }}
+          >
+            Edit Description
+          </button>
+        )}
+        {editTitle ? (
+          <button
+            className="p-2 bg-green-600 rounded-md"
+            onClick={() => {
+              setEditTitle(!editTitle);
+              editProjectTitle(user, projectState.project._id, title);
+              setEditTitle("");
+            }}
+          >
+            Save Title
+          </button>
+        ) : (
+          <button
+            className="p-2 bg-blue-600 rounded-md"
+            onClick={() => {
+              setEditTitle(!editTitle);
+            }}
+          >
+            Edit Title
+          </button>
+        )}
       </nav>
 
       <hr className="my-4" />
-
       <section className="w-[90%] justify-self-center">
         <h2 className="text-4xl text-center">Channels</h2>
         <nav>

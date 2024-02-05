@@ -3,19 +3,6 @@ import { NavLink } from "react-router-dom";
 import { useSearch } from "../../../hooks/useSearch";
 import { useSearchContext } from "../../../hooks/useContext/useSearchContext";
 import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
-import { useToggleFormContext } from "../../../hooks/useContext/useToggleForm";
-
-// TAILWIND COMPONENTS
-import {
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Button,
-  Input,
-  List,
-  ListItem,
-} from "@material-tailwind/react";
 
 //COMPONENTS
 import ProjectList from "./ProjectList";
@@ -24,136 +11,50 @@ import Search from "./Search";
 
 //ICONS
 import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
-import AddIcon from "@mui/icons-material/Add";
-import LoginIcon from "@mui/icons-material/Login";
 
 import { useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
 
 export default function SideBar() {
   const { logout } = useLogout();
   const { search } = useSearch();
   const { user } = useAuthContext();
-  const [menu, setMenu] = useState(false);
-
-  const {
-    background,
-    setBackground,
-    createProject,
-    setCreateProject,
-    joinProject,
-    setJoinProject,
-  } = useToggleFormContext();
-  const { state: searchState } = useSearchContext();
-
-  const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    if (query) {
-      search(user, query);
-    }
-  }, [query]);
 
   return (
     <>
       <NavLink
-        className="py-5 text-center flex self-center items-center text-2xl"
+        className="py-9 text-center flex self-center items-center text-2xl"
         to={"/"}
       >
         <header>
           <p>Tasking</p>
         </header>
       </NavLink>
-      <div className="relative">
-        <input
-          type="text"
-          className="mx-2 max-w-full text-black p-1"
-          placeholder="Search..."
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-          }}
-        />
-        {searchState.query && query ? (
-          <Search query={searchState.query} />
-        ) : null}
-      </div>
+      <SearchBar />
 
-      <nav>
-        <ul>
-          <NavLink to={"/"}>
-            <li>Dashboard</li>
-          </NavLink>
-          <NavLink to={"messages"}>
-            <li>Messages</li>
-          </NavLink>
-        </ul>
+      <nav className="text-2xl list-none p-2">
+        <NavLink to={"/"}>
+          <li className="p-3 hover:bg-neutral-800 rounded">Dashboard</li>
+        </NavLink>
+        <NavLink to={"messages"}>
+          <li className="p-3 hover:bg-neutral-800 rounded">Messages</li>
+        </NavLink>
       </nav>
       <hr />
-      <h2>Projects:</h2>
-      <section className="max-h-1/2 overflow-auto h-full">
+      <section className="max-h-1/2 overflow-auto h-full p-2">
         <ProjectList />
       </section>
-      <footer className="static z-0">
-        {menu && (
-          <div className="bg-neutral-600 text-md border-zinc-400 text-white">
-            <ul>
-              <li
-                onClick={() => {
-                  setBackground(!background), setCreateProject(!createProject);
-                }}
-              >
-                Add Project
-              </li>
-            </ul>
-          </div>
-        )}
-        <div
-          onClick={() => {
-            setMenu(!menu);
-          }}
-          className="flex flex-row w-full md:p-1 md:px-5 hover:bg-pink-300"
-        >
+      <footer className="flex items-center p-2">
+        <div className="flex flex-row w-full m-3 md:p-1 md:px-5 ">
           <FooterSideBar />
         </div>
-
-        {/* <Menu
-          animate={{
-            mount: { y: 0 },
-            unmount: { y: 25 },
+        <LogoutIcon
+          fontSize="large"
+          className="hover:bg-neutral-800 rounded"
+          onClick={() => {
+            logout();
           }}
-        >
-          <MenuHandler className="p-1 rounded-md m-3 flex flex-col hover:bg-zinc-800">
-            <Button>
-              <FooterSideBar />
-            </Button>
-          </MenuHandler>
-          <MenuList className="w-[14%] p-1 ml-1 bg-neutral-600 text-md border-zinc-400 text-white flex flex-col gap-y-2">
-            <MenuItem
-              onClick={() => {
-                setBackground(!background), setCreateProject(!createProject);
-              }}
-            >
-              Add project
-              <AddIcon />
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setBackground(!background), setJoinProject(!joinProject);
-              }}
-            >
-              Join project <LoginIcon />
-            </MenuItem>
-            <MenuItem>
-              Settings
-              <SettingsIcon />
-            </MenuItem>
-            <hr />
-            <MenuItem onClick={() => logout()}>
-              Logout <LogoutIcon />
-            </MenuItem>
-          </MenuList>
-        </Menu> */}
+        />
       </footer>
     </>
   );

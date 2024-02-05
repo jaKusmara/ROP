@@ -161,6 +161,32 @@ const getAllProjectChannels = async (req, res) => {
   }
 };
 
+const editProjectTitle = async (req, res) => {
+  const { project_id, title } = req.query;
+
+  try {
+    const project = await Project.findByIdAndUpdate(project_id, {
+      title: title,
+    });
+    res.status(200).json(project);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+const editProjectDescription = async (req, res) => {
+  const { project_id, description } = req.query;
+
+  try {
+    const project = await Project.findByIdAndUpdate(project_id, {
+      description: description,
+    });
+    res.status(200).json(project);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createProject,
   getAllUserProjects,
@@ -169,4 +195,6 @@ module.exports = {
   leaveProject,
   deleteProject,
   getAllProjectChannels,
+  editProjectTitle,
+  editProjectDescription,
 };

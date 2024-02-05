@@ -74,11 +74,11 @@ export default function ProjectLayout() {
 
   return (
     <>
-      <aside className="border-r w-1/6 text-lg">
+      <aside className="border-r w-[15%] text-lg flex flex-col text-xl list-none my-3">
         <SideBar />
       </aside>
 
-      <main className="w-5/6 p-4 overflow-auto">
+      <main className="w-[85%] p-4 overflow-auto">
         <Outlet />
       </main>
     </>

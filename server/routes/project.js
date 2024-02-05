@@ -11,6 +11,8 @@ const {
   leaveProject,
   deleteProject,
   getAllProjectChannels,
+  editProjectTitle,
+  editProjectDescription,
 } = require("../controllers/projectController");
 
 //middleware
@@ -28,6 +30,10 @@ router.get("/getAllProjectChannels", getAllProjectChannels);
 router.get("/getProjectById", getProjectById);
 
 router.put("/joinProject", joinProject);
+
+router.put("/editProjectTitle", editProjectTitle);
+
+router.put("/editProjectDescription", editProjectDescription);
 
 router.put("/leaveProject", leaveProject);
 

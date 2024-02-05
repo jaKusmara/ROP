@@ -7,54 +7,42 @@ import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
 import { useIdContext } from "../../../hooks/useContext/useIdContext";
 import { useChannelContext } from "../../../hooks/useContext/useChannelContext";
 import { useChat } from "../../../hooks/useChat";
+import ChannelList from "./ChannelList";
 
 export default function SideBar() {
   const { state: idContext, dispatch } = useIdContext();
   const { state: channelState } = useChannelContext();
   const { user } = useAuthContext();
   const { state: project } = useProjectContext();
-  const [channels, setChannels] = useState(null);
-  const { getChannel } = useChannel();
 
   const navigate = useNavigate();
-
-  const handleChannelClick = (channel_id) => {
-    dispatch({ type: "SET_CHANNEL_ID", payload: channel_id });
-    navigate(`channel/${channel_id}`);
-  };
 
   const handleSettingsClicked = () => {
     navigate("settings");
   };
 
   return (
-    <div className="flex flex-col max-w-80">
-      <div>
-        {project.project && <div>{project.project.title}</div>}
-        {project.data && project.data.title}
-        {project.loading && project.loading}
-      </div>
-      <div>
-        <NavLink to={`/project/${idContext.project_id}`}>Dashboard</NavLink>
-      </div>
-      <div>
-        <NavLink to="tasks">Tasks</NavLink>
-      </div>
-      <div>Channels:</div>
-      {channelState.channels &&
-        channelState.channels.map((channel) => (
-          <li
-            onClick={() => handleChannelClick(channel._id)}
-            key={channel._id}
-            className="list-none"
-          >
-            {channel.title}
-          </li>
-        ))}
-
-      {/* {loading && loading} */}
-      {/* {error && error} */}
-      <button onClick={handleSettingsClicked}>Settings</button>
-    </div>
+    <>
+      <div>{project.loading && project.loading}</div>
+      <NavLink to={`/project/${idContext.project_id}`}>
+        <li className="text-center p-3 hover:bg-neutral-500 rounded mx-2">
+          Dashboard
+        </li>
+      </NavLink>{" "}
+      <NavLink to="tasks">
+        <li className="text-center p-3 hover:bg-neutral-500 rounded mx-2">
+          Tasks
+        </li>
+      </NavLink>
+      <section className="max-h-[80%] overflow-auto h-full p-2 my-5 mx-5 flex flex-col gap-y-3 ">
+        <ChannelList />
+      </section>
+      <button
+        className="text-center p-3 hover:bg-neutral-500 rounded mx-2"
+        onClick={handleSettingsClicked}
+      >
+        Settings
+      </button>
+    </>
   );
 }

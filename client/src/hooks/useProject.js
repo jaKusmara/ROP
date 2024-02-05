@@ -72,13 +72,13 @@ export const useProject = () => {
     }
   };
 
-  const createProject = async (user, title) => {
+  const createProject = async (user, title, description) => {
     setIsLoading(true);
 
     try {
       const response = await axios.post(
         `http://localhost:5000/api/project/createProject`,
-        { title: title },
+        { title: title, description: description },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -177,6 +177,63 @@ export const useProject = () => {
     }
   };
 
+  const editProjectTitle = async (user, project_id, title) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/project/editProjectTitle?project_id=${project_id}&title=${title}`,
+        {},
+
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        dispatch({ type: "EDIT_TITLE", payload: title });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error(error);
+    }
+  };
+
+  const editProjectDescription = async (user, project_id, description) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/project/editProjectDescription?project_id=${project_id}&description=${description}`,
+        {},
+
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        dispatch({
+          type: "EDIT_DESCRIPTION",
+          payload: description,
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error(error);
+    }
+  };
+
   return {
     setProjects,
     setProject,
@@ -184,6 +241,8 @@ export const useProject = () => {
     joinProject,
     leaveProject,
     deleteProject,
+    editProjectTitle,
+    editProjectDescription,
     error,
     isLoading,
   };
