@@ -6,12 +6,12 @@ export default function HomeForm() {
   return (
     <div className="flex flex-col items-center gap-y-10">
       <h2 className="text-7xl font-bold">Get Started</h2>
-      <div className="flex flex-col items-center w-3/5 h-fit gap-y-3">
+      <div className="flex flex-col items-center w-[80%] h-fit gap-y-3">
         <button
           onClick={() => {
             navigate("login");
           }}
-          className="bg-indigo-900 h-16 w-full rounded-md text-3xl"
+          className="bg-indigo-900 h-12 w-[50%] rounded-md text-3xl"
         >
           Login
         </button>
@@ -19,7 +19,7 @@ export default function HomeForm() {
           onClick={() => {
             navigate("signup");
           }}
-          className="bg-indigo-900 h-16 w-full rounded-md text-3xl"
+          className="bg-indigo-900 h-12 w-[50%] rounded-md text-3xl"
         >
           Signup
         </button>

@@ -1,6 +1,5 @@
 const Message = require("../models/messageModel");
-const Chat = require("../models/chatModel");
-const Channel = require("../models/channelModel");
+const User = require("../models/userModel");
 var crypto = require("crypto");
 
 const sendMessage = async (req, res) => {
@@ -13,15 +12,19 @@ const sendMessage = async (req, res) => {
     let crypted = cipher.update(content, "utf8", "hex");
     crypted += cipher.final("hex");
 
+    const sender = await User.findById(sender_id);
+
     const message = await Message.create({
       content: crypted,
       sender_id: sender_id,
       chat_id: chat_id,
+      sender_username: sender.username,
     });
 
     res.status(200).json(message);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    console.error(error);
+    res.status(400).json({ error: error.message });
   }
 };
 

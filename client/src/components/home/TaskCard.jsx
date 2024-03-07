@@ -5,10 +5,10 @@ export default function TaskCard({ task }) {
   const navigate = useNavigate();
   return (
     <div className="bg-neutral-700 md:rounded flex flex-col md:gap-2 md:p-3 md:w md:h-56">
-      <h2 className="font-bold text-2xl w-full">
-        {task.title.substring(0, 26)}
+      <h2 className="font-bold text-xl break-all w-full">
+        {task.title}
       </h2>
-      <h1 className="text-neutral-400 text-sm">
+      <h1 className="text-neutral-400 text-xs">
         {task.project_title}/{task.list_title}
       </h1>
       <section className="break-all h-full">

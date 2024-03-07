@@ -7,12 +7,15 @@ import { useChat } from "../../hooks/useChat";
 import { useMessageContext } from "../../hooks/useContext/useMessageContext";
 
 export default function Channel() {
-  const { sendMessage, getMessages, error, isLoading } = useChat();
   const { user } = useAuthContext();
   const { channel_id } = useParams();
+
+  const { state } = useMessageContext();
+
+  const { sendMessage, getMessages, error, isLoading } = useChat();
+
   const [messageFromSocket, setMessageFromSocket] = useState(null);
   const [content, setContent] = useState("");
-  const { state } = useMessageContext();
 
   useEffect(() => {
     getMessages(user, channel_id);
@@ -31,7 +34,7 @@ export default function Channel() {
   return (
     <div className="flex flex-col h-full">
       <nav className="flex felx-row"></nav>
-      <div className="flex flex-col px-2 overflow-hidden overflow-y-scroll h-full w-full">
+      <div className="flex flex-col px-2  overflow-auto h-full w-full">
         {state.messages &&
           state.messages.map((message) => (
             <Message
@@ -42,16 +45,17 @@ export default function Channel() {
             />
           ))}
       </div>
-      <footer className="flex flex-row items-center p-4">
-        <input
+      <footer className="flex max-w-[80%] flex-row items-center mt-4 gap-x-2">
+        <textarea
+          maxLength={1000}
           type="text"
-          className="flex whitespace-wrap break-all p-2 rounded-l border-gray-300 overflow-y-scroll w-max-[50%]"
+          className="flex whitespace-wrap break-all rounded text-black border-gray-300 overflow-hidden resize-none w-[80%]"
           placeholder="Type your message..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
         <button
-          className="bg-blue-500 text-white p-2 rounded-r hover:bg-blue-600 focus:outline-none"
+          className="bg-blue-500 text-white rounded h-full hover:bg-blue-600 focus:outline-none w-[20%]"
           onClick={() => {
             sendMessage(user, channel_id, content), setContent("");
           }}

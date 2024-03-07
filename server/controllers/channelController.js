@@ -65,8 +65,24 @@ const deleteChannel = async (req, res) => {
   }
 };
 
+const editChannelTitle = async (req, res) => {
+  const { channel_id, title } = req.query;
+
+  try {
+    const channel = await Channel.findByIdAndUpdate(channel_id, {
+      title: title,
+    });
+
+    res.status(200).json(title);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   createChannel,
   deleteChannel,
   getChannel,
+  editChannelTitle
 };

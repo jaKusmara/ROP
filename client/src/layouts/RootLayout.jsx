@@ -5,11 +5,12 @@ import SideBar from "../components/home/sidebar/SideBar";
 import { useToggleFormContext } from "../hooks/useContext/useToggleForm";
 import { useAuthContext } from "../hooks/useContext/useAuthContext";
 import { useProject } from "../hooks/useProject";
+import ShowedTask from "../components/project/board/ShowedTask";
 
 export default function RootLayout() {
   const { user } = useAuthContext();
   const { setProjects } = useProject();
-  const { background } = useToggleFormContext();
+  const { task } = useToggleFormContext();
 
   useEffect(() => {
     if (user) {
@@ -19,6 +20,7 @@ export default function RootLayout() {
 
   return (
     <>
+      {task && <ShowedTask />}
       <aside className="bg-neutral-950 h-full w-[15%] flex flex-col text-lg p-1">
         <SideBar />
       </aside>

@@ -35,7 +35,9 @@ export default function FriendList({ query }) {
                 openChat(user, friend._id);
               }}
             >
-              <p>{friend.firstname}</p> <p className="ml-3">{friend.surname}</p>
+              <img width="40" src={friend.avatar} alt={friend.username} />
+              <p className="ml-3">{friend.firstname}</p>{" "}
+              <p className="ml-3">{friend.surname}</p>
             </ListItem>
           ))
         : chatContextState.friends &&
@@ -47,7 +49,11 @@ export default function FriendList({ query }) {
                 openChat(user, friend._id);
               }}
             >
-              <p>{friend.firstname}</p> <p className="ml-3">{friend.surname}</p>
+              {friend.avatar && (
+                <img width="40" src={friend.avatar} alt={friend.username} />
+              )}
+              <p className="ml-3">{friend.firstname}</p>{" "}
+              <p className="ml-3">{friend.surname}</p>
             </ListItem>
           ))}
     </List>

@@ -7,12 +7,15 @@ import { useChat } from "../../hooks/useChat";
 import Message from "../../components/Message";
 
 import socket from "../../utils/socekt";
+import { useChatContext } from "../../hooks/useContext/useChatContext";
 
 export default function DirectMessages() {
   const { user } = useAuthContext();
   const { state: idContextState } = useIdContext();
   const { state: messageContextState } = useMessageContext();
   const { sendMessage, getMessages } = useChat();
+
+  const { state: chatState } = useChatContext();
 
   const [content, setContent] = useState("");
   const [messageFromSocket, setMessageFromSocket] = useState(null);
@@ -42,16 +45,28 @@ export default function DirectMessages() {
       setMessageFromSocket(data);
     });
 
-    // Cleanup the socket listener when component unmounts
     return () => {
       socket.off("private_message");
     };
   }, [idContextState.chat_id]);
-
+  console.log(chatState.receiver);
   return (
     <>
+      <nav className="flex p-3">
+        {chatState.receiver.avatar && (
+          <img
+            src={chatState.receiver.avatar}
+            alt={chatState.receiver.username}
+            width="50"
+          />
+        )}
+        <div className="flex items-center text-xl">
+          <p className="mx-3">{chatState.receiver.firstname}</p>
+          <p>{chatState.receiver.surname}</p>
+        </div>
+      </nav>
       <div
-        className="flex flex-col px-2 overflow-hidden overflow-y-scroll h-full w-full"
+        className="flex flex-col px-2 overflow-auto h-full w-full"
         ref={chatContainerRef}
       >
         {messageContextState.messages &&
@@ -59,12 +74,10 @@ export default function DirectMessages() {
             <Message key={message._id} message={message} />
           ))}
       </div>
-      <hr />
 
       <footer className="flex justify-center h-20 p-4">
-        <textarea
-          rows={3}
-          className="flex w-[75%] p-2 rounded-l border-gray-300 overflow-y-scroll resize-none"
+        <input
+          className="flex w-[75%] p-2 rounded-l border-gray-300 overflow-y-scroll resize-none text-black"
           placeholder="Type your message..."
           value={content}
           maxLength={1000}

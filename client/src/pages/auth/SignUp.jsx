@@ -32,27 +32,29 @@ function RegistrationForm() {
   return (
     <div className="flex flex-col items-center gap-y-8 ">
       <h2 className="text-7xl font-bold">Sign Up</h2>
-      <div className="flex flex-wrap justify-center w-3/5 h-fit gap-y-3 gap-x-3 text-black">
-        <input
-          className="h-14 w-2/5 rounded-md text-3xl "
-          type="text"
-          name="firstname"
-          placeholder="First Name"
-          value={firstname}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+      <div className="grid justify-items-center w-[80%] text-lg gap-y-3 gap-x-3 text-black">
+        <div className="grid grid-rows-1 grid-cols-2 gap-x-2">
+          <input
+            className="h-12 rounded-md p-2"
+            type="text"
+            name="firstname"
+            placeholder="First Name"
+            value={firstname}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+
+          <input
+            className="h-12 rounded-md p-2"
+            type="text"
+            name="surname"
+            placeholder="Surname"
+            value={surname}
+            onChange={(e) => setSurName(e.target.value)}
+          />
+        </div>
 
         <input
-          className="h-14 w-2/5 rounded-md text-3xl "
-          type="text"
-          name="surname"
-          placeholder="Surname"
-          value={surname}
-          onChange={(e) => setSurName(e.target.value)}
-        />
-
-        <input
-          className="h-14 w-5/6 rounded-md text-3xl "
+          className="h-12 w-full rounded-md p-2"
           type="text"
           name="email"
           placeholder="Email"
@@ -61,7 +63,7 @@ function RegistrationForm() {
         />
 
         <input
-          className="h-14 w-5/6 rounded-md text-3xl "
+          className="h-12 w-full rounded-md p-2"
           type="text"
           name="username"
           placeholder="Username"
@@ -69,25 +71,26 @@ function RegistrationForm() {
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        <input
-          className="h-14 w-2/5 rounded-md text-3xl "
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <input
-          className="h-14 w-2/5 rounded-md text-3xl "
-          type="password"
-          name="password"
-          placeholder="re type Password"
-          value={reTypePassword}
-          onChange={(e) => setReTypePassword(e.target.value)}
-        />
+        <div className="grid grid-rows-1 grid-cols-2 gap-x-2">
+          <input
+            className="h-12  rounded-md p-2"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            className="h-12  rounded-md p-2"
+            type="password"
+            name="password"
+            placeholder="Re-type Password"
+            value={reTypePassword}
+            onChange={(e) => setReTypePassword(e.target.value)}
+          />
+        </div>
       </div>
-      <div className="grid grid-rows-2 grid-cols-3 w-3/5 justify-items-center">
+      <div className="grid grid-rows-2 grid-cols-3 w-[80%] justify-items-center">
         <img
           src="b1.png"
           alt="avatar"
@@ -137,7 +140,7 @@ function RegistrationForm() {
           onClick={() => setAvatar("w3.png")}
         />
       </div>
-      <span className="flex flex-col w-3/5 gap-y-2">
+      <span className="flex flex-col w-[80%] gap-y-2">
         <div className="flex text-red-600 text-xl">
           {error && <p>{error.error}</p>}
         </div>
@@ -153,7 +156,7 @@ function RegistrationForm() {
           onClick={() => {
             navigate("../login");
           }}
-          className="self-end text-xl text-blue-900"
+          className="self-end text-xl text-blue-900 cursor-pointer"
         >
           Do you have an account?
         </p>

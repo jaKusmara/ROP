@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const User = require("./userModel");
+const randomToken = require("random-token").create(
+  "abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+);
 
 const Schema = mongoose.Schema;
 
@@ -13,10 +15,10 @@ const projectSchema = new Schema(
           ref: "User",
           required: true,
         },
-        role: {
+        permisionsAndRole_id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Role",
-          required: false,
+          required: true,
         },
       },
     ],
@@ -26,7 +28,6 @@ const projectSchema = new Schema(
     },
     description: {
       type: String,
-      required: false,
     },
     connectionString: {
       type: String,
@@ -63,47 +64,64 @@ projectSchema.statics.getUserProjects = async function (user_id) {
 };
 
 projectSchema.statics.getProjectById = async function (_id) {
-  const project = await this.findById(_id);
-
-  if (!project) {
-    throw Error("Bad project ID");
+  if (!_id) {
+    throw new Error("Bad project ID");
   }
 
-  const users = await Promise.all(
+  const project = await this.findById(_id);
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  const members = await Promise.all(
     project.members.map(async (member) => {
-      const user = await User.findById(member.user_id);
+      const userDetails = await mongoose.model("User").findById(member.user_id);
+      const roleDetails = await mongoose
+        .model("Role")
+        .findById(member.permisionsAndRole_id);
+
       return {
-        user_id: user._id,
-        username: user.username,
-        firstname: user.firstname,
-        surname: user.surname,
-        avatar: user.avatar,
-        email: user.email,
+        user_id: userDetails._id,
+        firstname: userDetails.firstname,
+        surname: userDetails.surname,
+        username: userDetails.username,
+        avatar: userDetails.avatar,
+        role: roleDetails.role,
+        permisions: roleDetails.permisions,
       };
     })
   );
 
-  const projectWithUsers = {
-    ...project.toObject(),
-    users,
+  const channels = await Promise.all(
+    project.channels.map(async (channel) => {
+      const channelDetails = await mongoose
+        .model("Channel")
+        .findById(channel._id);
+
+      return {
+        _id: channelDetails._id,
+        title: channelDetails.title,
+        type: channelDetails.type,
+      };
+    })
+  );
+
+  const lists = await Promise.all(
+    
+  )
+
+  return {
+    _id: project._id,
+    members: members,
+    title: project.title,
+    description: project.description,
+    connectionString: project.connectionString,
+    channels: channels,
+    lists: ,
+    tasks: ,
+    board_id: ,
   };
-
-  console.log(projectWithUsers);
-
-  return projectWithUsers;
 };
-
-// projectSchema.statics.getUserProjects = async function (user_id) {
-//   const projects = await this.find({
-//     "members.user_id": user_id,
-//   });
-
-//   if (!projects || projects.length === 0) {
-//     throw Error("No projects for the user");
-//   }
-
-//   return projects;
-// };
 
 projectSchema.statics.getAllProjectChannels = async function (_id) {
   const project = await this.findById(_id);
@@ -119,6 +137,63 @@ projectSchema.statics.getAllProjectChannels = async function (_id) {
   });
 
   return channels;
+};
+
+projectSchema.statics.createNewProject = async function (
+  user_id,
+  title,
+  description
+) {
+  if (!title) {
+    throw Error("Bad project title");
+  }
+
+  if (!user_id) {
+    throw Error("Bad user ID");
+  }
+
+  const connectionString = randomToken(8);
+
+  const board = await mongoose.model("Board").create({ title: title });
+
+  const permisionsAndRole = await mongoose
+    .model("Role")
+    .create({ role: "projectManager" });
+
+  if (!description) {
+    newProject = await this.create({
+      members: [{ user_id, permisionsAndRole_id: permisionsAndRole._id }],
+      title,
+      description: "",
+      connectionString,
+      board_id: board._id,
+      channels: [],
+    });
+  } else {
+    newProject = await this.create({
+      members: [{ user_id, permisionsAndRole_id: permisionsAndRole._id }],
+      title,
+      description,
+      connectionString,
+      board_id: board._id,
+      channels: [],
+    });
+  }
+
+  const channel = await mongoose.model("Channel").create({
+    members: [user_id],
+    title: "General",
+    project_id: newProject._id,
+    type: "general",
+  });
+
+  await this.findByIdAndUpdate(
+    newProject._id,
+    { $push: { channels: channel._id } },
+    { new: true }
+  );
+
+  return newProject;
 };
 
 module.exports = mongoose.model("Project", projectSchema);

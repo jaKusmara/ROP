@@ -18,9 +18,9 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center gap-y-8">
       <h2 className="text-7xl font-bold">Login</h2>
-      <div className="flex flex-col items-center text-black sm:w-3/5 h-fit gap-y-3">
+      <div className="flex flex-col items-center text-black w-[80%] h-fit gap-y-3 text-lg">
         <input
-          className="w-full rounded-md text-3xl sm:h-10 sm:p-2"
+          className="w-[70%] rounded-md h-12 p-2"
           type="text"
           name="identifier"
           placeholder="Email or Username"
@@ -28,7 +28,7 @@ export default function Login() {
           onChange={(e) => setIdentifier(e.target.value)}
         />
         <input
-          className="w-full rounded-md text-3xl sm:h-10 sm:p-2"
+          className="w-[70%] rounded-md h-12 p-2"
           type="password"
           name="password"
           placeholder="Password"
@@ -37,7 +37,7 @@ export default function Login() {
         />
       </div>
 
-      <span className="flex flex-col w-3/5 gap-y-2">
+      <span className="flex flex-col w-[80%] gap-y-2">
         <p className="flex text-red-600 text-xl">
           {error && <p>{error.error}</p>}
         </p>
@@ -53,7 +53,7 @@ export default function Login() {
           onClick={() => {
             navigate("../signup");
           }}
-          className="self-end text-xl text-blue-900"
+          className="self-end text-xl text-blue-900 cursor-pointer"
         >
           Don't have an account?
         </p>

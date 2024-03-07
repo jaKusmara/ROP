@@ -32,23 +32,27 @@ export default function Search({ query }) {
   return (
     <div className="absolute top-full left-0 mt-2 w-full bg-white text-black p-4 border border-gray-300 rounded-md shadow-md">
       <ul className="w-full flex flex-col gap-y-3">
-        {query.map((result) => (
-          <li key={result._id} className="flex items-center justify-between">
-            <div className="flex items-center">
-              <AccountCircleIcon className="text-blue-500" />
-              <p className="ml-2">
-                {result.firstname} {result.surname}
-              </p>
-            </div>
-            <FriendButton
-              isFriend={
-                friendsState.friends &&
-                friendsState.friends.some((friend) => friend._id === result._id)
-              }
-              person_id={result._id}
-            />
-          </li>
-        ))}
+        {query.map((result) =>
+          result._id !== user.user._id ? (
+            <li key={result._id} className="flex items-center justify-between">
+              <div className="flex items-center">
+                <img width="40" src={result.avatar} alt={result.username} />
+                <p className="text-sm ml-2">
+                  {result.firstname} {result.surname}
+                </p>
+              </div>
+              <FriendButton
+                isFriend={
+                  friendsState.friends &&
+                  friendsState.friends.some(
+                    (friend) => friend._id === result._id
+                  )
+                }
+                person_id={result._id}
+              />
+            </li>
+          ) : null
+        )}
       </ul>
     </div>
   );

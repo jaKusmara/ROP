@@ -1,6 +1,7 @@
 const Task = require("../models/taskModel");
 const List = require("../models/listModel");
 const Board = require("../models/boardModel");
+const Label = require("../models/labelModel");
 const Project = require("../models/projectModel");
 
 //  CREATE TASK
@@ -86,7 +87,7 @@ const getTaskById = async (req, res) => {
   const task_id = req.query.task_id;
 
   try {
-    const task = await Task.findById(task_id);
+    const task = await Task.findById(task_id).populate("labels");
 
     if (!task || task.length === 0) {
       return res.status(200).json({ status: 0 });
@@ -263,7 +264,60 @@ const moveTask = async (req, res) => {
   }
 };
 
-module.exports = { moveTask };
+const addLabel = async (req, res) => {
+  const task_id = req.query.task_id;
+  const { text, color } = req.body;
+
+  try {
+    const label = await Label.create({
+      color: color,
+      text: text,
+    });
+
+    const task = await Task.findByIdAndUpdate(
+      task_id,
+      { $push: { labels: label } },
+      { new: true }
+    );
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    res.status(200).json(label);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteLabel = async (req, res) => {
+  const task_id = req.query.task_id;
+  const label_id = req.query.label_id;
+
+  try {
+    const task = await Task.findById(task_id);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    const labelIndex = task.labels.findIndex(
+      (label) => label._id.toString() === label_id
+    );
+
+    if (labelIndex === -1) {
+      return res.status(404).json({ error: "Label not found in the task" });
+    }
+
+    task.labels.splice(labelIndex, 1);
+
+    await task.save();
+
+    res.status(200).json(label_id);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createTask,
@@ -276,4 +330,6 @@ module.exports = {
   getUserTasks,
   taskParticipants,
   moveTask,
+  addLabel,
+  deleteLabel,
 };

@@ -9,8 +9,7 @@ export default function TaskCard({ task }) {
   const { getTask } = useTask();
   const { user } = useAuthContext();
   const { state, dispatch } = useIdContext();
-  const { setBackground, background, setShowTask, showTask } =
-    useToggleFormContext();
+  const { task: toggleTask, setTask: setToggleTask } = useToggleFormContext();
   const [socketData, setSocketData] = useState(null);
   const [updateTask, setUpdateTask] = useState(null);
 
@@ -30,22 +29,19 @@ export default function TaskCard({ task }) {
     }
   }, [updateTask, user, state.task_id]);
 
-  const handleOnTaskClick = () => {
-    dispatch({ type: "SET_TASK_ID", payload: task._id });
-    setBackground(!background);
-    setShowTask(!showTask);
-  };
+
 
   return (
     <div className="rounded-md break-all  bg-neutral-800 m-4 p-3 shadow-lg shadow-neutral-900">
       {task && (
-        <div onClick={handleOnTaskClick}>
-          <h2 className="text-center text-lg">{task.title}</h2>
-          {task.description && (
-            <div className="text-md md:text-sm bg-neutral-900 p-2  shadow-neutral-700">
-              {task.description}
-            </div>
-          )}
+        <div
+          onClick={() => {
+            dispatch({ type: "SET_TASK_ID", payload: task._id });
+            setToggleTask(!toggleTask);
+          }}
+        >
+          <h2 className="md:text-base text-lg">{task.title}</h2>
+          
         </div>
       )}
     </div>

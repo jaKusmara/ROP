@@ -13,18 +13,15 @@ const taskSchema = new Schema({
   },
   labels: [
     {
-      color: {
-        type: String,
-      },
-      text: {
-        type: String,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: "Label",
     },
   ],
   participants: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
     },
   ],
   list_id: {

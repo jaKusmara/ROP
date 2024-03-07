@@ -14,11 +14,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
+import { useChatContext } from "../../../hooks/useContext/useChatContext";
 
 export default function SideBar() {
   const { logout } = useLogout();
   const { search } = useSearch();
   const { user } = useAuthContext();
+  const { dispatch } = useChatContext();
 
   return (
     <>
@@ -32,12 +34,18 @@ export default function SideBar() {
       </NavLink>
       <SearchBar />
 
-      <nav className="text-2xl list-none p-2">
+      <nav className="text-2xl md:text-lg list-none p-2">
         <NavLink to={"/"}>
           <li className="p-3 hover:bg-neutral-800 rounded">Dashboard</li>
         </NavLink>
         <NavLink to={"messages"}>
-          <li className="p-3 hover:bg-neutral-800 rounded">Messages</li>
+          <li
+          
+            onClick={() => dispatch({ type: "SET_CHAT", payload: null })}
+            className="p-3 hover:bg-neutral-800 rounded"
+          >
+            Messages
+          </li>
         </NavLink>
       </nav>
       <hr />
@@ -45,7 +53,7 @@ export default function SideBar() {
         <ProjectList />
       </section>
       <footer className="flex items-center p-2">
-        <div className="flex flex-row w-full m-3 md:p-1 md:px-5 ">
+        <div className="flex flex-row w-full md:p-1 md:px-2 ">
           <FooterSideBar />
         </div>
         <LogoutIcon

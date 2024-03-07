@@ -25,6 +25,27 @@ export const boardReducer = (state, action) => {
     case "SET_PARTICIPANTS": {
       return { ...state, participants: action.payload };
     }
+
+    case "ADD_LABEL": {
+      const updatedTask = {
+        ...state.task,
+        labels: [...state.task.labels, action.payload],
+      };
+
+      return { ...state, task: updatedTask };
+    }
+
+    case "DELETE_LABEL": {
+      const updatedTask = {
+        ...state.task,
+        labels: state.task.labels.filter(
+          (label) => label._id !== action.payload
+        ),
+      };
+
+      return { ...state, task: updatedTask };
+    }
+
     default:
       return state;
   }

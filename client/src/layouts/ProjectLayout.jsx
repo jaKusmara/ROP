@@ -9,38 +9,58 @@ import socket from "../utils/socekt";
 import { useProject } from "../hooks/useProject";
 
 import SideBar from "../components/project/sidebar/SideBar";
+import { useBoardContext } from "../hooks/useContext/useBoardContext";
+import { useProjectContext } from "../hooks/useContext/useProjectContext";
+import { useChannelContext } from "../hooks/useContext/useChannelContext";
 
 export default function ProjectLayout() {
   const { user } = useAuthContext();
+  const { project_id } = useParams();
+
   const { getProjectChannels } = useChannel();
-  const { state: idState, dispatch: idDispatch } = useIdContext();
   const { setProject } = useProject();
+
   const { setLists, error: listError, isLoading: listLoading } = useBoard();
   const { getTasks, error: taskError, isLoading: taskIsLoading } = useTask();
 
   const [socketData, setSocketData] = useState(null);
   const [updateTask, setUpdateTask] = useState(null);
 
-  const { project_id } = useParams();
+  const { state: idState, dispatch: idDispatch } = useIdContext();
+  const { dispatch: listContextDisp } = useBoardContext();
+  const { dispatch: projectDispatch } = useProjectContext();
+  const { dispatch: channelDispatch } = useChannelContext();
+
+  //PREMAZANIE
+
+  useEffect(() => {
+    listContextDisp({ type: "SET_LISTS", payload: [] });
+    listContextDisp({ type: "TASKS_LISTS", payload: [] });
+    listContextDisp({ type: "SET_PARTICIPANTS", payload: [] });
+    projectDispatch({ type: "SET_PROJECT", payload: null });
+    channelDispatch({ type: "SET_CHANNELS", payload: null });
+  }, []);
+
+  //PROJECT && CHANNELS
 
   useEffect(() => {
     if (project_id && user) {
       idDispatch({ type: "SET_PROJECT_ID", payload: project_id });
       setProject(user, project_id);
+      getProjectChannels(user, project_id);
     }
-  }, [project_id]);
+  }, [user, project_id]);
+
+
+  //TASKS
 
   useEffect(() => {
-    if (user && idState.project_id) {
-      getProjectChannels(user, idState.project_id);
+    if (idState.board_id) {
+      getTasks(user, idState.board_id);
     }
-  }, []);
+  }, [idState.board_id, socketData, updateTask]);
 
-  useEffect(() => {
-    if (user && idState.project_id) {
-      getProjectChannels(user, idState.project_id);
-    }
-  }, [user, idState.project_id]);
+  //SOCKET
 
   useEffect(() => {
     setSocketData(null);
@@ -66,15 +86,9 @@ export default function ProjectLayout() {
     };
   }, [idState.board_id]);
 
-  useEffect(() => {
-    if (idState.board_id) {
-      getTasks(user, idState.board_id);
-    }
-  }, [idState.board_id, socketData, updateTask]);
-
   return (
     <>
-      <aside className="border-r w-[15%] text-lg flex flex-col text-xl list-none my-3">
+      <aside className="border-r w-[15%] flex flex-col text-xl list-none my-3">
         <SideBar />
       </aside>
 

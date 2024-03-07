@@ -25,20 +25,20 @@ export default function SideBar() {
     <>
       <div>{project.loading && project.loading}</div>
       <NavLink to={`/project/${idContext.project_id}`}>
-        <li className="text-center p-3 hover:bg-neutral-500 rounded mx-2">
+        <li className="text-center p-3 md:p-1 hover:bg-neutral-500 rounded mx-2">
           Dashboard
         </li>
       </NavLink>{" "}
       <NavLink to="tasks">
-        <li className="text-center p-3 hover:bg-neutral-500 rounded mx-2">
+        <li className="text-center p-3 md:p-1 hover:bg-neutral-500 rounded mx-2">
           Tasks
         </li>
       </NavLink>
-      <section className="max-h-[80%] overflow-auto h-full p-2 my-5 mx-5 flex flex-col gap-y-3 ">
+      <section className="max-h-[80%] overflow-auto h-full p-2 md:p-0.5 my-5 mx-1.5 flex flex-col ">
         <ChannelList />
       </section>
       <button
-        className="text-center p-3 hover:bg-neutral-500 rounded mx-2"
+        className="text-center p-3 md:p-1 hover:bg-neutral-500 rounded mx-2"
         onClick={handleSettingsClicked}
       >
         Settings

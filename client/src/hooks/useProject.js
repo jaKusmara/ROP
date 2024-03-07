@@ -6,7 +6,7 @@ import { useLogout } from "./useLogout";
 
 export const useProject = () => {
   const { logout } = useLogout();
-  const { dispatch } = useProjectContext();
+  const { dispatch, state: projectState } = useProjectContext();
   const { dispatch: idDispatch } = useIdContext();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,12 +40,12 @@ export const useProject = () => {
     }
   };
 
-  const setProject = async (user, _id) => {
+  const setProject = async (user, project_id) => {
     setIsLoading(true);
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/project/getProjectById?_id=${_id}`,
+        `http://localhost:5000/api/project/getProjectById?_id=${project_id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -74,11 +74,14 @@ export const useProject = () => {
 
   const createProject = async (user, title, description) => {
     setIsLoading(true);
-
+    console.log(description);
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/project/createProject`,
-        { title: title, description: description },
+        "http://localhost:5000/api/project/createProject",
+        {
+          title: title,
+          description: description == "" ? false : description,
+        },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -87,14 +90,14 @@ export const useProject = () => {
       );
 
       if (response.status) {
-        dispatch({ type: "CREATE_PROJECT", payload: response.data });
         console.log(response);
+        dispatch({ type: "CREATE_PROJECT", payload: response.data });
+        console.log(projectState);
         setIsLoading(false);
       }
     } catch (error) {
       setIsLoading(false);
       setError(error);
-
       console.error(error);
     }
   };

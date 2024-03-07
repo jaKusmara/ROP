@@ -29,6 +29,16 @@ export const channelReducer = (state, action) => {
         ],
       };
     }
+    case "EDIT_TITLE": {
+      return {
+        ...state,
+        channels: state.channels.map((channel) =>
+          channel._id === action.payload.channel_id
+            ? { ...channel, title: action.payload.title }
+            : channel
+        ),
+      };
+    }
 
     default:
       return state;

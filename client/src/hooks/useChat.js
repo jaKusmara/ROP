@@ -27,8 +27,13 @@ export const useChat = () => {
       );
 
       if (response.status === 200) {
-        chatContextDisp({ type: "SET_CHAT", payload: response.data });
-        idContextDisp({ type: "SET_CHAT_ID", payload: response.data._id });
+        console.log(response.data);
+        chatContextDisp({ type: "SET_CHAT", payload: response.data.chat });
+        chatContextDisp({
+          type: "SET_RECEIVER",
+          payload: response.data.receiver,
+        });
+        idContextDisp({ type: "SET_CHAT_ID", payload: response.data.chat._id });
         messageContextDisp({ type: "SET_MESSAGE", payload: [] });
         setIsLoading(false);
       }

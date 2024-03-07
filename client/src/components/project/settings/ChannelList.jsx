@@ -2,9 +2,9 @@
 
 export default function ChannelList() {
   return (
-    <table className="table-fixed w-full bg-neutral-600 my-5 rounded shadow-xl shadow-neutral-800 max-h-20">
+    <table className="table-fixed w-full bg-neutral-600  rounded shadow-xl shadow-neutral-800 max-h-20">
       <thead>
-        <tr className="text-xl">
+        <tr className="">
           <th>Title</th>
           <th>Type</th>
         </tr>

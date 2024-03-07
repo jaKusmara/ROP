@@ -81,7 +81,7 @@ export const useTask = () => {
       );
 
       if (response.status) {
-        console.log(response);
+        // console.log(response.data);
         dispatch({ type: "SET_TASK", payload: response.data });
 
         setIsLoading(false);
@@ -294,6 +294,66 @@ export const useTask = () => {
     }
   };
 
+  const deleteLabel = async (user, task_id, label_id) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/task/deleteLabel?task_id=${task_id}&label_id=${label_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        console.log(response.data);
+        dispatch({
+          type: "DELETE_LABEL",
+          payload: response.data,
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting participants failed:", error);
+    }
+  };
+
+  const addLabel = async (user, task_id, text, color) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/task/addLabel?task_id=${task_id}`,
+        { text: text, color: color },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        console.log(response.data);
+        dispatch({
+          type: "ADD_LABEL",
+          payload: response.data,
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error("Getting participants failed:", error);
+    }
+  };
+
   return {
     createTask,
     getTask,
@@ -305,6 +365,8 @@ export const useTask = () => {
     getTasks,
     moveTask,
     getUserTasks,
+    deleteLabel,
+    addLabel,
     error,
     isLoading,
   };

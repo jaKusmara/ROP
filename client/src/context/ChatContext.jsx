@@ -7,6 +7,9 @@ export const chatReducer = (state, action) => {
     case "SET_CHAT": {
       return { ...state, chat: action.payload };
     }
+    case "SET_RECEIVER": {
+      return { ...state, receiver: action.payload };
+    }
     case "SET_FRIENDS": {
       return {
         ...state,
@@ -35,7 +38,8 @@ export const chatReducer = (state, action) => {
 export const ChatContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(chatReducer, {
     chat: null,
-    friends: null,
+    receiver: null,
+    friends: [],
   });
 
   return (

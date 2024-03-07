@@ -40,10 +40,11 @@ export default function Board() {
       <div className="flex overflow-x-auto overflow-y-hidden h-full">
         <div className="flex flex-nowrap space-x-4">
           {createList && (
-            <div className="flex bg-neutral-700 w-80 md:w-60 h-fit p-3 md:p-1.5 rounded">
+            <div className="flex bg-neutral-700 md:w-72 h-fit md:px-2 md:py-1.5 rounded">
               <input
                 type="text"
                 name="listTitle"
+                maxLength={20}
                 value={listTitle}
                 onChange={(e) => setListTitle(e.target.value)}
                 className="p-2 w-full rounded text-black md:p-0.5"
@@ -55,7 +56,7 @@ export default function Board() {
                   setCreateList(!createList);
                   setListTitle("");
                 }}
-                className="bg-purple-500 p-2 ml-2 md:ml-0.5 rounded md:p-0.5"
+                className="bg-purple-500 p-2 md:ml-2 rounded md:p-0.5"
               >
                 <AddIcon />
               </button>

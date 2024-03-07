@@ -7,6 +7,7 @@ const {
   createChannel,
   getChannel,
   deleteChannel,
+  editChannelTitle
 } = require("../controllers/channelController");
 
 //middleware
@@ -17,5 +18,7 @@ router.post("/createChannel", createChannel);
 router.delete("/deleteChannel", deleteChannel);
 
 router.get("/getChannel", getChannel);
+
+router.put("/editChannelTitle", editChannelTitle);
 
 module.exports = router;

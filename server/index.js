@@ -11,6 +11,7 @@ const PORT = process.env.PORT;
 // Middleware
 app.use(express.json());
 app.use(cors());
+
 //routes
 
 //user
@@ -53,6 +54,10 @@ app.use("/api/friend", friendRoute)
 const listRoute = require("./routes/boardList")
 app.use("/api/list", listRoute)
 
+//boardList
+const roleRoute = require("./routes/role")
+app.use("/api/v1/role/", listRoute)
+
 
 
 
@@ -64,5 +69,3 @@ try {
 } catch (error) {
   console.error('Error starting server:', error);
 }
-
-//mongodb+srv://markushilgner:M7MLXwtKJpv9MJCG@ropdb.mzm4rni.mongodb.net/db?retryWrites=true&w=majority

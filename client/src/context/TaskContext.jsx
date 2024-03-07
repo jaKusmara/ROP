@@ -3,9 +3,7 @@ import { createContext, useReducer } from "react";
 export const TaskContext = createContext();
 
 export const tasksReducer = (state, action) => {
-  console.log(action);
   switch (action.type) {
-    
     default:
       return state;
   }

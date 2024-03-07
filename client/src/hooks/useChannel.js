@@ -108,11 +108,39 @@ export const useChannel = () => {
     }
   };
 
+  const editChannelTitle = async (user, channel_id, title) => {
+    setIsLoading(true);
+    console.log(title);
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/channel/editChannelTitle?channel_id=${channel_id}&title=${title}`,
+        {},
+
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.status) {
+        dispatch({ type: "EDIT_TITLE", payload: { channel_id, title } });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+
+      console.error(error);
+    }
+  };
+
   return {
     getChannel,
     getProjectChannels,
     createChannel,
     deleteChannel,
+    editChannelTitle,
     error,
     isLoading,
   };

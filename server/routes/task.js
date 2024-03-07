@@ -14,6 +14,8 @@ const {
   getUserTasks,
   taskParticipants,
   moveTask,
+  addLabel,
+  deleteLabel,
 } = require("../controllers/taskController");
 
 //middleware
@@ -39,5 +41,9 @@ router.put("/leaveTask", leaveTask);
 router.put("/updateTask", updateTask);
 
 router.put("/moveTask", moveTask);
+
+router.put("/addLabel", addLabel);
+
+router.put("/deleteLabel", deleteLabel);
 
 module.exports = router;

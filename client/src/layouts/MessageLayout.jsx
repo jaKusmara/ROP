@@ -28,7 +28,7 @@ export default function MessageLayout() {
       </aside>
 
       {chatContextState.chat && (
-        <main className="flex flex-col h-full md:w-[75%] bg-neutral-500">
+        <main className="flex flex-col h-full md:w-[75%] border-l">
           <Outlet />
         </main>
       )}

@@ -1,9 +1,7 @@
 const Channel = require("../models/channelModel");
 const Project = require("../models/projectModel");
 const Board = require("../models/boardModel");
-const randomToken = require("random-token").create(
-  "abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-);
+const Task = require("../models/taskModel");
 
 // CREATE PROJECT
 const createProject = async (req, res) => {
@@ -11,34 +9,10 @@ const createProject = async (req, res) => {
   const user_id = req.user._id;
 
   try {
-    const connectionString = randomToken(8);
+    console.log(user_id);
+    const project = await Project.createNewProject(user_id, title, description);
 
-    const board = await Board.create({ title: title });
-
-    // Create a new project
-    const data = await Project.create({
-      members: [{ user_id }],
-      title,
-      description,
-      connectionString,
-      board_id: board._id,
-      channels: [],
-    });
-
-    const channel = await Channel.create({
-      members: [user_id],
-      title: "General",
-      project_id: data._id,
-      type: "general",
-    });
-
-    await Project.findByIdAndUpdate(
-      data._id,
-      { $push: { channels: channel._id } },
-      { new: true }
-    );
-
-    res.status(200).json(data);
+    res.status(200).json(project);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -48,9 +22,6 @@ const createProject = async (req, res) => {
 const getAllUserProjects = async (req, res) => {
   const user_id = req.user;
 
-  if (user_id) {
-    console.log(user_id);
-  }
   try {
     const data = await Project.getUserProjects(user_id);
 
@@ -67,10 +38,11 @@ const getProjectById = async (req, res) => {
 
   try {
     const data = await Project.getProjectById(_id);
+    
 
     res.status(200).json(data);
   } catch (error) {
-    res.status(200).json({ error: error.message });
+    res.status(404).json({ error: error.message });
   }
 };
 
@@ -112,6 +84,14 @@ const leaveProject = async (req, res) => {
       "members.user_id": user_id,
     });
 
+    const tasks = await Task.updateMany(
+      {
+        participants: user_id,
+        board_id: project.board_id,
+      },
+      { $pull: { participants: user_id } }
+    );
+    console.log(tasks.matchedCount);
     if (!project) {
       return res
         .status(404)

@@ -68,6 +68,10 @@ const allUserFriends = async (req, res) => {
       friendList.push({ _id, username, firstname, surname });
     });
 
+    if (friendList.length == 0) {
+      return res.status(200).json([]);
+    }
+
     res.status(200).json(friendList);
   } catch (error) {
     res.status(404).json({ error: error.message });

@@ -14,7 +14,7 @@ export default function Message({ message }) {
       >
         <div>{message.content}</div>
       </div>
-      <h2>{message.sender_id === user.user._id ? user.user.surname : null}</h2>
+      <h2 className="text-xs">{message.sender_id === user.user._id ? null : message.sender_username}</h2>
     </>
   );
 }

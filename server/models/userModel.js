@@ -40,6 +40,7 @@ const userSchema = new Schema(
     ],
     avatar: {
       type: String,
+      required: true,
     },
   },
   {
@@ -91,9 +92,6 @@ userSchema.statics.signup = async function (
     str.charAt(0).toUpperCase() + str.slice(1);
   const capitalizedFirstname = capitalizeFirstLetter(firstname);
   const capitalizedSurname = capitalizeFirstLetter(surname);
-
-  console.log("Capitalized Firstname:", capitalizedFirstname);
-  console.log("Capitalized Surname:", capitalizedSurname);
 
   const emailExist = await this.findOne({ email });
 
