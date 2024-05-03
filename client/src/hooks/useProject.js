@@ -54,14 +54,13 @@ export const useProject = () => {
       );
 
       if (response.status) {
+
+        console.log(response.data)
+
         dispatch({ type: "SET_PROJECT", payload: response.data });
 
         idDispatch({ type: "SET_BOARD_ID", payload: response.data.board_id });
 
-        localStorage.setItem(
-          "board_id",
-          JSON.stringify(response.data.board_id)
-        );
         setIsLoading(false);
       }
     } catch (error) {

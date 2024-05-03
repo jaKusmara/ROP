@@ -110,6 +110,8 @@ projectSchema.statics.getProjectById = async function (_id) {
     
   )
 
+  console.log(lists)
+
   return {
     _id: project._id,
     members: members,
@@ -117,9 +119,9 @@ projectSchema.statics.getProjectById = async function (_id) {
     description: project.description,
     connectionString: project.connectionString,
     channels: channels,
-    lists: ,
-    tasks: ,
-    board_id: ,
+    lists: project.lists,
+    tasks: project._id,
+    board_id: project._id,
   };
 };
 

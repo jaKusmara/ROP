@@ -18,12 +18,12 @@ export default function ListDropdownMenu({
   const { dispatch: idDispatch } = useIdContext();
 
   return (
-    <div class="group">
+    <div className="group">
       <button className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5">
         <ListIcon />
       </button>
 
-      <div class="absolute hidden bg-neutral-600  p-1 mt-1 rounded-md group-hover:block">
+      <div className="absolute hidden bg-neutral-600  p-1 mt-1 rounded-md group-hover:block">
         <button
           className="hover:bg-blue-500 block p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5 mb-1"
           onClick={() => {

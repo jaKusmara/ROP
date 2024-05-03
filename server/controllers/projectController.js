@@ -37,8 +37,8 @@ const getProjectById = async (req, res) => {
   const _id = req.query._id;
 
   try {
-    const data = await Project.getProjectById(_id);
-    
+    //const data = await Project.getProjectById(_id);
+    const data = await Project.findById(_id)
 
     res.status(200).json(data);
   } catch (error) {
