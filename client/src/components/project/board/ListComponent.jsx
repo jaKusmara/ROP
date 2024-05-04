@@ -44,7 +44,10 @@ export default function ListComponent({ list, tasks }) {
             className="hover:bg-blue-500 p-2 rounded shadow shadow-neutral-900 bg-neutral-800 md:p-0.5"
             onClick={() => {
               setEditList(!editList);
-              editTitle(user, list._id, idState.board_id, newTitle);
+              if(newTitle != ""){
+                editTitle(user, list._id, idState.board_id, newTitle);
+              }
+              
             }}
           >
             <SaveIcon />

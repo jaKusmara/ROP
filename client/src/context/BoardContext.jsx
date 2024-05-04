@@ -46,6 +46,19 @@ export const boardReducer = (state, action) => {
       return { ...state, task: updatedTask };
     }
 
+    case "MOVE_TASK": {
+      const { taskId, newListId } = action.payload;
+      
+      const updatedTasks = state.tasks.map(task => {
+        if (task._id === taskId) {
+          return { ...task, list_id: newListId }; 
+        }
+        return task;
+      });
+    
+      return { ...state, tasks: updatedTasks };
+    }
+
     default:
       return state;
   }

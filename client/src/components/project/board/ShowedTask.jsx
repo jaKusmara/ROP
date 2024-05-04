@@ -69,7 +69,6 @@ export default function ShowedTask() {
     }
   }, [user, idState.task_id, socketUpdateTask]);
 
-  console.log(taskState);
 
   return (
     <>
@@ -87,7 +86,7 @@ export default function ShowedTask() {
                       onChange={(e) => {
                         setTitle(e.target.value);
                       }}
-                      placeholder="Label..."
+                      placeholder="Title..."
                       className="w-full rounded text-white bg-neutral-700 h-fit resize-none p-1.5 text-2xl"
                     />
                   </div>
@@ -158,13 +157,15 @@ export default function ShowedTask() {
                   <li
                     onClick={() => {
                       setToggleEdit(!toggleEdit);
-                      updateTask(
-                        user,
-                        taskState.task._id,
-                        title,
-                        description,
-                        taskState.task.board_id
-                      );
+                      if(title != ""){
+                        updateTask(
+                          user,
+                          taskState.task._id,
+                          title,
+                          description,
+                          taskState.task.board_id
+                        );
+                      }
                     }}
                     className="hover:bg-green-500 bg-green-600 rounded p-1 mx-1.5 cursor-pointer"
                   >

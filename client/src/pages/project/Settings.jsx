@@ -33,7 +33,11 @@ export default function Settings() {
   const { dispatch: projectDispatch } = useProjectContext();
 
   const saveChannel = () => {
-    editChannelTitle(user, selectedChannel, newChannelTitle);
+    if (newChannelTitle != "") {
+      editChannelTitle(user, selectedChannel, newChannelTitle);
+      setSelectedChannel(null);
+    }
+
     setSelectedChannel(null);
   };
 
@@ -126,7 +130,10 @@ export default function Settings() {
             className="p-2 md:p-1 bg-green-600 rounded-md"
             onClick={() => {
               setEditTitle(!editTitle);
-              editProjectTitle(user, projectState.project._id, title);
+
+              if (title != "") {
+                editProjectTitle(user, projectState.project._id, title);
+              }
             }}
           >
             Save Title
@@ -180,7 +187,7 @@ export default function Settings() {
             </button>
           </div>
         )}
-        
+
         <table className="table-fixed w-full bg-neutral-600 my-5 rounded shadow-xl shadow-neutral-800">
           <thead className="border-b-2 md:border-b">
             <tr className="text-2xl md:text-lg h-12">
@@ -235,8 +242,12 @@ export default function Settings() {
                     ) : (
                       <div
                         onClick={() => {
-                          setSelectedChannel(channel._id);
-                          setNewChannelTitle(channel.title);
+                          channelContext.channels.map((channel) => {
+                            if (channel.type != "general") {
+                              setSelectedChannel(channel._id);
+                              setNewChannelTitle(channel.title);
+                            }
+                          });
                         }}
                         className="w-fit justify-self-center hover:bg-purple-500 rounded"
                       >

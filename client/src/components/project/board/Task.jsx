@@ -14,7 +14,6 @@ import { useAuthContext } from "../../../hooks/useContext/useAuthContext";
 import { useIdContext } from "../../../hooks/useContext/useIdContext";
 
 import socket from "../../../utils/socekt";
-import MoveTask from "./MoveTask";
 
 export default function Task() {
   const { state } = useBoardContext();
@@ -101,10 +100,6 @@ export default function Task() {
     setLabels(!labels);
   };
 
-  const handleMove = () => {
-    setMove(!move);
-  };
-
   return (
     <div className="w-full h-full flex flex-row">
       <div className="flex flex-col h-96 w-96 bg-gray-600 break-all p-4 space-x-4">
@@ -189,7 +184,7 @@ export default function Task() {
         </footer>
       </div>
       {labels ? <ShowLabels /> : null}
-      {move ? <MoveTask /> : null}
+
     </div>
   );
 }

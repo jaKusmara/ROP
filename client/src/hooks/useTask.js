@@ -255,6 +255,7 @@ export const useTask = () => {
       );
 
       if (response.status) {
+        dispatch({ type: "MOVE_TASK", payload: { taskId: task_id, newListId: list_id } })
         socket.emit("tasks_refresh", {
           to: board_id,
         });
